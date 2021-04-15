@@ -1,24 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import CarRental from './components/car_rental.js';
+import CarHomePage from './components/car_homepage.js';
+import Admin from './components/admin'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
 
+} from "react-router-dom";
+import ListCar from './components/list_car'
+import AddCar from './components/add_car'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Switch>
+            <Route exact path="/">
+                  <CarHomePage/>
+            </Route>
+              <Route exact path="/vehicles">
+                  <CarRental/>
+            </Route>
+            <Route exact path="/admin">
+                  <Admin/>
+            </Route>
+            <Route exact path="/admin/vehicles" >
+                  <Admin com={<ListCar/>}/>
+            </Route>
+            <Route exact path="/admin/add-vehicles">
+                  <Admin com={<AddCar/>}/>
+            </Route>
+        </Switch>
+    </Router>
   );
 }
 
