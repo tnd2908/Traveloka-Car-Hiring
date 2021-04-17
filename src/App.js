@@ -11,10 +11,12 @@ import {
 } from "react-router-dom";
 import ListCar from './components/list_car'
 import AddCar from './components/add_car'
+
 function App() {
   dotenv.config();
   return (
     <Router>
+      
         <Switch>
             <Route exact path="/">
                   <CarHomePage/>
