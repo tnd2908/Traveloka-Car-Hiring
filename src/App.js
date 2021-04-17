@@ -2,6 +2,7 @@ import './App.css';
 import CarRental from './components/car_rental.js';
 import CarHomePage from './components/car_homepage.js';
 import Admin from './components/admin'
+import dotenv from 'dotenv'
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,6 +12,7 @@ import {
 import ListCar from './components/list_car'
 import AddCar from './components/add_car'
 function App() {
+  dotenv.config();
   return (
     <Router>
         <Switch>
