@@ -2,6 +2,10 @@
     color: white;
     margin-left: 10px;
 }
+.ant-skeleton-content{
+    width: 100%;
+    position: absolute;
+}
 .navbar-admin.col-3, .navbar-admin.col-9{
     padding: 0;
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import '../css/admin.css'
 import React from 'react'
 import axios from 'axios'
-import { Modal, message, Form, Input, InputNumber } from 'antd'
+import { Modal, message, Form, Input, InputNumber, Skeleton } from 'antd'
 const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 15 },
@@ -97,7 +97,6 @@ const ListCar = () => {
             axios.get("https://mighty-meadow-74982.herokuapp.com/manufactor")
                 .then(response => {
                     setBrand(response.data.data)
-                    console.log(response.data.data)
                 })
         } catch (error) {
             console.log(error)
@@ -170,7 +169,7 @@ const ListCar = () => {
                                     </Form.Item>
                                 </Form>
                             </Modal>
-                            {listCar.map((car, index) => {
+                            {listCar.length > 0 ? listCar.map((car, index) => {
                                 return (
                                     <tr>
                                         <th scope="row"> {index} </th>
@@ -188,7 +187,8 @@ const ListCar = () => {
                                         </td>
                                     </tr>
                                 );
-                            })}
+                            }):
+                            <Skeleton width={700} style={{backgroundColor:"black"}} active/>}
                         </tbody>
                     </table>
                 </div>
