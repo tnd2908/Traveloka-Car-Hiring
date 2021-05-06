@@ -1,31 +1,43 @@
 import { Menu, Radio } from 'antd';
 import React, { useEffect, useState } from 'react';
-import '../css/filter.css';
+import '../../css/filter.css';
 import axios from 'axios';
 const { SubMenu } = Menu;
 
 const Category = ({getFilter, showAll}) =>{
-    const [category, setCategory] = useState({
-        categorys: []
-    })
+    const [category, setCategory] = useState([])
+    const [brand,setBrand] = useState([])
     const [sort, setSort] = useState(true)
     const [idCategory, setIdcategory] = useState()
     const onCheck = (e) =>{
         getFilter(idCategory, e.target.value)
         setSort(e.target.value)
     }
-    useEffect(()=>{
+    const getCategoryData = () =>{
         try {
             axios.get("https://mighty-meadow-74982.herokuapp.com/cate")
                 .then(response=>{
-                    setCategory({
-                        categorys: response.data.data
-                    })
+                    setCategory(response.data.data)
+                    console.log(category)
                 })
-                .then(console.log(category.categorys))
         } catch (error) {
             console.log(error)
         }
+    }
+    const getManufactorData = () =>{
+        try {
+            axios.get("https://mighty-meadow-74982.herokuapp.com/manufactor")
+            .then(response=>{
+                setBrand(response.data.data)
+                console.log(response.data.data)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{                                                         
+        getCategoryData();
+        getManufactorData();
     },[])
     return(
         <Menu
@@ -37,14 +49,15 @@ const Category = ({getFilter, showAll}) =>{
           </div>
             <SubMenu key="sub1"  title="Số hành khách tối đa">
                 <Menu.Item onClick={()=>showAll(sort)}>Tất cả</Menu.Item>
-                {category.categorys.map(cate=>(
+                {category.map(cate=>(
                     <Menu.Item onClick={()=>{getFilter(cate.idCategory, sort); setIdcategory(cate.idCategory)}} key={cate.idCategory}> Xe {cate.nameCate} chỗ </Menu.Item>
                 ))}
             </SubMenu>
-        
-            <SubMenu key="sub2"  title="Số xe">
-                <Menu.Item key="5">Option 5</Menu.Item>
-                <Menu.Item key="6">Option 6</Menu.Item>
+            <SubMenu key="sub2"  title="Hãng xe">
+            <Menu.Item onClick={()=>showAll(sort)}>Tất cả</Menu.Item>
+                {brand.map(brand=>(
+                    <Menu.Item key={brand.name}>{brand.name} </Menu.Item>
+                ))}
             </SubMenu>
             <SubMenu key="sub4"  title="Sắp xếp">
                 <Menu.Item key="10" style={{height: '100%', paddingLeft:'20px'}}>

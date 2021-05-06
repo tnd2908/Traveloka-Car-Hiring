@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import '../css/admin.css'
+import '../../css/admin.css'
 import React from 'react'
 import axios from 'axios'
-import { Modal, message, Form, Input, InputNumber, Skeleton } from 'antd'
+import { Modal, message, Form, Input, InputNumber, Skeleton, Upload } from 'antd'
 const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 15 },
@@ -56,16 +56,15 @@ const ListCar = () => {
     }
     const onEdit = ()=>{
         const data = {
-            idVehicle: idVehicle,
-            name: name,
-            price: price,
-            quantity: quantity,
-            idCategory: idCategory,
-            idManufactor: idManufactor,
+            idVehicle,
+            name,
+            price,
+            quantity,
+            idCategory,
+            idManufactor,
         }
-        console.log(data)
         try {
-            axios.put(`https://mighty-meadow-74982.herokuapp.com/vehicle/${idVehicle}`)
+            axios.put(`https://mighty-meadow-74982.herokuapp.com/${idVehicle}, ${data}`)
             .then(response=>{
                 console.log(response)
                 setIsvisible(false)
@@ -82,6 +81,7 @@ const ListCar = () => {
                 .then(response => {
                     console.log(response)
                     message.success('Đã xoá thành công!')
+
                 })
         } catch (error) {
             console.log(error)

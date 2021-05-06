@@ -17,7 +17,7 @@ const AddCar = () => {
     const [idCategory, setIdCategory] = useState('')
     const [idManufactor, setIdManufactor] = useState('')
     const [brand,setBrand] = useState([])
-    useEffect(()=>{                                                         
+    const getCategoryData = () =>{
         try {
             axios.get("https://mighty-meadow-74982.herokuapp.com/cate")
                 .then(response=>{
@@ -27,8 +27,8 @@ const AddCar = () => {
         } catch (error) {
             console.log(error)
         }
-    },[])
-    useEffect(()=>{
+    }
+    const getManufactorData = () =>{
         try {
             axios.get("https://mighty-meadow-74982.herokuapp.com/manufactor")
             .then(response=>{
@@ -38,42 +38,41 @@ const AddCar = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+    useEffect(()=>{                                                         
+        getCategoryData();
+        getManufactorData();
     },[])
     const onIdManufactorChange = (value) =>{
         setIdManufactor(value.value)
-        console.log(value.value)
     }
     const onIdCategoryChange = (value) =>{
         setIdCategory(value.value)
-        console.log(value.value)
     }
     const onNameChange = (e) =>{
         setName(e.target.value)
-        console.log(name)
     }
     const onPriceChange = (value) =>{
         setPrice(value)
-        console.log(price)
     }
     const onQuantityChange = (value) =>{
         setQuantity(value)
-        console.log(quantity)
     }
     const handleCreateCar = () =>{
         try {
             const data = {
-                name: name,
-                price: price,
-                quantity: quantity,
-                idCategory: idCategory,
-                idManufactor: idManufactor,
+                name,
+                price,
+                quantity,
+                idCategory,
+                idManufactor,
             }
             axios.post('https://mighty-meadow-74982.herokuapp.com/vehicle', data)
                 .then(response=>{
                     Modal.success({
                         content: response.data.result,
                         onOk: ()=>{
-                            document.querySelectorAll(Input).value = null
+                            
                         }
                     })
                     console.log(response)
