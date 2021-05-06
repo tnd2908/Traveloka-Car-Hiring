@@ -4,7 +4,6 @@ import {
     Link
   } from "react-router-dom";
 function Car({car}){
-    console.log(car)
     const id = car.idVehicle;
     const fetchCar = () => {
         axios.get("https://mighty-meadow-74982.herokuapp.com/vehicle/"+id)
@@ -27,9 +26,8 @@ function Car({car}){
                 <div className="col-4"> 
                     <div className="price">
                         <p id="text">Giá thuê theo ngày từ</p>
-                        <p id="price">$ {car.price}</p>
-                        <p> {car.idCategory}</p>
-                        <Link to={id}><span>Tiếp tục</span></Link>
+                        <p id="price">{new Intl.NumberFormat().format(car.price)} VNĐ</p>
+                        <Link to={`/vehicles/${id}`}><span>Tiếp tục</span></Link>
                     </div>
                  </div>
             </div>

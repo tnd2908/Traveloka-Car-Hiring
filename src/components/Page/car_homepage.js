@@ -1,11 +1,10 @@
-import '../css/carRental.css'
+import '../../css/carRental.css'
 import { DatePicker, Select, TimePicker } from 'antd'
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { image } from "./dummy"
+import { image } from "../dummy"
 import axios from 'axios';
 function Imglink() {
-
     return (
         <Fragment>
             {image.imageBrand.map(item => (

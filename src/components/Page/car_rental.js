@@ -1,4 +1,4 @@
-import '../css/carRental.css';
+import '../../css/carRental.css';
 import 'antd/dist/antd.css';
 
 import React, { useEffect, useState } from 'react';

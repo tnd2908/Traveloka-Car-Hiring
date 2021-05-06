@@ -1,8 +1,22 @@
-import React, { Component } from 'react';
-import '../css/carDetail.css'
-const CarDetail = () => {
-
-
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
+import '../../css/carDetail.css'
+const CarDetail = () =>{
+    let {idVehicle} = useParams();
+    useEffect(()=>{
+        fetchDetail();
+    },[])
+    const fetchDetail = () =>{
+        try {
+            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/`)
+            .then(response=>{
+                console.log(response)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return(
         <div>
             <div className="car-detail">
@@ -50,12 +64,11 @@ const CarDetail = () => {
                                 <li>Đọc và ký thỏa thuận thuê xe của nhà cung cấp, sau đó bạn có thể sử dụng dịch vụ.</li>
                             </ol>
                             <div className="chose-loca">
-                                
+
                             </div>
                         </div>    
             </div>
-        </div>                        
+        </div>                 
     );
 }
-
-export default CarDetail;
+export default CarDetail

@@ -1,4 +1,5 @@
-import '../css/admin.css'
+import '../../css/admin.css'
+
 import Dashboard from './dashboard'
 import {Dropdown} from 'antd';
 

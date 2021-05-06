@@ -8,4 +8,94 @@
 }
 .container-fluid{
   background-color: #f6f6f6;
+  overflow-x: hidden;
+}
+.header{
+  background-color: #fff;
+}
+.login-form .login-btn{
+  background-color: orange;
+  border-style: none;
+  color: white;
+  border-radius: 5px;
+  height: 40px;
+  width: 35%;
+}
+.login-form .signup-link{
+  width: 65%;
+  padding-left: 20px;
+}
+.login-form .signup-link p{
+  margin-bottom: 0;
+}
+
+.header .nav-top{
+  line-height: 40px;
+  padding-left: 30px;
+}
+.nav-top .open-left-menu{
+  margin-left: 30px;
+  font-size: 20px;
+  color: rgb(73, 73, 252);
+}
+.nav-top .logo{
+  height: 55px;
+  width: auto;
+  transform: translateY(-3px);
+}
+.nav-mid{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.nav-mid a{
+  margin-left: 20px;
+  color: dimgray;
+}
+.nav-mid a i{
+  margin-right: 5px;
+  font-size: 15px;
+}
+
+.nav-mid .user{
+  margin: 0 20px;
+  margin-right: 80px;
+}
+.nav-mid .user a{
+  margin-left: 10px;
+}
+#login{
+  background-color: whitesmoke;
+  padding: 7px 10px;
+  border-radius: 5px;
+  color: royalblue;
+}
+#login i{
+  color: silver;
+  font-size: 22px;
+  transform: translateY(4px);
+}
+#signup{
+  background-color: royalblue;
+  color: white;
+  border-radius: 5px;
+  padding: 17px 5px;
+}
+.header .nav-bottom{
+  background-color: #f6f6f6;
+  line-height: 40px;
+  padding-left: 40px;
+  display: flex;
+}
+.nav-bottom a{
+  color: dimgray;
+  margin-left: 45px;
+  font-size: 15px;
+}
+.nav-bottom a i{
+  font-size: 17px;
+}
+.prev-icon{
+  margin-right: 10px;
 }
