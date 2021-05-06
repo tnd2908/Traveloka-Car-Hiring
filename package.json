@@ -1,5 +1,5 @@
 {
-  "proxy":"http://localhost:3020",
+  "proxy": "http://localhost:3020",
   "name": "traveloka",
   "version": "0.1.0",
   "private": true,

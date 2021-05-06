@@ -10,9 +10,10 @@ import {
 } from "react-router-dom";
 import ListCar from './components/list_car'
 import AddCar from './components/add_car'
+import CarDetail from './components/CarDetail';
 
 function App() {
-  return (
+  return (  
     <Router>
       
         <Switch>
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route exact path="/admin/add-vehicles">
                   <Admin com={<AddCar/>}/>
+            </Route>
+            <Route exact path="/cardetail">
+                  <CarDetail />
             </Route>
         </Switch>
     </Router>
