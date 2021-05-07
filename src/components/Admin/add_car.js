@@ -10,19 +10,15 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 const AddCar = () => {
+    const [form] = Form.useForm();
     const [category, setCategory] = useState([])
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
-    const [quantity, setQuantity] = useState(0)
-    const [idCategory, setIdCategory] = useState('')
-    const [idManufactor, setIdManufactor] = useState('')
     const [brand,setBrand] = useState([])
+
     const getCategoryData = () =>{
         try {
             axios.get("https://mighty-meadow-74982.herokuapp.com/cate")
                 .then(response=>{
                     setCategory(response.data.data)
-                    console.log(category)
                 })
         } catch (error) {
             console.log(error)
@@ -43,36 +39,24 @@ const AddCar = () => {
         getCategoryData();
         getManufactorData();
     },[])
-    const onIdManufactorChange = (value) =>{
-        setIdManufactor(value.value)
-    }
-    const onIdCategoryChange = (value) =>{
-        setIdCategory(value.value)
-    }
-    const onNameChange = (e) =>{
-        setName(e.target.value)
-    }
-    const onPriceChange = (value) =>{
-        setPrice(value)
-    }
-    const onQuantityChange = (value) =>{
-        setQuantity(value)
-    }
-    const handleCreateCar = () =>{
+    
+    const handleCreateCar = (value) =>{
         try {
+            const {name, price, quantity} = value;
             const data = {
                 name,
                 price,
                 quantity,
-                idCategory,
-                idManufactor,
+                idManufactor: value.idManufactor.value,
+                idCategory: value.idCategory.value
             }
+            console.log(data)
             axios.post('https://mighty-meadow-74982.herokuapp.com/vehicle', data)
                 .then(response=>{
                     Modal.success({
                         content: response.data.result,
                         onOk: ()=>{
-                            
+                            document.querySelectorAll()
                         }
                     })
                     console.log(response)
@@ -90,6 +74,7 @@ const AddCar = () => {
                         name="basic"
                         style={{backgroundColor: '#fff', boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
                         initialValues={{ remember: false }}
+                        form={form}
                         onFinish={handleCreateCar}
                     >
                         <Form.Item className="form-header"><h5>Thêm xe mới</h5></Form.Item>
@@ -98,7 +83,7 @@ const AddCar = () => {
                             name="name"
                             rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
                         >
-                            <Input name="name" value={name} onChange={onNameChange} placeholder="Nhập tên xe"/>
+                            <Input  placeholder="Nhập tên xe"/>
                         </Form.Item>
 
                         <Form.Item
@@ -106,14 +91,14 @@ const AddCar = () => {
                             name="price"
                             rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
                         >
-                            <InputNumber placeholder="Nhập giá tiền" name="price" value={price} style={{width:'40%'}} onChange={onPriceChange}/>
+                            <InputNumber placeholder="Nhập giá tiền"  style={{width:'40%'}} />
                         </Form.Item>
                         <Form.Item
                             label="Số lượng"
                             name="quantity"
                             rules={[{ required: true, message: 'Vui lòng nhập số lượng xe' }]}
                         >
-                            <InputNumber placeholder="Nhập số lượng xe" name="quantity" value={quantity} style={{width:'40%'}} onChange={onQuantityChange} />
+                            <InputNumber placeholder="Nhập số lượng xe"  style={{width:'40%'}}  />
                         </Form.Item>
                         <Form.Item
                             label="Số chỗ ngồi"
@@ -123,12 +108,10 @@ const AddCar = () => {
                             <Select
                                 labelInValue
                                 placeholder="Số chỗ"
-                                onChange={onIdCategoryChange}
                                 name="idCategory"
-                                value={idCategory}
                             >
                                 {category.map((idCategory, index)=>(
-                                    <Option key={index} value={idCategory.idCategory}>{idCategory.nameCate} chỗ</Option>
+                                    <Option key={index} value={idCategory.idCategory} >{idCategory.nameCate} chỗ</Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -141,9 +124,7 @@ const AddCar = () => {
                             <Select
                                 labelInValue
                                 placeholder="Hãng sản xuất"
-                                onChange= {onIdManufactorChange}
                                 name="idManufactor"
-                                value={idManufactor}
                             >
                                 {brand.map((id, index)=>(
                                     <Option key={index} value={id.idManufactor}> {id.name} </Option>
