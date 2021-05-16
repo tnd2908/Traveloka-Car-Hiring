@@ -5,17 +5,30 @@ import React, { useEffect, useState } from 'react';
 import Car from './car';
 import axios from 'axios';
 import Category from './filter';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getListCarByPrice, getListCarFromHighPrice, getListCarFromLowPrice, setList } from '../../action/car';
 function CarRental(){
-    const [listCar, setListCar] = useState({
-        cars: [],
-    })
-    const [newListCar, setNewListCar] = useState({
-        cars: listCar.cars,
-    })
     const [dateStart, setDateStart] = useState()
     const [dateEnd, setDateEnd] = useState()
     const [city, setCity] = useState()
+    const dispatch = useDispatch()
+    const list = useSelector(state => state.car.listCar)
+    const defaultList = useSelector(state => state.car.defaultList)
+    const getPriceRange = (value) =>{
+        const action = getListCarByPrice(value)
+        dispatch(action)
+    }
+
+    const sortPrice = (value) =>{
+        if(value === 'low'){
+            const action = getListCarFromLowPrice(list)
+            dispatch(action)
+        }
+        else if(value === 'high'){
+            const action = getListCarFromHighPrice(list)
+            dispatch(action)
+        }
+    }
     useEffect(()=>{
         const date1 = localStorage.getItem('DateStart')
         setDateStart(date1)
@@ -23,60 +36,29 @@ function CarRental(){
         setDateEnd(date2)
         const place = localStorage.getItem('City')
         setCity(place)
+        getListCar();
     },[])
-    
-     const getFilter = (idCate, sort) =>{
-        const newArr = [];
-        listCar.cars.forEach(newCar=>{
-            if(idCate === newCar.idCategory){
-                newArr.push(newCar);
-                if(sort == true){
-                    newArr.sort((a,b)=>{
-                        return a.price - b.price;
-                    })
-                    setNewListCar({cars: [...newArr]})
-                }
-                if(sort == false){
-                    newArr.sort((a,b)=>{
-                        return b.price - a.price;
-                    })
-                    setNewListCar({cars: [...newArr]})
-                }
-            }
-            else{
-                setNewListCar({cars: [...newArr]})
-            }
-        })
-    }
-    const showAll = () =>{
-        setNewListCar({cars: listCar.cars})
-    }
-    useEffect(()=>{
+    const getListCar = () =>{
         try {
-            console.log(listCar);
             axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/`)
             .then(response =>{
-                setListCar({
-                    cars: response.data.data
-                })
-                setNewListCar({
-                    cars: response.data.data
-                })
+                const action = setList(response.data.data, response.data.data)
+                dispatch(action)
             })
         } catch (error) {
-            console.log(error)
-        }       
-    },[])
+            console.log(error) 
+        }    
+    }
 
     return(
         <div className="container-fluid">
             <div className="row">
-                <div className="banner">
+                <div  className="banner">
                 </div>
             </div>
             <div className="container main">
                 <div className="row">
-                    <div className="form-container infor">
+                    <div className="form-container rent-infor">
                         <p>Thuê xe / Thuê xe tự lái</p>
                         <h5>Thuê xe tự lái</h5>
                         <p style={{fontWeight:'bold', marginTop: '15px', color:'grey'}}><span style={{marginRight:'10px', fontSize: '20px'}}>Thành phố {city}</span> <span>{dateStart} đến {dateEnd} </span> </p>
@@ -84,12 +66,12 @@ function CarRental(){
                 </div>
                 <div className="row">
                 <div className="col-3">
-                    <Category showAll = {showAll} getFilter = {getFilter}/>
+                    <Category sortPrice={sortPrice} getPriceRange={getPriceRange} />
                 </div>
                 <div className="col-9">
-                    <h6>Tìm thấy {newListCar.cars.length} loại xe</h6>
-                    {newListCar.cars.map(items=>(
-                        items?<Car key={listCar.cars.idVehicle} car = {items}/>: <p>Không tìm thấy xe</p>
+                    <h6>Tìm thấy {list.length} loại xe</h6>
+                    {list.map(items=>(
+                        items?<Car key={items.idVehicle} car = {items}/>: <p>Không tìm thấy xe</p>
                     ))}
                 </div>
             </div>    

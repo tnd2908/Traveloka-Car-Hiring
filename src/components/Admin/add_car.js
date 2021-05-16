@@ -42,11 +42,12 @@ const AddCar = () => {
     
     const handleCreateCar = (value) =>{
         try {
-            const {name, price, quantity} = value;
+            const {name, price, quantity, image} = value;
             const data = {
                 name,
                 price,
                 quantity,
+                image,
                 idManufactor: value.idManufactor.value,
                 idCategory: value.idCategory.value
             }
@@ -56,7 +57,15 @@ const AddCar = () => {
                     Modal.success({
                         content: response.data.result,
                         onOk: ()=>{
-                            document.querySelectorAll()
+                            const obj ={
+                                name: '',
+                                price: '',
+                                quantity: '',
+                                idManufactor: '',
+                                idCategory: '',
+                                image: ''
+                            }
+                              form.setFieldsValue(obj)
                         }
                     })
                     console.log(response)
@@ -100,6 +109,14 @@ const AddCar = () => {
                         >
                             <InputNumber placeholder="Nhập số lượng xe"  style={{width:'40%'}}  />
                         </Form.Item>
+                        <Form.Item
+                            label="Hình ảnh"
+                            name="image"
+                            rules={[{ required: true, message: 'Vui lòng nhập URL hình' }]}
+                        >
+                            <Input  placeholder="Nhập hình ảnh"/>
+                        </Form.Item>
+
                         <Form.Item
                             label="Số chỗ ngồi"
                             name="idCategory"

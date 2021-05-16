@@ -1,6 +1,5 @@
 import { Fragment, useState } from "react";
-import {
-  BrowserRouter as Router,
+import { 
   Link
 } from "react-router-dom";
 import { Dropdown, Form, Input } from 'antd'
@@ -63,9 +62,9 @@ function Nav() {
           <div className="col-9">
             <div className="nav-mid">
               <Link><i class="fas fa-percent " style={{ color: 'tomato' }}></i>Khuyến mãi</Link>
-              <Link to="/admin"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
+              <a href="/admin"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</a>
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
-              <Link><i class="fal fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
+              <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
               <div className="user">
                 <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={loginForm} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
@@ -79,11 +78,11 @@ function Nav() {
           <div className="nav-bottom">
             <Link><i class="fas fa-plane prev-icon" style={{ color: 'deepskyblue' }}></i>Vé máy bay</Link>
             <Link><i class="fas fa-hotel prev-icon" style={{ color: 'indigo' }}></i>Khách sạn</Link>
-            <Link><i class="fal fa-car-building prev-icon" style={{ color: 'darkcyan' }}></i>Combo tiết kiệm</Link>
-            <Link><i class="fal fa-car-bus prev-icon" style={{ color: 'skyblue' }}></i>Đưa đón sân bay</Link>
+            <Link><i class="fas fa-car-building prev-icon" style={{ color: 'darkcyan' }}></i>Combo tiết kiệm</Link>
+            <Link><i class="fas fa-car-bus prev-icon" style={{ color: 'skyblue' }}></i>Đưa đón sân bay</Link>
             <Link><i class="fas fa-map-marked-alt prev-icon" style={{ color: 'yellowgreen' }}></i>Xperience</Link>
             <Link to="vehicles"><i class="fas fa-car-alt prev-icon" style={{ color: 'gray' }}></i>Cho thuê xe</Link>
-            <Link><i class="fal fa-globe prev-icon" style={{ color: 'tomato' }}></i>JR Pass</Link>
+            <Link><i class="fas fa-globe prev-icon" style={{ color: 'tomato' }}></i>JR Pass</Link>
           </div>
         </div>
       </div>

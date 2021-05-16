@@ -4,150 +4,72 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { image } from "../dummy"
 import axios from 'axios';
+import HiringForm from './hiring-form';
 function Imglink() {
-    return (
-        <Fragment>
-            {image.imageBrand.map(item => (
-                <div className="img-box">
-                    <img src={item} alt="" key={1} />
-                </div>
-            ))}
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      {image.imageBrand.map(item => (
+        <div className="img-box">
+          <img src={item} alt="" key={1} />
+        </div>
+      ))}
+    </Fragment>
+  );
 }
 const dateFormat = 'YYYY/MM/DD';
 
 function CarHomePage() {
-    const { Option } = Select
-    const [city, setCity] = useState("");
-    const [idCity, setIdCity] = useState([]);
-    const [cities, setCities] = useState([]);
-    const onDateStartChange = (date, dateString) => {
-        localStorage.setItem('DateStart', dateString)
-    }
-    const onDateEndChange = (date, dateString) => {
-        localStorage.setItem('DateEnd', dateString)
-    }
-    const onPlaceChange = value => {
-        console.log(value);
-        //localStorage.setItem('City', value)
-        setCity(value[0]);
-        setIdCity(value[1]);
-    }
-    const carFilter = () => {
-        const idCityBody = {
-            idCity:idCity
-        }
-        axios.post("https://mighty-meadow-74982.herokuapp.com/vehicle/available/place",idCityBody)
-        .then(res=>localStorage.setItem("vehicle",JSON.stringify(res.data.vehicles)))
-    }
-    useEffect(() => {
-        axios.get("https://mighty-meadow-74982.herokuapp.com/city")
-            .then(res => {
-                if (res.data) {
-                    setCities(res.data.cities)
-                }
-            })
-    }, [])
-    return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="banner">
-
-                </div>
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        <div className="banner">
+        </div>
+      </div>
+      <div className="container main">
+        <div className="form-container">
+          <HiringForm/>
+        </div>
+        <div className="row">
+          <div className="col-md-4">
+            <div className="introduction">
+              <h4>Các đối tác cho thuê xe</h4>
+              <h5>Các đối tác cho thuê xe yêu thích của bạn</h5>
+              <p>Chúng tôi hợp tác với các đối tác cho thuê xe uy tín trên toàn thế giới để đưa bạn đến bất kỳ nơi nào bạn muốn</p>
             </div>
-            <div className="container main">
-                <div className="form-container">
-                    <form className="find-car-form">
-                        <div className="form-header">
-                            <label htmlFor="select">Có tài xế hay xe tự lái?</label>
-                            <select name="driver" id="select">
-                                <option value="noDriver">Tự lái</option>
-                                <option value="Diver">Có tài xế</option>
-                            </select>
-                        </div>
-                        <div className="form-body">
-                            <label htmlFor="place">Địa điểm thuê xe của bạn</label>
-                            <Select
-                                style={{ width: 400 }}
-                                onChange={onPlaceChange}
-                                placeholder="Điền thành phố, sân bay hoặc khách sạn">
-                                {
-                                    cities.length > 0 ? cities.map((city, index) =>
-                                        <Option 
-                                            key={city.idCity} 
-                                            value={[city.name,city.idCity]}>{city.name}
-                                        </Option>
-                                    ) : <div>loading....</div>
-                                }
-                            </Select>
-                            <div className="container-fluid bg-white">
-                                <div className="row">
-                                    <div className="col-6 col-md-3">
-                                        <label htmlFor="startDate">Ngày bắt đầu</label>
-                                        <DatePicker onChange={onDateStartChange} id="startDate" format={dateFormat} />
-                                    </div>
-                                    <div className="col-6 col-md-2">
-                                        <label htmlFor="timeStart">Giờ bắt đầu</label>
-                                        <TimePicker />
-                                    </div>
-                                    <div className="col-6 col-md-3">
-                                        <label htmlFor="startDate">Ngày kết thúc</label>
-                                        <DatePicker onChange={onDateEndChange} id="startDate" format={dateFormat} />
-                                    </div>
-                                    <div className="col-6 col-md-2">
-                                        <label htmlFor="timeStart">Giờ kết thúc</label>
-                                        <TimePicker />
-                                    </div>
-                                    <div className="col-6 col-md-2 form-btn">
-                                        <Link to="/vehicles" onClick={carFilter}>Tim xe</Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div className="row">
-                    <div className="col-md-4">
-                        <div className="introduction">
-                            <h4>Các đối tác cho thuê xe</h4>
-                            <h5>Các đối tác cho thuê xe yêu thích của bạn</h5>
-                            <p>Chúng tôi hợp tác với các đối tác cho thuê xe uy tín trên toàn thế giới để đưa bạn đến bất kỳ nơi nào bạn muốn</p>
-                        </div>
-                    </div>
-                    <div className="col-md-8">
-                        <div className="brands">
-                            <Imglink />
-                        </div>
-                    </div>
-                </div>
-                <div className="member">
+          </div>
+          <div className="col-md-8">
+            <div className="brands">
+              <Imglink />
+            </div>
+          </div>
+        </div>
+        <div className="member">
           <h3>Tại sao nên thuê xe ô tô trên Traveloka?</h3>
           <div className="containerer">
             <div className="row">
               <div className="col-sm">
-              <img  src={process.env.PUBLIC_URL + '/images/Time.svg'}/>
+                <img src={process.env.PUBLIC_URL + '/images/Time.svg'} alt="" />
                 <span>Tiết kiệm thời gian</span>
                 <p>Dễ dàng thuê xe ở bất cứ đâu và bất kỳ khi nào. So sánh xe ô tô từ các đối tác tin cậy của chúng tôi trên một nền tảng, việc tìm kiếm chiếc xe phù hợp với bạn trở nên dễ dàng hơn bao giờ hết.</p>
               </div>
               <div className="col-sm">
-              <img  src={process.env.PUBLIC_URL + '/images/Quality.svg'}/>
+                <img src={process.env.PUBLIC_URL + '/images/Quality.svg'} alt="" />
                 <span>Dịch vụ chất lượng cao từ các đối tác tin cậy</span>
                 <p>Những đối tác tin cậy của chúng tôi cung cấp dịch vụ chất lượng đảm bảo rằng bạn có một chuyến đi an toàn, thoải mái và đáng nhớ.</p>
               </div>
               <div className="col-sm">
-              <img  src={process.env.PUBLIC_URL + '/images/Comment.svg'}/>
+                <img src={process.env.PUBLIC_URL + '/images/Comment.svg'} alt="" />
                 <span>Đánh giá thực tế từ người dùng</span>
                 <p>Những đánh giá thực tế từ những người dùng khác giúp bạn tìm được xe phù hợp.</p>
               </div>
             </div>
           </div>
-        </div>      
+        </div>
         <div className="headers">
-          <div className="row">  
+          <div className="row">
             <div className="col-sm">
               <h3>Thuê xe tự lái</h3>
-              <p>Du lịch cùng gia đình hoặc người thân sẽ vui hơn nếu bạn chọn phương tiện di chuyển phù hợp và thuê xe có thể là sự lựa chọn tốt nhất. Nhằm hỗ trợ sự linh hoạt trong khi đi du lịch của bạn, Traveloka hiện cung cấp dịch vụ cho Thuê xe tự lái. Bạn có thể tận hưởng tiện ích này bằng cách đặt trực tiếp qua Ứng dụng Traveloka. Thỏa sức tìm kiếm với nhiều lựa chọn xe tốt nhất kèm bảng giá chi tiết đi kèm.</p>        
+              <p>Du lịch cùng gia đình hoặc người thân sẽ vui hơn nếu bạn chọn phương tiện di chuyển phù hợp và thuê xe có thể là sự lựa chọn tốt nhất. Nhằm hỗ trợ sự linh hoạt trong khi đi du lịch của bạn, Traveloka hiện cung cấp dịch vụ cho Thuê xe tự lái. Bạn có thể tận hưởng tiện ích này bằng cách đặt trực tiếp qua Ứng dụng Traveloka. Thỏa sức tìm kiếm với nhiều lựa chọn xe tốt nhất kèm bảng giá chi tiết đi kèm.</p>
               <h3>Thuê xe có tài xế</h3>
               <p>Di chuyển thuận tiện là một vấn đề rất quan trọng khi bạn đi du lịch. Đặc biệt khi bạn mong muốn có một chuyến đi dễ dàng, ít rắc rối khi khám phá nhiều địa điểm du lịch thì việc thuê một chiếc xe có tài xế là lựa chọn hợp lý. Cùng với sự phát triển của kĩ thuật số, bạn có thể dễ dàng tận hưởng dịch vụ cho thuê xe thông qua Ứng dụng Traveloka. Dễ dàng so sánh giá từ các đối tác tin cậy của chúng tôi và tìm dịch vụ phù hợp với nhu cầu của mình.</p>
             </div>
@@ -159,9 +81,9 @@ function CarHomePage() {
             <div className="col-sm">
               <div className="collu">
                 <div className="he1"><span>yêu cầu chung khi thuê xe tự lái</span></div>
-                <h5>Bao gồm</h5> 
+                <h5>Bao gồm</h5>
                 <div className="content">
-                  <ul> 
+                  <ul>
                     <ul>
                       <li>bảo hiểm cho xe và khách hàng</li>
                       <li>Thời hạn sử dụng xe tới 24 tiếng cho mỗi ngày thuê</li>
@@ -173,11 +95,11 @@ function CarHomePage() {
                     <h5>Địa điểm đón khách</h5>
                     <ul>
                       <li>Miễn phí đón và trả khách tại sân bay và trong trung tâm thành phố</li>
-                    </ul>   
+                    </ul>
                     <h5>Các giấy tờ cần thiết</h5>
                     <ul>
                       <li>Chứng minh nhân dân/hộ chiếu gốc, bằng lái xe, thẻ tín dụng của cá nhân hoặc thẻ tín dụng gia đình (hình chụp thẻ gia đình (KK) hoặc giấy chứng nhận kết hôn phải được chia sẻ với đối tác cho thuê trước khi đón để xác thực thẻ tín dụng của thành viên gia đình)</li>
-                    </ul>   
+                    </ul>
                   </ul></div>
               </div>
             </div>
@@ -213,7 +135,7 @@ function CarHomePage() {
             <p>Thuê xe trên Traveloka sẽ giúp bạn tránh khỏi một số rắc rối cũng như tiết kiệm thời gian và tiền bạc. Bạn có thể chọn xe từ các đối tác tin cậy của chúng tôi để khám phá thành phố. Đặt xe phù hợp với nhu cầu trên Traveloka, bạn sẽ nhận được xác nhận tức thì với mức giá tốt nhất.</p>
           </details>
           <details>
-            <summary>Làm thể nào để đặt xe trên Traveloka?</summary>  
+            <summary>Làm thể nào để đặt xe trên Traveloka?</summary>
             <ol>
               <h5>Bạn có thể dễ dàng đặt xe với một vài bước đơn giản:</h5>
               <li>Chọn thành phố/khu vực bạn muốn thuê xe, ngày, khoảng thời gian thuê và thời gian đón.</li>
@@ -233,7 +155,7 @@ function CarHomePage() {
           </details>
         </div>
       </div>
-            </div>
-    );
+    </div>
+  );
 }
 export default CarHomePage

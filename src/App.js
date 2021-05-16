@@ -8,13 +8,10 @@ import {
       BrowserRouter as Router,
       Switch,
       Route,
-      useLocation,
-      Link
 } from "react-router-dom";
 import ListCar from './components/Admin/list_car'
 import AddCar from './components/Admin/add_car'
-import { useState } from 'react';
-import Nav from './components/nav';
+import Nav from './components//commons/nav';
 
 
 function App() {
@@ -31,17 +28,18 @@ function App() {
                         <Route exact path="/admin/add-vehicles">
                               <Admin com={<AddCar />} />
                         </Route>
-                  </Switch>
-                  <Switch>
                         <div>
-                              <Nav/>
+                              <Nav />
                               <Route exact path="/">
+                                    {/* <Nav /> */}
                                     <CarHomePage />
                               </Route>
-                              <Route exact path="/vehicles">
+                              <Route exact path="/vehicles" >
+                                    {/* <Nav/> */}
                                     <CarRental />
                               </Route>
                               <Route exact path="/vehicles/:idVehicle">
+                                    {/* <Nav/> */}
                                     <CarDetail />
                               </Route>
                         </div>

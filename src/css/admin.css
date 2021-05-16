@@ -26,16 +26,22 @@
     align-items: center;
     height: 50px;
 }
+.menu-title button{
+    margin-left: 12px;
+}
 .menu-title h4{
     color: orange;
     display: block;
     transform: translateY(-2px);
-    margin: 0 20px;
+    margin: 0px;
 }
 .navbar-admin{
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     height: 50px;
+}
+.admin-search{
+    margin-bottom: 30px;
 }
 .container-fluid.navbar-admin{
     padding: 0;
@@ -104,6 +110,7 @@ table.table .btn-edit{
     background-color: #52BE80;
     background-color: orange;
 }
+
 .component .form{
     background-color: #eee;
 }
@@ -145,7 +152,7 @@ table.table .btn-edit{
     background-color: #fcba07;
     color: rgb(255, 255, 255);
     text-transform: uppercase;
-    border-radius: 10px;
+    border-radius: 4px;
     transition: 0.4s;
 }
 .component .form .btn-add:hover{
@@ -162,14 +169,7 @@ table.table .btn-edit{
     display: flex;
     justify-content: flex-end;
 }
-.modal-btn .btn-delete{
-    width: 100px;
-    height: 35px;
-    color: white;
-    background-color: rgb(255, 196, 0);
-    border-radius: 2px;
-    border-style: none;
-}
+
 .car-infor{
     animation: toRight 1s;
 }

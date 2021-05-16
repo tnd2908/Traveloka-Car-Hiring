@@ -2,6 +2,8 @@ import '../../css/admin.css'
 
 import Dashboard from './dashboard'
 import {Dropdown} from 'antd';
+import { Route, Switch } from 'react-router-dom';
+import { useState } from 'react';
 
 const menu=(
     <div className="sub-menu">
@@ -10,18 +12,24 @@ const menu=(
     </div>
 );
 const Admin = ({com}) =>{
+    const [collapse, setCollapse] = useState(true)
     return(
         <div className="container-fluid" style={{backgroundColor: '#eee', padding:'0'}}>
-            <div className="container-fluid navbar-admin">
+            <div className="d-flex" >
+                <div className="dashboard" >
+                    <Dashboard collapse = {collapse}/>
+                </div>
+                <div className="main" style={{width:'100%'}}>
+                    <div className="container-fluid navbar-admin">
                         <div className="row">
                             <div className="col-9">
                                 <div className="menu-title">
-                                    <h4>Dashboard</h4>
+                                    <button className="btn" onClick={()=>setCollapse(!collapse)}><i class="fal fa-bars"></i></button>
+                                    <h4>Traveloka</h4>
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="admin-infor">
-                                    <p id="hello-text">Chào Danny</p>
                                     <Dropdown overlay={menu} placement="bottomRight" arrow>
                                         <p className="user-icon"><i class="fad fa-user-circle"></i></p>
                                     </Dropdown>
@@ -29,12 +37,9 @@ const Admin = ({com}) =>{
                             </div>
                         </div>
                     </div>
-            <div className="d-flex" >
-                <div className="dashboard" style={{width:'20%'}}>
-                    <Dashboard/>
-                </div>
-                <div className="main" style={{width:'80%'}}>
-                    {com}
+                    <div>
+                        {com}
+                    </div>    
                 </div>
             </div>
         </div>

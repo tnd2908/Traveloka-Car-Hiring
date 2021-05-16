@@ -1,5 +1,9 @@
 .ant-menu-item.ant-menu-item-only-child.ant-menu-item-selected{
     color: black;
+    background-color: unset;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background-color: unset;
 }
 .ant-menu-inline .ant-menu-item::after{
     border-style: none;

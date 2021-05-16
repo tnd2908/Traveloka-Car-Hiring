@@ -8,20 +8,27 @@ import {
   EyeOutlined,
   DeleteOutlined,
   EditOutlined,
+  CarOutlined,
+  ProfileOutlined,
 } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
 const { SubMenu } = Menu;
 
-const Dashboard = () =>{
+const Dashboard = ({collapse}) =>{
     return(
         <Menu
-          defaultOpenKeys={['sub1']}
+          defaultSelectedKeys={'1'}
           mode="inline"
           theme="dark"
+          inlineCollapsed = {collapse}
+          collapsedWidth = "400px"
           style={{height: '100%', minHeight:'100vh'}}
         >
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            Option 1
+          <Menu.Item key="0" className="bg-dark" disabled style={{cursor:'default', padding:'0 20px', margin:'0'}}>
+              <h5 style={{margin:'0', height:'100%'}} className="text-light d-flex align-items-center">Dashboard</h5>
+          </Menu.Item>
+          <Menu.Item key="1" icon={<DesktopOutlined  />}>
+            <Link to="/admin">Trang chủ</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Option 2
@@ -29,13 +36,13 @@ const Dashboard = () =>{
           <Menu.Item key="3" icon={<ContainerOutlined />}>
             Option 3
           </Menu.Item>
-          <SubMenu className="submenu" key="sub1" icon={<i style={{color:'white'}} class="fas fa-cars"></i>} title="Quản lý xe">
+          <SubMenu className="submenu" key="car" icon={<CarOutlined />} title="Quản lý xe">
             <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/admin/vehicles"> Xem danh sách xe</Link></Menu.Item>
             <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles"> Thêm xe mới</Link></Menu.Item>
             <Menu.Item key="7" icon={<DeleteOutlined />}>Xoá xe</Menu.Item>
             <Menu.Item key="8" icon={<EditOutlined />}>Cập nhật thông tin xe</Menu.Item>
           </SubMenu>
-            <SubMenu key="sub2" icon={<i style={{color: 'white'}} class="fal fa-ballot-check"></i>} title="Quản lý đơn hàng">
+          <SubMenu key="sub2" icon={<ContainerOutlined />} title="Quản lý đơn hàng">
             <Menu.Item key="9">Option 9</Menu.Item>
             <Menu.Item key="10">Option 10</Menu.Item>
           </SubMenu>

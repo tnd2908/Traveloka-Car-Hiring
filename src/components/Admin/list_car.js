@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import '../../css/admin.css'
 import React from 'react'
 import axios from 'axios'
-import { Modal, message, Form, Input, InputNumber, Skeleton, Upload } from 'antd'
-import { useSelector } from 'react-redux';
+import { Modal, message, Form, Input, InputNumber, Skeleton } from 'antd'
+import { useDispatch, useSelector } from 'react-redux';
+import { searchCar, setList } from '../../action/car';
 const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 15 },
@@ -11,23 +12,18 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 6, span: 15 },
 };
+const {Search} = Input
 const ListCar = () => {
     const [form] = Form.useForm();
-    const [listCar, setListCar] = useState([])
     const [brand, setBrand] = useState([])
     const [idVehicle, setIdVehicle] = useState('')
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [isVisible, setIsvisible] = useState(false);
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
+    const list = useSelector(state=>state.car.listCar)
+    const dispatch = useDispatch()
     const handleClose = () => {
         setIsvisible(false);
     };
-    const confirmDelete = (id) => {
-        setIsModalVisible(true);
-        setIdVehicle(id)
-    }
+
     const openEditVehicleForm = (id) => {
         setIdVehicle(id)
         setIsvisible(true)
@@ -45,23 +41,12 @@ const ListCar = () => {
             console.log(error)
         }
     }
-    const handleDelete = (id) => {
-        try {
-            axios.delete(`https://mighty-meadow-74982.herokuapp.com/vehicle/${id}`)
-                .then(response => {
-                    console.log(response)
-                    message.success('Đã xoá thành công!')
-                })
-        } catch (error) {
-            console.log(error)
-        }
-        handleCancel()
-    }
     useEffect(() => {
         try {
             axios.get("https://mighty-meadow-74982.herokuapp.com/vehicle/")
                 .then(response => {
-                    setListCar(response.data.data)
+                    const action = setList(response.data.data, response.data.data)
+                    dispatch(action)
                 })
             axios.get("https://mighty-meadow-74982.herokuapp.com/manufactor")
                 .then(response => {
@@ -70,9 +55,27 @@ const ListCar = () => {
         } catch (error) {
             console.log(error)
         }
-    }, [JSON.stringify(listCar)])
+    }, [])
+    const onSearch = (value) =>{
+        console.log(value)
+        const action = searchCar(value)
+        dispatch(action)
+    }
     return (
         <div className="container-fluid component">
+            <div className="row">
+                <div className="admin-search">
+                    <h5>Tìm kiếm</h5>
+                    <Search 
+                        size="large" 
+                        placeholder="Nhập tên xe cần tìm" 
+                        style={{ width: '50%' }} 
+                        allowClear
+                        enterButton={<i class="far fa-search"></i>}
+                        onSearch = {onSearch}
+                    />
+                </div>
+            </div>
             <div className="row">
                 <div className="col-12">
                     <table class="table table-striped table-bordered">
@@ -87,13 +90,7 @@ const ListCar = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <Modal footer={null} title="Bạn có chắc muốn xoá?" visible={isModalVisible} onOk={handleCancel} onCancel={handleCancel}>
-                                <p> {idVehicle} </p>
-                                <div className="modal-btn">
-                                    <button className="btn-delete" onClick={() => handleDelete(idVehicle)}>ĐỒNG Ý</button>
-                                </div>
-                            </Modal>
-                            <Modal footer={null} title="Sửa thông tin xe" visible={isVisible} onOk={handleClose} onCancel={handleClose}>
+                            <Modal footer={null} title="Sửa thông tin xe" visible={isVisible}  onCancel={handleClose}>
                                 <div className="car-infor shadow rounded-3" style={{padding:'10px 20px', marginBottom:'15px', background:'orange', color:'white'}}>
                                     <h5 className="text-light">Thông tin hiện tại:</h5>
                                 </div>
@@ -114,7 +111,6 @@ const ListCar = () => {
                                     >
                                         <Input  placeholder="Nhập tên xe" />
                                     </Form.Item>
-
                                     <Form.Item
                                         label="Giá"
                                         name="price"
@@ -134,9 +130,9 @@ const ListCar = () => {
                                     </Form.Item>
                                 </Form>
                             </Modal>
-                            {listCar.length > 0 ? listCar.map((car, index) => {
+                            {list.length > 0 ? list.map((car, index) => {
                                 return (
-                                    <tr>
+                                    <tr className="list-car-row">
                                         <th scope="row"> {index} </th>
                                         <td> {car.name}</td>
                                         {brand.map(br => {
@@ -144,10 +140,9 @@ const ListCar = () => {
                                                 return (<td>{br.name}</td>);
                                             }
                                         })}
-                                        <td> ${car.price} / Ngày</td>
+                                        <td> {car.price} / Ngày</td>
                                         <td> {car.quantity}</td>
                                         <td>
-                                            <button onClick={() => { confirmDelete(car.idVehicle) }} className="btn-delete"><i class="fal fa-trash-alt"></i></button>
                                             <button onClick={() => { openEditVehicleForm(car.idVehicle) }} className="btn-edit"><i class="fal fa-edit"></i></button>
                                         </td>
                                     </tr>
