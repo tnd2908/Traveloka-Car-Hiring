@@ -75,13 +75,13 @@ const AddCar = () => {
         }
     }
     return (
-        <div className="container-fluid component">
+        <div className="container component">
             <div className="row" >
                 <div className="form">
                     <Form
                         {...layout}
                         name="basic"
-                        style={{backgroundColor: '#fff', boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
+                        style={{backgroundColor: '#fff',boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
                         initialValues={{ remember: false }}
                         form={form}
                         onFinish={handleCreateCar}
@@ -149,7 +149,7 @@ const AddCar = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
-                            <button className="btn-add"><i class="fal fa-plus-circle"></i>Thêm xe</button>
+                            <button className="btn-add">Thêm xe</button>
                         </Form.Item>
                     </Form>
                 </div>

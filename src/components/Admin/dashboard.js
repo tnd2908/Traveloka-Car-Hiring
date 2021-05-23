@@ -18,6 +18,7 @@ const Dashboard = ({collapse}) =>{
     return(
         <Menu
           defaultSelectedKeys={'1'}
+          defaultOpenKeys={'car'}
           mode="inline"
           theme="dark"
           inlineCollapsed = {collapse}

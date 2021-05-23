@@ -31,15 +31,12 @@ function App() {
                         <div>
                               <Nav />
                               <Route exact path="/">
-                                    {/* <Nav /> */}
                                     <CarHomePage />
                               </Route>
                               <Route exact path="/vehicles" >
-                                    {/* <Nav/> */}
                                     <CarRental />
                               </Route>
                               <Route exact path="/vehicles/:idVehicle">
-                                    {/* <Nav/> */}
                                     <CarDetail />
                               </Route>
                         </div>

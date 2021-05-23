@@ -6,6 +6,23 @@
 * p{
   margin: 0;
 }
+button:active{
+  outline: none;
+  border: none;
+}
+  
+button:focus{
+  outline:0;
+}
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.btn:active{
+  border-style: none;
+  outline: none;
+}
+
 .container-fluid{
   background-color: #f6f6f6;
   overflow-x: hidden;
@@ -63,6 +80,9 @@
 .nav-mid .user{
   margin: 0 20px;
   margin-right: 80px;
+  display: flex;
+  align-items: center;
+  height: 40px;
 }
 .nav-mid .user a{
   margin-left: 10px;
@@ -82,7 +102,7 @@
   background-color: royalblue;
   color: white;
   border-radius: 5px;
-  padding: 17px 5px;
+  padding: 5px 8px;
 }
 .header .nav-bottom{
   background-color: #f6f6f6;

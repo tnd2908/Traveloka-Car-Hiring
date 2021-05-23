@@ -12,7 +12,7 @@ const menu=(
     </div>
 );
 const Admin = ({com}) =>{
-    const [collapse, setCollapse] = useState(true)
+    const [collapse, setCollapse] = useState(false)
     return(
         <div className="container-fluid" style={{backgroundColor: '#eee', padding:'0'}}>
             <div className="d-flex" >
@@ -25,7 +25,7 @@ const Admin = ({com}) =>{
                             <div className="col-9">
                                 <div className="menu-title">
                                     <button className="btn" onClick={()=>setCollapse(!collapse)}><i class="fal fa-bars"></i></button>
-                                    <h4>Traveloka</h4>
+                                    <h4>Admin</h4>
                                 </div>
                             </div>
                             <div className="col-3">
