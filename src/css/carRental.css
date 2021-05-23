@@ -210,7 +210,6 @@
 }
 .request{
     font-size: large;
-    width: 1000px;
     height: auto;
     margin:100px auto;
     text-align: center;
@@ -238,7 +237,6 @@
     padding: 0 10px;
 }
 .FAQ{  
-    width: 1000px;
     margin: 0 auto;
 }
 .FAQ summary{

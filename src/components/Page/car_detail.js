@@ -18,35 +18,37 @@ const CarDetail = () => {
         }
     }
     return (
-        <div>
-            <div className="car-detail">
-                <div className="car">
-                        <img  src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
-                        <div className="info">
-                        <p>Tên xe: rolls Royce Phantom Wheelbase </p>
-                        <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
-                                <div className="iconic">
-                                    <p> <img  src={process.env.PUBLIC_URL + '/images/pilot.png'}/>Tự lái</p>
-                                    <p> <img  src={process.env.PUBLIC_URL + '/images/wheel.png'}/>Số sàn</p>
-                                    <p> <img  src={process.env.PUBLIC_URL + '/images/minicar.png'}/>Năm 2015 trở lên</p>
-                                </div>
-                        </div>
-                </div> 
+        <div className="container">
+        <div className="row">
+            <div className="col-9">
+                <div className="car-detail">
+                    <div className="car">
+                            <img alt=".."  src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
+                            <div className="info">
+                            <p>Tên xe: Rolls Royce Phantom Wheelbase </p>
+                            <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
+                                    <div className="iconic">
+                                         <img alt=".." src={process.env.PUBLIC_URL + '/images/pilot.png'}/><p>Tự lái</p>
+                                         <img alt=".." src={process.env.PUBLIC_URL + '/images/wheel.png'}/><p>Số sàn</p>
+                                         <img alt=".." src={process.env.PUBLIC_URL + '/images/minicar.png'}/><p>Năm 2015 trở lên</p>
+                                    </div>
+                            </div>
+                    </div> 
                         <div className="Policy">
                             <h4>Thông tin thuê xe</h4>
                             <h5>Tiện ích</h5>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/shield.png'}/>Vehicle insurance</p>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/24.png'}/>24/7 Traveloka Customer Service</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/shield.png'}/>Vehicle insurance</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/24.png'}/>24/7 Traveloka Customer Service</p>
                             <h5>Chính sách</h5>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/check.png'}/>Rental Requirements</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/check.png'}/>Rental Requirements</p>
                             <ul>
                                 <li>ID card (KTP or passport)</li>
                                 <li>Driver’s License (SIM A)/International Driving Permit</li>
                                 <li>Others (if provider requires additional verification)</li>
                             </ul>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/fuel.png'}/>Return the fuel as received</p>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/clock.png'}/>Usage of up to 24 hours per rental day</p>
-                            <p> <img  src={process.env.PUBLIC_URL + '/images/cash.png'}/>Áp dụng hoàn tiền</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/fuel.png'}/>Return the fuel as received</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/clock.png'}/>Usage of up to 24 hours per rental day</p>
+                            <p> <img alt=".." src={process.env.PUBLIC_URL + '/images/cash.png'}/>Áp dụng hoàn tiền</p>
                             <h5>Chính sách</h5>
                             <p>Rental Requirements</p>
                             <h5>Before Pick-up</h5>
@@ -63,12 +65,64 @@ const CarDetail = () => {
                                 <li>Sau khi nhà cung cấp xác minh các yêu cầu, hãy kiểm tra tình trạng xe với nhân viên của nhà cung cấp.</li>
                                 <li>Đọc và ký thỏa thuận thuê xe của nhà cung cấp, sau đó bạn có thể sử dụng dịch vụ.</li>
                             </ol>
-                            <div className="chose-loca">
-
+                        </div> 
+                    <div className="choose-loca">
+                            <h5>Chọn địa điểm đón xe</h5>
+                            <p>Văn phòng thuê xe</p>
+                        <form>
+                            <div class="form-row">
+                                <div class="col">
+                                <input type="text" class="form-control" placeholder="Điền tên địa điểm hoặc địa chỉ"/>
+                                </div>
                             </div>
-                        </div>    
+                        </form>
+                            <p>Địa điểm khác</p>
+                            <form>
+                                <div class="form-row">
+                                    <div class="col">
+                                    <input type="text" class="form-control" placeholder="Điền tên địa điểm hoặc địa chỉ"/>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    </div>
+                    <h4 style={{marginTop:'20px'}}>Chi tiết giá</h4>
+                    <div className="pursuit">
+                        <p>Bạn thanh toán</p>
+                        <h6>560.000 VND</h6>
+                    </div>
+                    <div className="next-page">
+                        <button>Tiếp tục</button>
+                    </div>
+                 </div>     
+            <div className="col-3"> 
+            <div className="rental-info">
+                <h5>Tóm tắt xe thuê</h5>
+                <div  className="d-flex mb-2">
+                    <img alt=".." src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
+                    <div>
+                        <p style={{margin:'0'}}>Rolls Royce Phantom Wheelbase</p>
+                        <p className="badge bg-warning">Số sàn</p>
+                    </div>
+                </div>
+                <div className="content">
+                    <ul>
+                        <li>Jakarta</li>
+                        <li>T6, 07 Th05 2021 10:30 - T7, 08 Th05 2021 10:30</li>
+                    </ul>
+                </div>
             </div>
-        </div>              
+            <div className="payment">
+                <h5>Tổng giá tiền</h5>
+                <h6>560.000 VND</h6>
+                <button>Tiếp tục</button>
+                <p>Đã bao gồm thuế, phí</p>
+                <p>Giá thuê cơ bản 560.000 VND</p>
+                <p>Bạn thanh toán 560.000VND</p>
+            </div>
+            </div>
+        </div>
+    </div>                
     );
 }
 export default CarDetail

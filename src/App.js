@@ -12,6 +12,7 @@ import {
 import ListCar from './components/Admin/list_car'
 import AddCar from './components/Admin/add_car'
 import Nav from './components//commons/nav';
+import Reservation from './components/Page/car_reservation';
 
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
                               </Route>
                               <Route exact path="/vehicles/:idVehicle">
                                     <CarDetail />
+                              </Route>
+                              <Route exact path="/vehicles/:idVehicle/payment">
+                                    <Reservation/> 
                               </Route>
                         </div>
                   </Switch>

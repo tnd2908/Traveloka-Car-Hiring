@@ -75,55 +75,52 @@ function CarHomePage() {
             </div>
           </div>
         </div>
-        <div className="request">
-          <h2>Yêu cầu chung khi thuê xe</h2>
-          <div className="row">
-            <div className="col-sm">
-              <div className="collu">
-                <div className="he1"><span>yêu cầu chung khi thuê xe tự lái</span></div>
-                <h5>Bao gồm</h5>
-                <div className="content">
-                  <ul>
+        <div className="container">
+          <div className="request">
+            <h3>Yêu cầu chung khi thuê xe</h3>
+            <div className="row">
+              <div style={{boxShadow:'0 0 1px 0'}} className="col-lg-6 col-sm-12">
+                  <div className="he1"><p>Yêu cầu chung khi thuê xe tự lái</p></div>
+                  <h5>Bao gồm</h5> 
+                  <div className="content col-lg-12 col-sm-12">
+                      <ul>
+                        <li>bảo hiểm cho xe và khách hàng</li>
+                        <li>Thời hạn sử dụng xe tới 24 tiếng cho mỗi ngày thuê</li>
+                      </ul>
+                      <h5>Không bao gồm</h5>
+                      <ul>
+                        <li>Chi phí nhiên liệu, đón/trả ngoài trung tâm và yêu cầu bồi thường bảo hiểm</li>
+                      </ul>
+                      <h5>Địa điểm đón khách</h5>
+                      <ul>
+                        <li>Miễn phí đón và trả khách tại sân bay và trong trung tâm thành phố</li>
+                      </ul>   
+                      <h5>Các giấy tờ cần thiết</h5>
+                      <ul>
+                        <li>Chứng minh nhân dân/hộ chiếu gốc, bằng lái xe, thẻ tín dụng của cá nhân hoặc thẻ tín dụng gia đình (hình chụp thẻ gia đình (KK) hoặc giấy chứng nhận kết hôn phải được chia sẻ với đối tác cho thuê trước khi đón để xác thực thẻ tín dụng của thành viên gia đình)</li>
+                      </ul>   
+                </div>
+              </div>
+              <div style={{boxShadow:'0 0 1px 0'}} className="col-lg-6 col-sm-12">
+                  <div className="he1"><p>Yêu cầu chung khi thuê xe có tài xế</p></div>
+                  <h5>Bao gồm</h5>
+                  <div className="content col-lg-12 col-sm-12">
                     <ul>
-                      <li>bảo hiểm cho xe và khách hàng</li>
-                      <li>Thời hạn sử dụng xe tới 24 tiếng cho mỗi ngày thuê</li>
+                      <li>Sử dụng xe trong thành phố</li>
+                      <li>Thời gian thuê lên đến 12 tiếng hoặc đến 23:59 cho mỗi ngày thuê xe</li>
                     </ul>
                     <h5>Không bao gồm</h5>
                     <ul>
-                      <li>Chi phí nhiên liệu, đón/trả ngoài trung tâm và yêu cầu bồi thường bảo hiểm</li>
+                      <li>Nhiên liệu, phí đỗ xe, phí cầu đường, phụ cấp ăn của tài xế và tiền tips</li>
+                      <li>Phí lưu trú của tài xe trong trường hợp di chuyển ra khỏi khu vực trung tâm</li>
+                      <li>Sử dụng xe bên ngoài thành phố</li>
                     </ul>
                     <h5>Địa điểm đón khách</h5>
                     <ul>
-                      <li>Miễn phí đón và trả khách tại sân bay và trong trung tâm thành phố</li>
+                      <li>Miễn phí đón và trả khách ở sân bay và trong trung tâm thành phố</li>
                     </ul>
-                    <h5>Các giấy tờ cần thiết</h5>
-                    <ul>
-                      <li>Chứng minh nhân dân/hộ chiếu gốc, bằng lái xe, thẻ tín dụng của cá nhân hoặc thẻ tín dụng gia đình (hình chụp thẻ gia đình (KK) hoặc giấy chứng nhận kết hôn phải được chia sẻ với đối tác cho thuê trước khi đón để xác thực thẻ tín dụng của thành viên gia đình)</li>
-                    </ul>
-                  </ul></div>
-              </div>
-            </div>
-            <div className="col-sm">
-              <div className="collu">
-                <div className="he1"><span>Yêu cầu chung khi thuê xe có tài xế</span></div>
-                <h5>Bao gồm</h5>
-                <div className="content">
-                  <ul>
-                    <li>Sử dụng xe trong thành phố</li>
-                    <li>Thời gian thuê lên đến 12 tiếng hoặc đến 23:59 cho mỗi ngày thuê xe</li>
-                  </ul>
-                  <h5>Không bao gồm</h5>
-                  <ul>
-                    <li>Nhiên liệu, phí đỗ xe, phí cầu đường, phụ cấp ăn của tài xế và tiền tips</li>
-                    <li>Phí lưu trú của tài xe trong trường hợp di chuyển ra khỏi khu vực trung tâm</li>
-                    <li>Sử dụng xe bên ngoài thành phố</li>
-                  </ul>
-                  <h5>Địa điểm đón khách</h5>
-                  <ul>
-                    <li>Miễn phí đón và trả khách ở sân bay và trong trung tâm thành phố</li>
-                  </ul>
-                  <p>Tài xế sẽ liên lạc với bạn trong khoảng từ 12 - 24 tiếng trước giờ đón khách. Trường hợp thuê xe đi ngay trong ngày, tài xế sẽ liên hệ với bạn nhanh chóng sau khi quá trình đặt xe của bạn được xác nhận.</p>
-                </div>
+                    <p>Tài xế sẽ liên lạc với bạn trong khoảng từ 12 - 24 tiếng trước giờ đón khách. Trường hợp thuê xe đi ngay trong ngày, tài xế sẽ liên hệ với bạn nhanh chóng sau khi quá trình đặt xe của bạn được xác nhận.</p>
+                  </div>
               </div>
             </div>
           </div>
