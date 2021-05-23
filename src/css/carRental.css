@@ -222,41 +222,51 @@
 }
 .request{
     font-size: large;
-    width: 1000px;
-    height: auto;
-    margin:100px auto;
-    text-align: center;
+    margin: 100px auto;
 }
 .request .collu{
-    border: 1px solid rgba(128, 127, 126, 0.425);
+    border: 0.5px solid rgb(235, 231, 231);
     border-radius: 0.5px  rgb(134, 133, 133);
 }
 .request .he1{  
-    font-weight: normal;
     box-shadow: 0 5px 0 0 rgba(128, 127, 126, 0.062);
+    padding: 15px 0;
+
 }
 .request p{
     color: black;
 }
 .request h5{
     font-size: medium;
-    font-weight: 800;
+    font-weight: 700;
+    padding-top: 40px;
+    padding-left: 10px;
 }
 .request ul li{
     text-align: left;
 }
 
 .content {
-    padding: 0 10px;
+    padding: 5px 10px;
 }
 .FAQ{  
     width: 1000px;
     margin: 0 auto;
+    margin-top: -90px;
 }
-.FAQ summary{
-    font-weight: 800;
-    color: rgba(25, 157, 197, 0.849);
+.FAQ h3{
+    padding: 0 300px;
 }
-.FAQ ol li{
+.FAQ ol li {
     color: rgb(138, 138, 138);
+    font-size: large;
+}
+.FAQ p{
+    font-size: medium;
+    font-weight: 400;
+}
+.panel-header{
+    color: rgba(35,135,229);
+    font-size: x-large;
+    font-weight: 600;
 }

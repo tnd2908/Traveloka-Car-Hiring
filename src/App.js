@@ -15,6 +15,7 @@ import { Dropdown, Form, Input } from 'antd'
 import ListCar from './components/Admin/list_car'
 import AddCar from './components/Admin/add_car'
 import { useState } from 'react';
+import Reservation from './components/Page/car_reservation';
 
 const layout = {
       labelCol: { span: 24 },
@@ -121,6 +122,9 @@ function App() {
                               </Route>
                               <Route exact path="/vehicles/:idVehicle">
                                     <CarDetail />
+                              </Route>
+                              <Route exact path="/vehicles/:idVehicle/Reservation">
+                                    <Reservation/>
                               </Route>
                         </div>
                   </Switch>
