@@ -87,7 +87,7 @@ const Reservation =()=>{
                             <h3>Chi tiết thuê xe</h3>
                         </div>
                         <div className="rental-info">
-                        <p><img alt=".." src={process.env.PUBLIC_URL + '/images/carkey.svg'}/>Thuê xe tự lái</p>
+                        <p>Thuê xe tự lái</p>
                         <div>
                         <h6>Rolls Royce Phantom Wheelbase</h6>
                         <h6>Tự động</h6>
@@ -104,8 +104,8 @@ const Reservation =()=>{
                             <p>15B Lê Thánh Tôn p1, Q1</p>
                         </div>
                         <div style={{backgroundColor:'white',padding:'10px 5px'}}>
-                        <p><img alt=".." src={process.env.PUBLIC_URL + '/images/checked.svg'}/>Được hoàn tiền</p>
-                        <p><img alt=".." src={process.env.PUBLIC_URL + '/images/caution.svg'}/>Không áp dụng đổi lịch bay</p>
+                        <p>Được hoàn tiền</p>
+                        <p>Không áp dụng đổi lịch bay</p>
                         </div>
                         </div>
                 <div className="col-1"></div>

@@ -89,7 +89,7 @@ button:focus{
 }
 #login{
   background-color: whitesmoke;
-  padding: 7px 10px;
+  padding: 0 10px;
   border-radius: 5px;
   color: royalblue;
 }
@@ -105,10 +105,11 @@ button:focus{
   padding: 5px 8px;
 }
 .header .nav-bottom{
-  background-color: #f6f6f6;
+  background-color: whitesmoke;
   line-height: 40px;
   padding-left: 40px;
   display: flex;
+
 }
 .nav-bottom a{
   color: dimgray;

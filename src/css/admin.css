@@ -26,6 +26,9 @@
     align-items: center;
     height: 50px;
 }
+.fas.fa-sort-amount-up, .fas.fa-sort-amount-down{
+    margin-left: 7px;
+}
 .menu-title button{
     margin-left: 12px;
 }
