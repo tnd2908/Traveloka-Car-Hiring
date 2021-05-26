@@ -16,7 +16,7 @@ const LogInForm = () =>{
               colon={false}
               initialValues={{ remember: true }}
               style={{padding: '12px', paddingTop:'20px'}}
-              className="login-form"
+              className="login-form bg-white"
         >
               <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
               <Form.Item

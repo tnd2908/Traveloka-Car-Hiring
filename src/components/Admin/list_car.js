@@ -61,7 +61,6 @@ const ListCar = () => {
         }
     }, [render])
     const onSearch = (value) =>{
-        console.log(value)
         const action = searchCar(value)
         dispatch(action)
     }

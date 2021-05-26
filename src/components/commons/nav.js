@@ -74,7 +74,7 @@ function Nav() {
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
               <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
               <div className="user">
-                <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={LogInForm} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
+                <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
                 <Link id="signup">Đăng ký</Link>
