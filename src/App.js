@@ -13,6 +13,7 @@ import ListCar from './components/Admin/list_car'
 import AddCar from './components/Admin/add_car'
 import Nav from './components//commons/nav';
 import Reservation from './components/Page/car_reservation';
+import Payment from './components/Page/payment/payment';
 
 
 function App() {
@@ -42,6 +43,12 @@ function App() {
                               </Route>
                               <Route exact path="/vehicles/:idVehicle/input">
                                     <Reservation/> 
+                              </Route>
+                              <Route exact path="/vehicles/:idVehicle/payment">
+                                    <Payment/> 
+                              </Route>
+                              <Route exact path="/cart">
+                                    <Payment className="mt-5"/>
                               </Route>
                         </div>
                   </Switch>

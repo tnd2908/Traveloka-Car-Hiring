@@ -1,0 +1,25 @@
+.steps-content{
+    height: auto;
+}
+.payment-page{
+    padding: 50px 80px;
+    padding-top: 0;
+}
+#payment-title{
+    margin-bottom: 40px;
+}
+.menu-ant-title h5{
+    color: white;
+    margin-bottom: 0;
+}
+.menu-ant-title{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+.payment-method-cover{
+    background-color: #fff;
+    min-height: 100vh;
+    width: 100%;
+}

@@ -32,7 +32,6 @@ const Reservation =()=>{
                             </div>
                             <Form
                                 layout="vertical"
-
                             >
                                 <Form.Item label="Họ tên" required >
                                     <Input  />
