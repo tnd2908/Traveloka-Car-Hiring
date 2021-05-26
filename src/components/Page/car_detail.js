@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
 const CarDetail = () => {
     let { idVehicle } = useParams();
@@ -93,7 +93,7 @@ const CarDetail = () => {
                             <h6>560.000 VND</h6>
                         </div>
                         <div className="next-page">
-                            <button>Tiếp tục</button>
+                            <Link to={`/vehicles/${idVehicle}/input`}><button>Tiếp tục</button></Link>
                         </div>
                     </div>
                     <div className="col-3">
@@ -116,7 +116,7 @@ const CarDetail = () => {
                         <div className="payment">
                             <h5>Tổng giá tiền</h5>
                             <h6>560.000 VND</h6>
-                            <button>Tiếp tục</button>
+                            <Link to={`/vehicles/${idVehicle}/input`}><button>Tiếp tục</button></Link>
                             <p>Đã bao gồm thuế, phí</p>
                             <p>Giá thuê cơ bản 560.000 VND</p>
                             <p>Bạn thanh toán 560.000VND</p>
