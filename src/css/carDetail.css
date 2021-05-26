@@ -3,6 +3,9 @@
     background-color: #eee;
     padding-top: 50px;
 }
+.container{
+    margin-top: 50px;
+}
 .car-detail{
     background-color: white;
     padding: 10px;

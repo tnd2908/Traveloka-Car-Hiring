@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
+import Link from 'react-dom'
 import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
-const CarDetail = () => {
-    let { idVehicle } = useParams();
-    useEffect(() => {
+
+const CarDetail = () =>{
+    let {idVehicle} = useParams();
+    useEffect(()=>{
         fetchDetail();
     }, [])
     const fetchDetail = () => {

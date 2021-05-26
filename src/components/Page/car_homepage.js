@@ -1,6 +1,7 @@
 import '../../css/carRental.css'
-import { DatePicker, Select, TimePicker } from 'antd'
+import { DatePicker, Select, TimePicker,Collapse } from 'antd'
 import React, { Fragment, useEffect, useState } from 'react';
+import { SettingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import { image } from "../dummy"
 import axios from 'axios';
