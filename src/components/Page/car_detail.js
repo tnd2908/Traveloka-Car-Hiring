@@ -94,7 +94,7 @@ const CarDetail = () => {
                         <h4 style={{marginTop:'20px'}}>Chi tiết giá</h4>
                         <div className="pursuit">
                             <p>Bạn thanh toán</p>
-                            <h6>{car.price} VND</h6>
+                            <h6>{new Intl.NumberFormat().format(car.price)} VND</h6>
                         </div>
                         <div className="next-page">
                             <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
@@ -119,11 +119,11 @@ const CarDetail = () => {
                 </div>
                 <div className="payment">
                     <h5>Tổng giá tiền</h5>
-                    <h6>{car.price}</h6>
+                    <h6>{new Intl.NumberFormat().format(car.price)}</h6>
                     <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
                     <p>Đã bao gồm thuế, phí</p>
-                    <p>Giá thuê cơ bản {car.price} VND</p>
-                    <p>Bạn thanh toán {car.price}VND</p>
+                    <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.price)} VND</p>
+                    <p>Bạn thanh toán {new Intl.NumberFormat().format(car.price)}VND</p>
                 </div>
                 </div>
             </div>

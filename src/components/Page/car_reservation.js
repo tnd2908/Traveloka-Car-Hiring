@@ -83,6 +83,7 @@ const Reservation =()=>{
                                     className="row"
                                     style={{padding:'10px 0'}}
                                     layout="vertical"
+                                    form={form}
                                 >
                                     <Form.Item label="Danh xưng" required className="col-lg-3">
                                         <Input  />
