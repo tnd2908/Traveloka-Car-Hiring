@@ -17,7 +17,7 @@ function Car({car}){
                     <div className="car-price">
                         <p id="car-text">Giá thuê theo ngày từ</p>
                         <p id="car-price">{new Intl.NumberFormat().format(car.price)} VNĐ</p>
-                        <Link to={`/vehicles/${id}`}><span>Tiếp tục</span></Link>
+                        <Link to={`/detail/${id}`}><span>Tiếp tục</span></Link>
                     </div>
                  </div>
             </div>

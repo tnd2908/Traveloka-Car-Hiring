@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-// import { useParams } from 'react-router-dom'
+import {Link} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
+
 const CarDetail = () => {
-    // let { idVehicle } = useParams();
+    let { id } = useParams();
+    const [car,setCar] = useState({})
+
     useEffect(() => {
         fetchDetail();
     }, [])
     const fetchDetail = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/`)
+            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/detail/${id}`)
                 .then(response => {
-                    console.log(response)
+                    setCar(response.data.data)
                 })
         } catch (error) {
             console.log(error)
@@ -22,11 +26,11 @@ const CarDetail = () => {
             <div style={{marginTop:'50px'}} className="container">
             <div className="row">
                 <div className="col-9">
-                    <div className="car-detail">
-                        <div className="car">
-                                <img alt=".."  src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
-                                <div className="info">
-                                <p>Tên xe: Rolls Royce Phantom Wheelbase </p>
+                    <div className="car-detail container">
+                        <div className="car row d-flex">
+                                <img className="col-xs-12 col-lg-6" alt=".."  src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
+                                <div className="info col-xs-12 col-lg-6">
+                                <h4>Tên xe: {car.name} </h4>
                                 <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
                                         <div className="iconic">
                                             <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/07/04/1562235110991-221f181276cd7208e907c33bb8554fe5.png?tr=h-24,q-75,w-24'}/><p>Tự lái</p>
@@ -90,10 +94,10 @@ const CarDetail = () => {
                         <h4 style={{marginTop:'20px'}}>Chi tiết giá</h4>
                         <div className="pursuit">
                             <p>Bạn thanh toán</p>
-                            <h6>560.000 VND</h6>
+                            <h6>{car.price} VND</h6>
                         </div>
                         <div className="next-page">
-                            <button>Tiếp tục</button>
+                            <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
                         </div>
                     </div>     
                 <div className="col-3"> 
@@ -102,7 +106,7 @@ const CarDetail = () => {
                     <div  className="d-flex mb-2">
                         <img alt=".." src={process.env.PUBLIC_URL + '/images/vehicle.jpg'}/>
                         <div>
-                            <p style={{margin:'0'}}>Rolls Royce Phantom Wheelbase</p>
+                            <h6 style={{margin:'0'}}>{car.name}</h6>
                             <p className="badge bg-warning">Số sàn</p>
                         </div>
                     </div>
@@ -115,11 +119,11 @@ const CarDetail = () => {
                 </div>
                 <div className="payment">
                     <h5>Tổng giá tiền</h5>
-                    <h6>560.000 VND</h6>
-                    <button>Tiếp tục</button>
+                    <h6>{car.price}</h6>
+                    <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
                     <p>Đã bao gồm thuế, phí</p>
-                    <p>Giá thuê cơ bản 560.000 VND</p>
-                    <p>Bạn thanh toán 560.000VND</p>
+                    <p>Giá thuê cơ bản {car.price} VND</p>
+                    <p>Bạn thanh toán {car.price}VND</p>
                 </div>
                 </div>
             </div>

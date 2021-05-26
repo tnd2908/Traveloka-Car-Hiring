@@ -3,9 +3,7 @@
     background-color: white;
     align-content: center;
     justify-content: center;
-}
-.car-detail .car{
-    display: flex;
+    padding: 0 10px;
 }
 .car-detail p{
     color: rgb(14, 6, 0);
@@ -20,8 +18,8 @@
     border: none;
 }
 .car-detail img{
-    height: 150px;
-    width: 250px;
+   width: 250px;
+   height: 150px;
 }
 .car-detail p{
     padding: 5px 0;

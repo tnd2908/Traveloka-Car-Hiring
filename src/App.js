@@ -37,10 +37,10 @@ function App() {
                               <Route exact path="/vehicles" >
                                     <CarRental />
                               </Route>
-                              <Route exact path="/vehicles/:idVehicle">
+                              <Route exact path="/detail/:id">
                                     <CarDetail />
                               </Route>
-                              <Route exact path="/vehicles/:idVehicle/payment">
+                              <Route exact path="/vehicles/:id/payment">
                                     <Reservation/> 
                               </Route>
                         </div>
