@@ -23,3 +23,82 @@
     min-height: 100vh;
     width: 100%;
 }
+div.pd-2{
+    padding: 20px;
+}
+.payment-method-cover .border-box{
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.payment-method-cover .border-box ul li{
+    margin-bottom: 15px;
+}
+.payment-method-cover .border-box img{
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+}
+.switch{
+    width: 100%;
+    padding: 15px 25px;
+    border-top: 1px solid #eee;
+}
+.switch p{
+    margin-bottom: 0;
+    margin-left: 12px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.price-pay-detail{
+    background-color: #f6f6f6;
+    margin-top: 10px;
+}
+.price-pay-detail p:first-child{
+    font-size: 20px;
+}
+.show-total-price-1 p{
+    font-size: 16px;
+}
+.show-total-price-2{
+    border-top: 1px solid silver;
+    padding-top: 20px;
+}
+.show-total-price-2 p{
+    font-size: 15px;
+}
+#final-price{
+    font-weight: bold;
+    font-size: 18px;
+}
+.end-pay{
+    flex-direction: column;
+    align-items: flex-end;
+}
+.end-pay button{
+    background-color: rgb(255, 60, 0);
+    border-radius: 4px;
+    color: white;
+    border-style: none;
+    height: 40px;
+    width: 200px;
+}
+.rent-info{
+    min-height: 100vh;
+    background-color: #fff;
+
+}
+.rent-code{
+    border-bottom: 1px solid #eee;
+    padding: 10px 15px;
+}
+.rent-code p:first-child{
+    color: grey;
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+.rent-details{
+    padding: 10px 15px;
+}

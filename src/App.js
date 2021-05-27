@@ -1,6 +1,6 @@
 import './App.css';
 import CarRental from './components/Page/car_rental.js';
-import CarHomePage from './components/Page/car_homepage';
+import CarHomePage from './components/Page/homepage';
 import CarDetail from './components/Page/car_detail.js';
 import Admin from './components/Admin/admin.js'
 import dotenv from 'dotenv'
@@ -38,7 +38,7 @@ function App() {
                               <Route exact path="/vehicles" >
                                     <CarRental />
                               </Route>
-                              <Route exact path="/vehicles/:idVehicle">
+                              <Route exact path="/detail/:id">
                                     <CarDetail />
                               </Route>
                               <Route exact path="/vehicles/:idVehicle/input">

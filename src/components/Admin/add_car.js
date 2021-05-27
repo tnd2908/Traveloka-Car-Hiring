@@ -94,7 +94,13 @@ const AddCar = () => {
                         >
                             <Input  placeholder="Nhập tên xe"/>
                         </Form.Item>
-
+                        <Form.Item
+                            label="idSaler"
+                            name="idSaler"
+                            rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
+                        >
+                            <Input  placeholder="Nhập tên xe"/>
+                        </Form.Item>
                         <Form.Item
                             label="Giá"
                             name="price"

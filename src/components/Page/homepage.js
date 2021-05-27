@@ -49,17 +49,17 @@ function CarHomePage() {
           <div className="containerer">
             <div className="row">
               <div className="col-sm">
-                <img src={process.env.PUBLIC_URL + '/images/Time.svg'} alt="" />
+                <img src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2018/05/14/1526299345537-5d57c269f121ecb9ae60be83d7688d53.svg'} alt="" />
                 <span>Tiết kiệm thời gian</span>
                 <p>Dễ dàng thuê xe ở bất cứ đâu và bất kỳ khi nào. So sánh xe ô tô từ các đối tác tin cậy của chúng tôi trên một nền tảng, việc tìm kiếm chiếc xe phù hợp với bạn trở nên dễ dàng hơn bao giờ hết.</p>
               </div>
               <div className="col-sm">
-                <img src={process.env.PUBLIC_URL + '/images/Quality.svg'} alt="" />
+                <img src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2018/05/14/1526299395599-27c9f8d3b8b182673dc9768a31eaa1d7.svg'} alt="" />
                 <span>Dịch vụ chất lượng cao từ các đối tác tin cậy</span>
                 <p>Những đối tác tin cậy của chúng tôi cung cấp dịch vụ chất lượng đảm bảo rằng bạn có một chuyến đi an toàn, thoải mái và đáng nhớ.</p>
               </div>
               <div className="col-sm">
-                <img src={process.env.PUBLIC_URL + '/images/Comment.svg'} alt="" />
+                <img src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2018/05/14/1526299435281-ee34f2ae4efa6a2e73ebf5a810d5874a.svg'} alt="" />
                 <span>Đánh giá thực tế từ người dùng</span>
                 <p>Những đánh giá thực tế từ những người dùng khác giúp bạn tìm được xe phù hợp.</p>
               </div>
@@ -78,9 +78,9 @@ function CarHomePage() {
         </div>
         <div className="container">
           <div className="request">
-            <h3>Yêu cầu chung khi thuê xe</h3>
+            <h3 >Yêu cầu chung khi thuê xe</h3>
             <div className="row">
-              <div style={{boxShadow:'0 0 1px 0'}} className="col-lg-6 col-sm-12">
+              <div style={{boxShadow:'0 0 1px 0', margin:'10px 0'}} className="col-lg-6 col-sm-12">
                   <div className="he1"><p>Yêu cầu chung khi thuê xe tự lái</p></div>
                   <h5>Bao gồm</h5> 
                   <div className="content col-lg-12 col-sm-12">
@@ -102,7 +102,7 @@ function CarHomePage() {
                       </ul>   
                 </div>
               </div>
-              <div style={{boxShadow:'0 0 1px 0'}} className="col-lg-6 col-sm-12">
+              <div style={{boxShadow:'0 0 1px 0', margin:'10px 0'}} className="col-lg-6 col-sm-12">
                   <div className="he1"><p>Yêu cầu chung khi thuê xe có tài xế</p></div>
                   <h5>Bao gồm</h5>
                   <div className="content col-lg-12 col-sm-12">
