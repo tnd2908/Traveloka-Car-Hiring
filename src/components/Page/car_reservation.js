@@ -4,10 +4,13 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 const Reservation = () => {
     const [form] = Form.useForm()
     let { idVehicle } = useParams();
     const [car, setCar] = useState({})
+    const [value,setValue] = useState()
 
     useEffect(() => {
         fetchDetail();
@@ -42,36 +45,36 @@ const Reservation = () => {
                         <div className="head">
                             <h3>Thông tin liên hệ</h3>
                         </div>
-                        <div className="communicate">
                             <div style={{ alignContent: 'space-between', justifyContent: 'space-between' }} className="d-flex">
                                 <h6>Thông tin liên hệ</h6>
                                 <p style={{ color: 'rgba(9, 157, 216)', fontSize: 'medium' }}>Điền thông tin</p>
                             </div>
                             <Form
+                                style={{ alignContent: 'space-between', justifyContent: 'space-evenly' }}
+                                form={form}
                                 layout="vertical"
                             >
+                                <div className="communicate">
                                 <Form.Item label="Họ tên" required >
                                     <Input />
                                     <span style={{ color: 'grey' }}>như trên cmnd(không dấu)</span>
                                 </Form.Item>
-                            </Form>
-                            <Form
-                                style={{ alignContent: 'space-between', justifyContent: 'space-evenly' }}
-                                className="d-flex"
-                                form={form}
-                                layout="vertical"
-                            >
+                                <div className="d-flex">
                                 <Form.Item label="Điện thoại đi dộng" required >
-                                    <Input />
+                                <PhoneInput
+                                    international
+                                    defaultCountry="VN"
+                                    value={value}
+                                    onChange={setValue}/>
                                     <span style={{ color: 'grey', }}>VD: +84 901234567 trong đó (+84) là mã quốc gia và 901234567 là số di động</span>
                                 </Form.Item>
                                 <Form.Item label="Email" required>
                                     <Input />
                                     <span style={{ color: 'grey' }}>VD: email@example.com</span>
                                 </Form.Item>
-                            </Form>
-                        </div>
-                        <div className="head">
+                                </div>
+                                </div>
+                                <div className="head">
                             <h3>Thông tin chi tiết về tài xế</h3>
                         </div>
                         <div className="communicate">
@@ -79,10 +82,6 @@ const Reservation = () => {
                                 <h6>Tài xế</h6>
                                 <p style={{ color: 'rgba(9, 157, 216)', fontSize: 'medium' }}>Điền thông tin</p>
                             </div>
-                            <Form
-                                style={{ padding: '10px 0' }}
-                                layout="vertical"
-                            >
                                 <Form.Item label="Danh xưng" required >
                                     <Input />
                                 </Form.Item>
@@ -92,9 +91,9 @@ const Reservation = () => {
                                 <Form.Item label="Điện thoại đi động" required >
                                     <Input />
                                 </Form.Item>
-                            </Form>
                         </div>
-                        <div className="next-page-reserva">
+                            </Form>
+                        <div className="next-page-reserva ">
                             <Link to={`/vehicles/${car.idVehicle}/payment`}><button>Tiếp tục</button></Link>
                         </div>
                     </div>
