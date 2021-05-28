@@ -24,6 +24,10 @@ const RentInfor = ({car}) =>{
                     <p></p>
                 </div>
             </div>
+            <div className="rent-cus">
+                <h4>HÀNH KHÁCH</h4>
+                
+            </div>
         </div>
     )
 }
