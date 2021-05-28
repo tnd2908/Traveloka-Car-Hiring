@@ -2,14 +2,12 @@ import '../../css/admin.css'
 import { Menu } from 'antd';
 import {
   AppstoreAddOutlined,
-  PieChartOutlined,
   DesktopOutlined,
   ContainerOutlined,
   EyeOutlined,
   DeleteOutlined,
   EditOutlined,
   CarOutlined,
-  ProfileOutlined,
 } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
 const { SubMenu } = Menu;

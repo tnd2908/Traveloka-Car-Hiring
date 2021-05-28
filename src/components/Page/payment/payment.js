@@ -1,6 +1,6 @@
 import Dashboard from './dashboard'
 import '../../../css/payment.css'
-import PaymentMethod from './payment-method';
+import PaymentPage from './payment-cash';
 import RentInfor from './rent-infor';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
@@ -27,11 +27,11 @@ const Payment = () => {
             <div className="container payment-page">
                 <div className="row">
                     <div className="col-12">
-                        <h5 id="payment-title">Thanh toán</h5>
+                        <h4 id="payment-title">Thanh toán</h4>
                     </div>
                     <div className="col-md-9 d-flex">
                         <Dashboard />
-                        <PaymentMethod car = {car}/>
+                        <PaymentPage car = {car}/>
                     </div>
                     <div className="col-md-3">
                         <RentInfor car = {car}/>

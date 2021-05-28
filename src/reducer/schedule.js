@@ -1,12 +1,13 @@
 const initialState ={
-    schedule: {}
+    startDate: '',
+    endDate: '',
 }
 const scheduleReducer = (state = initialState, action) =>{
     switch(action.type){
         case 'SET_SCHEDULE':{
-            const sche = action.payload
-            console.log(sche)
-            return {...state, chedule: sche }
+            const start = action.payload.startDate
+            const end = action.payload.endDate
+            return {...state, startDate: start, endDate: end }
         }
         default:
              return {...state}

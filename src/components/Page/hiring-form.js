@@ -1,7 +1,5 @@
-import { Form, TimePicker, DatePicker, Option, Select } from 'antd';
+import { Form, DatePicker, Select } from 'antd';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSchedule } from '../../action/schedule';
 
 const layout = {
     labelCol: { span: 24 },
@@ -12,24 +10,21 @@ const dateFormat = 'DD/MM/YYYY';
 const HiringForm = () => {
     const { Option } = Select
     const [form] = Form.useForm()
-    const dispatch = useDispatch()
-    const [sche,setSche] = useState({
-        dateStart: '',
-        dateEnd: ''
-    })
-    const schedule = useSelector(state=>state.schedule.schedule)
+    const [dateStart, setDateStart] = useState('')
+    const [dateEnd, setDateEnd] = useState('')
+    const [val, setVal] = useState('')
     const onPlaceChange = (value) =>{
         console.log(value)
     }
     const onDateStartChange = (date, dateString) => {
-        setSche({...sche, dateStart: dateString})
+        setDateStart(dateString)
     }
     const onDateEndChange = (date, dateString) => {
-        setSche({...sche, dateEnd: dateString})
+        setDateEnd(dateString)
     }
-    const submitForm = () =>{
-        const action = setSchedule(sche)
-        dispatch(action)
+    const submitForm = (value) =>{
+        console.log(value)
+        window.location = `/vehicles?country=VN&&dateStart=${dateStart}&&dateEnd=${dateEnd}`
     }
     return (
                 <Form
@@ -38,6 +33,7 @@ const HiringForm = () => {
                     name="basic"
                     form={form}
                     initialValues={{ remember: true }}
+                    onFinish={submitForm}
                     >
                     <div className="form-header">
                         <label htmlFor="select">Có tài xế hay xe tự lái?</label>
@@ -50,46 +46,60 @@ const HiringForm = () => {
                         </div>
                     <div className="container-fluid bg-white">
                         <div className="row">
-                            <div className="col-12">
-                                <label htmlFor="place" className="mt-2">Địa điểm thuê xe của bạn</label>
+                            <div className="col-6">
+                                <label htmlFor="place" className="mt-2">Khu vực thuê xe của bạn</label>
                                 <Form.Item
                                     name="city"
-                                    rules={[{ required: true, message: 'Vui lòng nhập thành phố' }]}
+                                    rules={[{ required: true, message: 'Vui lòng chọn khu vực' }]}
                                 >
                                     <Select
-                                        style={{ width: 360 }}
-                                        placeholder="Điền thành phố, sân bay hoặc khách sạn">
-                                        <Option value='Viet Nam'>Viet NAm</Option>
+                                        style={{ width: '100%' }}
+                                        onChange={e=>setVal(e)}
+                                        placeholder="Chọn thành phố">
+                                        <Option value='VN'>Viet NAm</Option>
                                     </Select>
                                 </Form.Item>
                             </div>
+                            {val&&<div className="col-6">
+                                <label htmlFor="place" className="mt-2">Quận</label>
+                                <Form.Item
+                                    name="district"
+                                    rules={[{ required: false, message: 'Vui lòng chọn quận' }]}
+                                >
+                                    <Select
+                                        style={{ width: '100%' }}
+                                        placeholder="Chọn quận trong thành phố">
+                                        <Option value='VN'>8</Option>
+                                    </Select>
+                                </Form.Item>
+                            </div>}
                         </div>
                     </div>
                     <div className="container-fluid bg-white">
                         <div className="row">
                             <div className="col-4">
                                 <Form.Item
-                                    name="username"
-                                    rules={[{ required: false, message: 'Vui lòng nhập ngày bắt đầu' }]}
+                                    name="dateStart"
+                                    label="Ngày bắt đầu"
+                                    rules={[{ required: true, message: 'Vui lòng nhập ngày bắt đầu' }]}
                                     >
-                                    <label htmlFor="startDate">Ngày bắt đầu</label>
                                     <DatePicker onChange={onDateStartChange} id="startDate" dateFormat={dateFormat} />
                                 </Form.Item>
                             </div>
                             
                             <div className="col-4">
                                 <Form.Item
-                                    name="password"
-                                    rules={[{ required: false, message: 'Vui lòng nhập ngày kết thúc' }]}
+                                    name="dateEnd"
+                                    label="Ngày kết thúc"
+                                    rules={[{ required: true, message: 'Vui lòng nhập ngày kết thúc' }]}
                                 >
-                                    <label htmlFor="startDate">Ngày kết thúc</label>
                                     <DatePicker  onChange={onDateEndChange} id="startDate" dateFormat={dateFormat} />
                                 </Form.Item>
                             </div>
                             
-                            <div className="col-6 col-md-2 form-btn">
-                                <Form.Item>
-                                    <button onClick={()=>submitForm()} type="button" className="btn">Tim xe</button>
+                            <div className="col-6 col-md-4 form-btn">
+                                <Form.Item wrapperCol={{span: 24}}>
+                                    <button type="submit" >Tim xe</button>
                                 </Form.Item>
                             </div>
                         </div>

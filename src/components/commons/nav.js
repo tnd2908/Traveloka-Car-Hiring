@@ -4,58 +4,9 @@ import {
 } from "react-router-dom";
 import { Dropdown } from 'antd'
 import LogInForm from "./login-form";
-const layout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24 },
-};
-// const loginForm = () => {
-//   const dispatch = useDispatch()
-//   const loginPartner = (partner) =>{
-//     const action = loginPartner(partner)
-//     dispatch(action)
-//   }
-//   return (
-//         <Form
-//               {...layout}
-//               name="basic"
-//               colon={false}
-//               initialValues={{ remember: true }}
-//               style={{padding: '12px', paddingTop:'20px'}}
-//               onFinish={loginPartner}
-//               className="login-form"
-//         >
-//               <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
-//               <Form.Item
-//                     name="email"
-//                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
-//                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ email' }]}
-//               >
-//                     <label htmlFor="email">Email</label>
-//                     <Input size="large" name="email" />
-//               </Form.Item>
-//               <Form.Item
-//                     name="password"
-//                     style={{fontWeight:'bold', color:'grey'}}
-//                     rules={[{ required: true, message: 'Vui lòng nhập password' }]}
-//               >
-//                     <label htmlFor="password">Password</label>
-//                     <Input.Password name="password" size="large"/>
-//               </Form.Item>
-//               <Form.Item>
-//                     <div className="d-flex">
-//                           <button type="submit" className="login-btn">Đăng nhập</button>
-//                           <div className="signup-link">
-//                                 <p>Bạn chưa có tài khoản?</p>
-//                                 <Link>Đăng ký ngay</Link>
-//                           </div>
-//                     </div>
-//               </Form.Item>
-//         </Form>
-//   );
-// }
+
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
-  const [haha,setHaha] = useState('')
       const onVisibleChange = () =>{
             setFormVisible(!formVisible)
       }

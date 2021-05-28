@@ -1,6 +1,6 @@
 import {Switch} from 'antd'
 
-const PaymentMethod = ({car}) =>{
+const PaymentPage = ({car}) =>{
     return(
         <div className="payment-method-cover">
             <div className="pd-2">
@@ -39,4 +39,4 @@ const PaymentMethod = ({car}) =>{
         </div>
     )
 }
-export default PaymentMethod
+export default PaymentPage

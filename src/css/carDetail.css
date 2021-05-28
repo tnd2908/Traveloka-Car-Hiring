@@ -1,11 +1,16 @@
 .cover{
     width: 100%;
-    background-color: #eee;
+    background-color: #e6eaed;
     padding-left: 80px;
     padding-right: 80px;
     padding-top: 50px;
 }
-
+@media screen and(max-width: 1024px){
+    .cover{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
 .car-detail{
     background-color: white;
     align-content: center;

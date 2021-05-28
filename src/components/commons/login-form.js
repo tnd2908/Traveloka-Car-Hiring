@@ -1,4 +1,5 @@
 import {Form, Input, } from 'antd'
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {Link} from 'react-router-dom'
 import { LoginPartner } from '../../action/partner';
@@ -7,33 +8,38 @@ const layout = {
     labelCol: { span: 24 },
     wrapperCol: { span: 24 },
   };
+
 const LogInForm = () =>{
-    
-    return(
+      const [form] = Form.useForm()
+      const onLogin = (value) =>{
+            console.log(value)
+      }
+      return(
         <Form
               {...layout}
               name="basic"
-              colon={false}
-              initialValues={{ remember: true }}
+              initialValues={{ remember: false }}
               style={{padding: '12px', paddingTop:'20px'}}
-              className="login-form bg-white"
+              className="login-form bg-white shadow-sm"
+              form={form}
+              onFinish={onLogin}
         >
               <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
               <Form.Item
                     name="email"
                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
+                    label="Email"
                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ email' }]}
               >
-                    <label htmlFor="email">Email</label>
-                    <Input size="large" name="email" />
+                    <Input name="email" size="large" />
               </Form.Item>
               <Form.Item
                     name="password"
                     style={{fontWeight:'bold', color:'grey'}}
                     rules={[{ required: true, message: 'Vui lòng nhập password' }]}
+                    label="Password"
               >
-                    <label htmlFor="password">Password</label>
-                    <Input.Password name="password" size="large"/>
+                    <Input.Password size="large" />
               </Form.Item>
               <Form.Item>
                     <div className="d-flex">

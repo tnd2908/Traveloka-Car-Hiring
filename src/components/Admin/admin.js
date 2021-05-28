@@ -1,9 +1,7 @@
-import '../../css/admin.css'
-
 import Dashboard from './dashboard'
 import {Dropdown} from 'antd';
-import { Route, Switch } from 'react-router-dom';
 import { useState } from 'react';
+import '../../css/admin.css'
 
 const menu=(
     <div className="sub-menu">
