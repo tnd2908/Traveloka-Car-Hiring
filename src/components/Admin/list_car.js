@@ -23,9 +23,7 @@ const ListCar = () => {
     const [loading, setLoading] = useState(false)
     const [render,setRender] = useState(0)
     const dispatch = useDispatch()
-    const handleClose = () => {
-        setIsvisible(false);
-    };
+
     const openEditVehicleForm = (data) => {
         setEditData(data)
         form.setFieldsValue(data)
@@ -167,7 +165,7 @@ const ListCar = () => {
                                             if (car.idManufactor === br.idManufactor) {
                                                 return (<td>{br.name}</td>);
                                             }
-                                        }): <td>Loading...</td>}
+                                        }):  <td>Loading...</td>}
                                         <td> {car.price} / Ngày</td>
                                         <td> {car.quantity}</td>
                                         <td style={{width: '70px'}} >

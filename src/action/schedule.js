@@ -1,6 +1,6 @@
-export const setSchedule= (schedule) =>{
+export const setSchedule= (startDate, endDate) =>{
     return{
         type: 'SET_SCHEDULE',
-        payload: schedule
+        payload: {startDate, endDate}
     }
 }

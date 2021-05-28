@@ -27,6 +27,9 @@ button:focus{
   background-color: #f6f6f6;
   overflow-x: hidden;
 }
+.container-fluid.bgcolor{
+  background-color: #e6eaed ;
+}
 .header{
   background-color: #fff;
 }
