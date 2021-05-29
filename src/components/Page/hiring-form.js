@@ -1,5 +1,7 @@
 import { Form, DatePicker, Select } from 'antd';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { API_URL } from '../../util/util';
 
 const layout = {
     labelCol: { span: 24 },
@@ -11,8 +13,16 @@ const HiringForm = () => {
     const { Option } = Select
     const [form] = Form.useForm()
     const [dateStart, setDateStart] = useState('')
-    const [dateEnd, setDateEnd] = useState('')
-    const [val, setVal] = useState('')
+    const [dateEnd, setDateEnd] = useState('')   
+    const [district, setDistrict] = useState('')
+    const [districtList, setDistrictList] = useState([])
+    const [country, setCountry] = useState('')
+    const [countryList, setCountryList] = useState([])
+    const [city, setCity] = useState('')
+    const [cityList, setCityList] = useState([])
+    const [countryName,setCountryName] = useState('')
+    const [cityName, setCityName] = useState('')
+    const [districtName, setDistrictName] = useState('')
     const onPlaceChange = (value) =>{
         console.log(value)
     }
@@ -24,8 +34,20 @@ const HiringForm = () => {
     }
     const submitForm = (value) =>{
         console.log(value)
-        window.location = `/vehicles?country=VN&&dateStart=${dateStart}&&dateEnd=${dateEnd}`
+        window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${country}&&city=${city}&&district=${district}`
     }
+    useEffect(()=>{
+        try {
+            axios.get(API_URL+"country")
+                .then(res=>setCountryList(res.data.result))
+            axios.get(API_URL+"district")
+                .then(res=>setDistrictList(res.data.result))
+            axios.get(API_URL+"city")
+                .then(res=>setCityList(res.data.result))
+        } catch (error) {
+            console.log(error)
+        }
+    },[])
     return (
                 <Form
                     {...layout}
@@ -46,33 +68,60 @@ const HiringForm = () => {
                         </div>
                     <div className="container-fluid bg-white">
                         <div className="row">
-                            <div className="col-6">
+                        <div className="col-4">
                                 <label htmlFor="place" className="mt-2">Khu vực thuê xe của bạn</label>
+                                <Form.Item
+                                    name="country"
+                                    rules={[{ required: true, message: 'Vui lòng chọn khu vực' }]}
+                                >
+                                    <Select
+                                        style={{ width: '100%' }}
+                                        onChange={e=>setCountry(e)}
+                                        placeholder="Chọn khu vực">
+                                        {countryList.map(country=>(
+                                            <Option key={country.name} value={country.id}> {country.name} </Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                            </div>
+                            <div className="col-4">
+                                <label htmlFor="city" className="mt-2">Thành phố</label>
                                 <Form.Item
                                     name="city"
                                     rules={[{ required: true, message: 'Vui lòng chọn khu vực' }]}
                                 >
                                     <Select
                                         style={{ width: '100%' }}
-                                        onChange={e=>setVal(e)}
+                                        onChange={e=>setCity(e)}
+                                        disabled={!country}
                                         placeholder="Chọn thành phố">
-                                        <Option value='VN'>Viet NAm</Option>
+                                        {cityList.map(city=>{
+                                            if(country === city.idCountry){
+                                                return(<Option key={city.id} value={city.id}> {city.name} </Option>)
+                                            }
+                                        })}
                                     </Select>
                                 </Form.Item>
                             </div>
-                            {val&&<div className="col-6">
-                                <label htmlFor="place" className="mt-2">Quận</label>
+                            <div className="col-4">
+                                <label htmlFor="district" className="mt-2">Quận</label>
                                 <Form.Item
                                     name="district"
-                                    rules={[{ required: false, message: 'Vui lòng chọn quận' }]}
+                                    rules={[{ required: true, message: 'Vui lòng chọn thành phố' }]}
                                 >
                                     <Select
                                         style={{ width: '100%' }}
+                                        disabled={!city}
+                                        onChange={e=>setDistrict(e)}
                                         placeholder="Chọn quận trong thành phố">
-                                        <Option value='VN'>8</Option>
+                                        {districtList.map(dis=>{
+                                            if(city === dis.idCity){
+                                                return(<Option key={dis.id} value={dis.id}> {dis.name} </Option>)
+                                            }
+                                        })}
                                     </Select>
                                 </Form.Item>
-                            </div>}
+                            </div>
                         </div>
                     </div>
                     <div className="container-fluid bg-white">
