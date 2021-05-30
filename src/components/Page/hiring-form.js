@@ -1,6 +1,7 @@
 import { Form, DatePicker, Select } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { API_URL } from '../../util/util';
 
 const layout = {
@@ -20,6 +21,7 @@ const HiringForm = () => {
     const [countryList, setCountryList] = useState([])
     const [city, setCity] = useState('')
     const [cityList, setCityList] = useState([])
+
     const onPlaceChange = (value) =>{
         console.log(value)
     }
@@ -31,8 +33,12 @@ const HiringForm = () => {
     }
     const submitForm = (value) =>{
         console.log(value)
+        if(district)
         window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${country}&&city=${city}&&district=${district}`
+        else
+        window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${country}&&city=${city}`
     }
+    
     useEffect(()=>{
         try {
             axios.get(API_URL+"country")
@@ -104,7 +110,7 @@ const HiringForm = () => {
                                 <label htmlFor="district" className="mt-2">Quận</label>
                                 <Form.Item
                                     name="district"
-                                    rules={[{ required: true, message: 'Vui lòng chọn thành phố' }]}
+                                    rules={[{ required: false, message: 'Vui lòng chọn thành phố' }]}
                                 >
                                     <Select
                                         style={{ width: '100%' }}

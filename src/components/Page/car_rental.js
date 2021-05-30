@@ -44,20 +44,29 @@ function CarRental() {
         const action = setSchedule(param.get("dateStart"),param.get("dateEnd"))
         dispatch(action)
     }, [])
+    
     const getListCar = () => {
         try {
-            axios.get(API_URL+"car")
+            if(param.get("district")){
+                axios.get(API_URL+`car/availableCar?idDistrict=${param.get("district")}`)
                 .then(response => {
                     const action = setList(response.data.result, response.data.result)
                     dispatch(action)
                 })
+            }
+            else{
+                axios.get(API_URL+`car/available/city?idCity=${param.get("city")}`)
+                .then(response => {
+                    const action = setList(response.data.result, response.data.result)
+                    dispatch(action)
+                })
+            }
         } catch (error) {
             console.log(error)
         }
     }
     if(param.get("country")){
         return (
-        
             <div className="container-fluid bgcolor">
                 <div className="row">
                     <div className="banner">
@@ -80,7 +89,6 @@ function CarRental() {
                             </Collapse>
                             <h5 id="title-form">Thuê xe tự lái</h5>
                             <div className="rent-schedule-form">
-                                <h5>Khu vực {param.get("country")} </h5>
                                 <h6>Từ ngày {startDate} đến ngày {endDate} </h6>
                             </div>
                             {/* <p>Thuê xe / Thuê xe tự lái</p>

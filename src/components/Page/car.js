@@ -2,13 +2,14 @@
 import {
     Link
   } from "react-router-dom";
+import { API_URL } from "../../util/util";
 function Car({car}){
-    const id = car.idVehicle;
+    const id = car.id;
     return(
         <div className="container-fluid bg-white car-item">
             <div className="row">
                 <div className="col-lg-4">
-                    {car.image?<img className="car--image" src={car.avatar} alt=""/>:
+                    {car.avatar?<img className="car--image" src={ API_URL + 'images/' + car.avatar} alt=""/>:
                     <p className="car-image">picture</p>}
                 </div>
                 <div className="col-lg-4">
