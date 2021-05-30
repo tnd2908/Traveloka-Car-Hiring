@@ -38,12 +38,14 @@ const Dashboard = ({collapse}) =>{
           <SubMenu className="submenu" key="car" icon={<CarOutlined />} title="Quản lý xe">
             <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/admin/vehicles"> Xem danh sách xe</Link></Menu.Item>
             <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles"> Thêm xe mới</Link></Menu.Item>
-            <Menu.Item key="7" icon={<DeleteOutlined />}>Xoá xe</Menu.Item>
-            <Menu.Item key="8" icon={<EditOutlined />}>Cập nhật thông tin xe</Menu.Item>
+            <Menu.Item key="7" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles-district"> Thêm xe vào quận</Link></Menu.Item>
+
+            <Menu.Item key="8" icon={<DeleteOutlined />}>Xoá xe</Menu.Item>
+            <Menu.Item key="9" icon={<EditOutlined />}>Cập nhật thông tin xe</Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<ContainerOutlined />} title="Quản lý đơn hàng">
-            <Menu.Item key="9">Option 9</Menu.Item>
             <Menu.Item key="10">Option 10</Menu.Item>
+            <Menu.Item key="11">Option 11</Menu.Item>
           </SubMenu>
         </Menu>
     );
