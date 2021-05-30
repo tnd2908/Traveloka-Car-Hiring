@@ -12,6 +12,7 @@ import { setSchedule } from '../../action/schedule';
 
 import HiringForm from './hiring-form';
 import { Redirect, useLocation } from 'react-router-dom';
+import { API_URL } from '../../util/util';
 
 const { Panel } = Collapse
 
@@ -45,9 +46,9 @@ function CarRental() {
     }, [])
     const getListCar = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/`)
+            axios.get(API_URL+"car")
                 .then(response => {
-                    const action = setList(response.data.data, response.data.data)
+                    const action = setList(response.data.result, response.data.result)
                     dispatch(action)
                 })
         } catch (error) {

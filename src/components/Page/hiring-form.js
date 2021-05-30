@@ -20,9 +20,6 @@ const HiringForm = () => {
     const [countryList, setCountryList] = useState([])
     const [city, setCity] = useState('')
     const [cityList, setCityList] = useState([])
-    const [countryName,setCountryName] = useState('')
-    const [cityName, setCityName] = useState('')
-    const [districtName, setDistrictName] = useState('')
     const onPlaceChange = (value) =>{
         console.log(value)
     }
