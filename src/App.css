@@ -125,3 +125,72 @@ button:focus{
 .prev-icon{
   margin-right: 10px;
 }
+.login-partner-form{
+  transform: translateY(-100px);
+  margin-bottom: 30px;
+  padding: 20px;
+  padding-top: 10px;
+}
+.inside-form{
+  background-color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  overflow: hidden;
+  min-height: 50vh;
+}
+
+.app-logo{
+  width: auto;
+  cursor: pointer;
+  height: 90px;
+  margin-bottom: 20px
+}
+nav{
+  background-color: #fff;
+  padding-left: 50px;
+}
+.app-logo-nav{
+  width: auto;
+  cursor: pointer;
+  height: 50px;
+  transform: translateY(-3px)scale(1.1);
+}
+.btn-login-partner{
+  width: 140px;
+  height: 38px;
+  border-style: none;
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+  background-color: dodgerblue;
+}
+#cooperation-link{
+  cursor: pointer;
+  color: black;
+  margin: 10px 0;
+  font-size: 16px;
+}
+.form-left{
+  animation: toLeft 0.7s ease;
+}
+.form-right{
+  animation: ToRight 0.7s ease;
+}
+
+@keyframes ToRight{
+  from {
+    transform: translateX(80%);
+  }
+  to{
+    transform: translateX(0);
+  }
+}
+@keyframes toLeft{
+  from {
+    transform: translateX(-80%);
+  }
+  to{
+    transform: translateX(0);
+  }
+}

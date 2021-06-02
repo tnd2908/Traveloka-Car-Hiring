@@ -70,7 +70,7 @@ const ListCar = () => {
         const action = getListCarFromHighPrice(list)
         dispatch(action)
     }
-    return (
+    return (            
         <div className="container component">
             <div className="row">
                 <div className="admin-search col-md-6">
@@ -165,7 +165,7 @@ const ListCar = () => {
                                             if (car.idManufactor === br.idManufactor) {
                                                 return (<td>{br.name}</td>);
                                             }
-                                        }):  <td>Loading...</td>}
+                                        }):              <td>Loading...</td>}
                                         <td> {car.price} / Ngày</td>
                                         <td> {car.quantity}</td>
                                         <td style={{width: '70px'}} >
