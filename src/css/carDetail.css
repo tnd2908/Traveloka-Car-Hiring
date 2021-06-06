@@ -1,13 +1,35 @@
-
+.cover{
+    width: 100%;
+    background-color: #e6eaed;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 50px;
+}
+@media screen and(max-width: 1024px){
+    .cover{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
 .car-detail{
     background-color: white;
     align-content: center;
     justify-content: center;
-    padding: 0 10px;
+    padding: 10px;
 }
-.car-detail p{
-    color: rgb(14, 6, 0);
-    margin-bottom: 5px;
+.car-detail .info p{
+    margin-bottom: 0;
+    color: black;
+    font-weight: bold;
+}
+.car-detail .info p:first-child{
+    font-size: 22px;
+}
+.car-detail .info p:nth-child(2){
+    font-size: 17px;
+}
+.car-detail .info .iconic p{
+    font-weight: normal;
 }
 .car-detail .info{
     margin-left: 20px;
@@ -18,14 +40,16 @@
     border: none;
 }
 .car-detail img{
-   width: 250px;
-   height: 150px;
+   width: 300px;
+   height: 200px;
+   object-fit: cover;
 }
 .car-detail p{
     padding: 5px 0;
 }
 .iconic{
     display: flex;
+    margin-top: 15px;
 }
 .iconic p{
     margin-top: -5px;
@@ -34,7 +58,7 @@
 }
 .Policy{
     padding: 0 20px;
-    margin-bottom: 20px;
+    margin: 30px 0;
 }
 .Policy img{
     height: 25px;
@@ -58,9 +82,11 @@
 .rental-info{
     background-color: white;
     padding: 10px;
+    width: 100%
 }
+
 .rental-info img{
-    width: 60px;
+    width: 50px;
     height: 50px;
     margin-right: 10px;
     object-fit: cover;

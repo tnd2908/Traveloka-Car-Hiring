@@ -23,9 +23,7 @@ const ListCar = () => {
     const [loading, setLoading] = useState(false)
     const [render,setRender] = useState(0)
     const dispatch = useDispatch()
-    const handleClose = () => {
-        setIsvisible(false);
-    };
+
     const openEditVehicleForm = (data) => {
         setEditData(data)
         form.setFieldsValue(data)
@@ -61,7 +59,6 @@ const ListCar = () => {
         }
     }, [render])
     const onSearch = (value) =>{
-        console.log(value)
         const action = searchCar(value)
         dispatch(action)
     }
@@ -73,7 +70,7 @@ const ListCar = () => {
         const action = getListCarFromHighPrice(list)
         dispatch(action)
     }
-    return (
+    return (            
         <div className="container component">
             <div className="row">
                 <div className="admin-search col-md-6">
@@ -168,7 +165,7 @@ const ListCar = () => {
                                             if (car.idManufactor === br.idManufactor) {
                                                 return (<td>{br.name}</td>);
                                             }
-                                        }): <td>Loading...</td>}
+                                        }):              <td>Loading...</td>}
                                         <td> {car.price} / Ngày</td>
                                         <td> {car.quantity}</td>
                                         <td style={{width: '70px'}} >

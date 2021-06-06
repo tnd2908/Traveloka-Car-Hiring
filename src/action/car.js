@@ -17,6 +17,7 @@ export const setList = (list, defaultList) =>{
         payload: {list, defaultList},
     }
 }
+
 export const getListCarByPrice = (range) =>{
     return{
         type: 'GET_LIST_CAR_BY_PRICE',

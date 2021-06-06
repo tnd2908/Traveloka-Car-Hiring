@@ -1,64 +1,52 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { 
   Link
 } from "react-router-dom";
 import { Dropdown } from 'antd'
 import LogInForm from "./login-form";
-const layout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24 },
-};
-// const loginForm = () => {
-//   const dispatch = useDispatch()
-//   const loginPartner = (partner) =>{
-//     const action = loginPartner(partner)
-//     dispatch(action)
-//   }
-//   return (
-//         <Form
-//               {...layout}
-//               name="basic"
-//               colon={false}
-//               initialValues={{ remember: true }}
-//               style={{padding: '12px', paddingTop:'20px'}}
-//               onFinish={loginPartner}
-//               className="login-form"
-//         >
-//               <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
-//               <Form.Item
-//                     name="email"
-//                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
-//                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ email' }]}
-//               >
-//                     <label htmlFor="email">Email</label>
-//                     <Input size="large" name="email" />
-//               </Form.Item>
-//               <Form.Item
-//                     name="password"
-//                     style={{fontWeight:'bold', color:'grey'}}
-//                     rules={[{ required: true, message: 'Vui lòng nhập password' }]}
-//               >
-//                     <label htmlFor="password">Password</label>
-//                     <Input.Password name="password" size="large"/>
-//               </Form.Item>
-//               <Form.Item>
-//                     <div className="d-flex">
-//                           <button type="submit" className="login-btn">Đăng nhập</button>
-//                           <div className="signup-link">
-//                                 <p>Bạn chưa có tài khoản?</p>
-//                                 <Link>Đăng ký ngay</Link>
-//                           </div>
-//                     </div>
-//               </Form.Item>
-//         </Form>
-//   );
-// }
+import axios from "axios";
+import { API_URL } from "../../util/util";
+import {useDispatch, useSelector} from 'react-redux'
+import { setUserInfor } from "../../action/user";
+const logout = () =>{
+  localStorage.clear()
+  window.location="/"
+}
+const UserButton = () =>{
+  return(
+    <div className="bg-white d-flex flex-column user-form">
+        <Link className="text-dark" to="/"><i class="fal fa-user"></i>Thông tin cá nhân</Link>
+        <Link className="text-dark" to="/" onClick={()=>logout()}><i class="fal fa-sign-out"></i>Đăng xuất</Link>
+    </div>
+  )
+}
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
-  const [haha,setHaha] = useState('')
-      const onVisibleChange = () =>{
-            setFormVisible(!formVisible)
+  const onVisibleChange = () =>{
+      setFormVisible(!formVisible)
+  }
+  const dispatch = useDispatch()
+  const user = useSelector(state=>state.user.user)
+  const token = localStorage.getItem("user-token") || localStorage.getItem("partner-token") || ""
+  const header = {
+    'Authorization': token
+  }
+  useEffect(()=>{
+    if(token){
+      try {
+        axios.get(API_URL + "user/token",{
+          headers: header
+        })
+          .then(res=>{
+            console.log(res.data)
+            const action = setUserInfor(res.data.result)
+            dispatch(action)
+          })
+      } catch (error) {
+        console.log(error)
       }
+    }
+  },[token])
   return (
     <Fragment>
       <div className="container-fluid header" style={{ padding: '0' }}>
@@ -70,15 +58,25 @@ function Nav() {
           <div className="col-9">
             <div className="nav-mid">
               <Link><i class="fas fa-percent " style={{ color: 'tomato' }}></i>Khuyến mãi</Link>
-              <Link to="/admin"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
+              <Link to="/partner"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
               <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
-              <div className="user">
-                <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={LogInForm} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
+              {!token?<div className="user">
+                <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
                 <Link id="signup">Đăng ký</Link>
               </div>
+               :<div className="user">
+                 <Dropdown 
+                    visible={formVisible} 
+                    onVisibleChange={onVisibleChange} 
+                    trigger="click"  
+                    overlay={<UserButton/>}
+                    placement="bottomRight" arrow>
+                    <Link id="login">Xin chào <span style={{textTransform:'uppercase', fontWeight:'bold', color:'blue'}}>{user.fullname}</span></Link>
+                 </Dropdown>
+              </div>}
             </div>
           </div>
         </div>
@@ -89,7 +87,7 @@ function Nav() {
             <Link><i class="fas fa-car-building prev-icon" style={{ color: 'darkcyan' }}></i>Combo tiết kiệm</Link>
             <Link><i class="fas fa-car-bus prev-icon" style={{ color: 'skyblue' }}></i>Đưa đón sân bay</Link>
             <Link><i class="fas fa-map-marked-alt prev-icon" style={{ color: 'yellowgreen' }}></i>Xperience</Link>
-            <Link to="vehicles"><i class="fas fa-car-alt prev-icon" style={{ color: 'gray' }}></i>Cho thuê xe</Link>
+            <Link to={`/vehicles`} replace><i class="fas fa-car-alt prev-icon" style={{ color: 'gray' }}></i>Cho thuê xe</Link>
             <Link><i class="fas fa-globe prev-icon" style={{ color: 'tomato' }}></i>JR Pass</Link>
           </div>
         </div>

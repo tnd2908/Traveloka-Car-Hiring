@@ -18,18 +18,34 @@
 }
 .rental-info{
     background-color: white;
+    padding: 10px 20px;
 }
-.rental-info img{
-    width: 25px;
-    height: 25px;
-}
+
 .next-page-reserva button{
-   width: 20%;
    height: 40px;
    margin: 15px 0;
    border-style: none;
-   border-radius: 10px;
+   width: 150px;
+   border-radius: 5px;
    color: white;
    background-color: rgba(9, 157, 216);
    font-size: 17px;
+}
+.btn-a{
+    color: #1890ff;
+    border-style: none;
+    margin-right: 15px;
+    background-color: #fff;
+}
+.PhoneInputInput{
+    height: 32px;
+    border: 1px solid rgb(226, 225, 225);
+    border-radius: 2px;
+}
+.PhoneInputInput:focus{
+    outline: none;
+    border-color:  rgb(236, 235, 235);;
+}
+.pl-2{
+    padding-left: 20px;
 }

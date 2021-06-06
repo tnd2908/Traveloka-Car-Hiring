@@ -2,14 +2,12 @@ import '../../css/admin.css'
 import { Menu } from 'antd';
 import {
   AppstoreAddOutlined,
-  PieChartOutlined,
   DesktopOutlined,
   ContainerOutlined,
   EyeOutlined,
   DeleteOutlined,
   EditOutlined,
   CarOutlined,
-  ProfileOutlined,
 } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
 const { SubMenu } = Menu;
@@ -29,7 +27,7 @@ const Dashboard = ({collapse}) =>{
               <h5 style={{margin:'0', height:'100%'}} className="text-light d-flex align-items-center">Dashboard</h5>
           </Menu.Item>
           <Menu.Item key="1" icon={<DesktopOutlined  />}>
-            <Link to="/admin">Trang chủ</Link>
+            <Link to="/partner">Trang chủ</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Option 2
@@ -38,8 +36,8 @@ const Dashboard = ({collapse}) =>{
             Option 3
           </Menu.Item>
           <SubMenu className="submenu" key="car" icon={<CarOutlined />} title="Quản lý xe">
-            <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/admin/vehicles"> Xem danh sách xe</Link></Menu.Item>
-            <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles"> Thêm xe mới</Link></Menu.Item>
+            <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/partner/vehicles"> Xem danh sách xe</Link></Menu.Item>
+            <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/partner/add-vehicles"> Thêm xe mới</Link></Menu.Item>
             <Menu.Item key="7" icon={<DeleteOutlined />}>Xoá xe</Menu.Item>
             <Menu.Item key="8" icon={<EditOutlined />}>Cập nhật thông tin xe</Menu.Item>
           </SubMenu>

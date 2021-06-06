@@ -31,19 +31,36 @@ const Category = ({sortPrice, getPriceRange}) =>{
         <Menu
         defaultOpenKeys={['sub1','sub2','sub4']}
         mode="inline"
+        className="shadow-sm rounded"
         onSelect={onSelect}
       >
           <div className="filter-title">
               <p><i class="far fa-sliders-h"></i>Bộ lọc</p>
           </div>
             <SubMenu key="sub1"  title="Số hành khách tối đa">
-                <Menu.Item>Tất cả</Menu.Item>
+                <Menu.Item >Tất cả</Menu.Item>
                 {category.map(cate=>(
                     <Menu.Item key={cate.idCategory}> Xe {cate.nameCate} chỗ </Menu.Item>
                 ))}
             </SubMenu>
             <SubMenu key="sub2"  title="Giá từ">
-                <Menu.Item style={{paddingRight:'50px'}}><Slider range  step={100000} min={0} max={5000000} onChange={(value)=>{getPriceRange(value);}}/></Menu.Item>
+                <Menu.Item style={{paddingRight:'50px', height:'90px', paddingTop:'50px'}}>
+                    <Slider
+                    tooltipVisible
+                    defaultValue={[0,5000000]} 
+                    range  step={100000} 
+                    min={0}
+                    max={5000000}
+                    tipFormatter = {value=>{
+                        return(
+                        <span>{new Intl.NumberFormat().format(value)}</span>
+                        )
+                    }}
+                    onChange={(value)=>{
+                        getPriceRange(value);
+                    }}
+                    />
+                </Menu.Item>
             </SubMenu>
             <SubMenu key="sub4"  title="Sắp xếp">
                 <Menu.Item style={{height: '100%', paddingLeft:'20px'}}>

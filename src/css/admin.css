@@ -9,9 +9,7 @@
 .navbar-admin.col-3, .navbar-admin.col-9{
     padding: 0;
 }
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: #f6f6f6;
-}
+
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected span{
     color: black;
 }
@@ -25,6 +23,9 @@
     justify-content: flex-start;
     align-items: center;
     height: 50px;
+}
+.fas.fa-sort-amount-up, .fas.fa-sort-amount-down{
+    margin-left: 7px;
 }
 .menu-title button{
     margin-left: 12px;
@@ -168,7 +169,9 @@ table.table .btn-edit{
 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
     background-color: #f6f6f6;
 }
-
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background-color: #f6f6f6;
+}
 .component .form .btn-add{
     width: 50%;
     height: 38px;

@@ -7,21 +7,21 @@ const carReducer = (state = initialState, action)=>{
         case 'GET_LIST_CAR_FROM_LOW_PRICE':{
             const newList = action.payload
             newList.sort((a,b)=>{
-                return a.price - b.price;
+                return a.self_drive_price - b.self_drive_price;
             })
             return {...state, listCar: [...newList]}
         }
         case 'GET_LIST_CAR_FROM_HIGH_PRICE':{
             const newList = action.payload
             newList.sort((a,b)=>{
-                return b.price - a.price;
+                return b.self_drive_price - a.self_drive_price;
             })
             return {...state, listCar: [...newList]}
         }
         case 'GET_LIST_CAR_BY_PRICE':{
             const range = action.payload.range
             const newList = state.defaultList.filter(item=>{
-                return item.price >= range[0] && item.price <= range[1]
+                return item.self_drive_price >= range[0] && item.self_drive_price <= range[1]
             })
             return {...state, listCar: [...newList]}
         }
