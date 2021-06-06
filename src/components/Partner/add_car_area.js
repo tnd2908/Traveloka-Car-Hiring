@@ -136,21 +136,7 @@ import '../../css/carErea.css'
                                 </Select>
                             </Form.Item>
                             </div>
-                        <div className="car-deta col-6">
-                            <h6>Chọn Saler</h6>
-                            <Form.Item
-                                name="saler"
-                                rules={[{ required: true, message:'Vui lòng chọn người dùng' }]}
-                            >
-                                <Select
-                                    style={{ width: '100%' }}
-                                    placeholder="Chọn người dùng"
-                                    onChange={e=>setSaler(e)}>
-                                    {salerList.map(dis=>{
-                                        return(<Option key={dis.id} value={dis.id}> {dis.fullname} </Option>)                                    
-                                    })}    
-                                </Select>
-                            </Form.Item>
+                        <div className="car-deta col-6">                            
                             <h6>Chọn xe</h6>
                             <Form.Item
                                 name="car"
