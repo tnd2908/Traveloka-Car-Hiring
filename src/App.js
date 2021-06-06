@@ -15,6 +15,7 @@ import Nav from './components//commons/nav';
 import Reservation from './components/Page/payment/car_reservation';
 import Payment from './components/Page/payment/payment';
 import LoginPartner from './components/commons/login-partner';
+import AddCarToDistrict from './components/Partner/add_car_area';
 
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
                         </Route>
                         <Route exact path="/partner/add-vehicles">
                               <Admin com={<AddCar />} />
+                        </Route>
+                        <Route exact path="/partner/add-car-area">
+                              <Admin com={<AddCarToDistrict />} />
                         </Route>
                         <Route exact path="/">
                               <Nav />
