@@ -1,8 +1,10 @@
 import Dashboard from './dashboard'
 import { Dropdown } from 'antd';
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import '../../css/admin.css'
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL } from '../../util/util';
 
 const Menu = () => {
     return (
@@ -12,8 +14,22 @@ const Menu = () => {
         </div>
     )
 }
-
+const header = {
+    'Authorization' : 'Bearer ' + localStorage.getItem("partner-token")
+}
 const Admin = ({ com }) => {
+    useEffect(()=>{
+        try {
+            axios.get(API_URL + "user/token", {
+                headers: header
+            })
+            .then(res=>{
+                console.log(res.data)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },[])
     const [collapse, setCollapse] = useState(false)
     if (localStorage.getItem("partner-token"))
         return (
@@ -28,7 +44,7 @@ const Admin = ({ com }) => {
                                 <div className="col-9">
                                     <div className="menu-title">
                                         <button className="btn" onClick={() => setCollapse(!collapse)}><i class="fal fa-bars"></i></button>
-                                        <h4>Admin</h4>
+                                        <h4>Partner</h4>
                                     </div>
                                 </div>
                                 <div className="col-3">

@@ -1,15 +1,52 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { 
   Link
 } from "react-router-dom";
 import { Dropdown } from 'antd'
 import LogInForm from "./login-form";
-
+import axios from "axios";
+import { API_URL } from "../../util/util";
+import {useDispatch, useSelector} from 'react-redux'
+import { setUserInfor } from "../../action/user";
+const logout = () =>{
+  localStorage.clear()
+  window.location="/"
+}
+const UserButton = () =>{
+  return(
+    <div className="bg-white d-flex flex-column user-form">
+        <Link className="text-dark" to="/"><i class="fal fa-user"></i>Thông tin cá nhân</Link>
+        <Link className="text-dark" to="/" onClick={()=>logout()}><i class="fal fa-sign-out"></i>Đăng xuất</Link>
+    </div>
+  )
+}
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
-      const onVisibleChange = () =>{
-            setFormVisible(!formVisible)
+  const onVisibleChange = () =>{
+      setFormVisible(!formVisible)
+  }
+  const dispatch = useDispatch()
+  const user = useSelector(state=>state.user.user)
+  const token = localStorage.getItem("user-token") || localStorage.getItem("partner-token") || ""
+  const header = {
+    'Authorization': token
+  }
+  useEffect(()=>{
+    if(token){
+      try {
+        axios.get(API_URL + "user/token",{
+          headers: header
+        })
+          .then(res=>{
+            console.log(res.data)
+            const action = setUserInfor(res.data.result)
+            dispatch(action)
+          })
+      } catch (error) {
+        console.log(error)
       }
+    }
+  },[token])
   return (
     <Fragment>
       <div className="container-fluid header" style={{ padding: '0' }}>
@@ -21,15 +58,25 @@ function Nav() {
           <div className="col-9">
             <div className="nav-mid">
               <Link><i class="fas fa-percent " style={{ color: 'tomato' }}></i>Khuyến mãi</Link>
-              <Link to="/admin"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
+              <Link to="/partner"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
               <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
-              <div className="user">
+              {!token?<div className="user">
                 <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
                 <Link id="signup">Đăng ký</Link>
               </div>
+               :<div className="user">
+                 <Dropdown 
+                    visible={formVisible} 
+                    onVisibleChange={onVisibleChange} 
+                    trigger="click"  
+                    overlay={<UserButton/>}
+                    placement="bottomRight" arrow>
+                    <Link id="login">Xin chào <span style={{textTransform:'uppercase', fontWeight:'bold', color:'blue'}}>{user.fullname}</span></Link>
+                 </Dropdown>
+              </div>}
             </div>
           </div>
         </div>
