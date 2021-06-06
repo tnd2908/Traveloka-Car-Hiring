@@ -1,0 +1,25 @@
+.former h5{
+    color: teal;
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    line-height: 40px;
+    font-size: 1.3rem;
+    padding-left: 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 1px;
+}
+.add-btn{
+    margin-left: 155px;
+    width: 50%;
+    height: 34px;
+    border-style: none;
+    background-color: #fcba07;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: 0.4s;
+}
