@@ -23,7 +23,7 @@ const Admin = ({com}) =>{
                             <div className="col-9">
                                 <div className="menu-title">
                                     <button className="btn" onClick={()=>setCollapse(!collapse)}><i class="fal fa-bars"></i></button>
-                                    <h4>Admin</h4>
+                                    <h4>Partner</h4>
                                 </div>
                             </div>
                             <div className="col-3">

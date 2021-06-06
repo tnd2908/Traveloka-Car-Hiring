@@ -17,9 +17,9 @@ const Reservation = () => {
     }, [])
     const fetchDetail = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/detail/${idVehicle}`)
+            axios.get(`http://108.160.134.9:3301/car/detail/${idVehicle}`)
                 .then(response => {
-                    setCar(response.data.data)
+                    setCar(response.data.result)
                 })
         } catch (error) {
             console.log(error)

@@ -12,3 +12,14 @@
     font-weight: bolder;
     letter-spacing: 1px;
 }
+.add-btn{
+    margin-left: 155px;
+    width: 50%;
+    height: 34px;
+    border-style: none;
+    background-color: #fcba07;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: 0.4s;
+}

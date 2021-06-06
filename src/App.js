@@ -2,19 +2,19 @@ import './App.css';
 import CarRental from './components/Page/car_rental.js';
 import CarHomePage from './components/Page/homepage';
 import CarDetail from './components/Page/car_detail.js';
-import Admin from './components/Admin/admin.js'
+import Admin from './components/Partner/admin.js'
 import dotenv from 'dotenv'
 import {
       BrowserRouter as Router,
       Switch,
       Route,
 } from "react-router-dom";
-import ListCar from './components/Admin/list_car'
-import AddCar from './components/Admin/add_car'
+import ListCar from './components/Partner/list_car'
+import AddCar from './components/Partner/add_car'
 import Nav from './components//commons/nav';
 import Reservation from './components/Page/payment/car_reservation';
 import Payment from './components/Page/payment/payment';
-import AddCarToDistrict from './components/Admin/add_car_area';
+import AddCarToDistrict from './components/Partner/add_car_area';
 
 
 function App() {
@@ -22,16 +22,16 @@ function App() {
       return (
             <Router>
                   <Switch>
-                        <Route exact path="/admin">
+                        <Route exact path="/partner">
                               <Admin />
                         </Route>
-                        <Route exact path="/admin/vehicles" >
+                        <Route exact path="/partner/vehicles" >
                               <Admin com={<ListCar />} />
                         </Route>
-                        <Route exact path="/admin/add-vehicles">
+                        <Route exact path="/partner/add-vehicles">
                               <Admin com={<AddCar />} />
                         </Route>
-                        <Route exact path="/admin/add-vehicles-district">
+                        <Route exact path="/partner/add-vehicles-district">
                               <Admin com={<AddCarToDistrict />} />
                         </Route>
                         <div>

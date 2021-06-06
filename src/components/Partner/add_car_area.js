@@ -21,7 +21,10 @@ import '../../css/carErea.css'
         const [district, setDistrict] = useState('')
         const [districtList, setDistrictList] = useState([])
         const [carList,setCarList] = useState([])
-
+        const [cardetail,setCardetail] = useState('')
+        const [salerList,setSalerList] = useState([])
+        const [saler,setSaler] = useState('')
+        
         useEffect(()=>{
             try {
                 axios.get(API_URL+"country")
@@ -31,37 +34,36 @@ import '../../css/carErea.css'
                 axios.get(API_URL+"district")
                     .then(res=>setDistrictList(res.data.result))
                 axios.get(API_URL+"car")
-                    .then(res=>setCarList(res.data.result))   
-                    // getCar(); 
+                    .then(res=>setCarList(res.data.result)) 
+                axios.get(API_URL+"car/saler")  
+                    .then(res=>setSalerList(res.data.result))  
             } catch (error) {
                 console.log(error)
             }
         },[])
-
-        const handleCreateCar = (value) =>{
+        // const submitForm = (value) =>{
+        //     console.log(value)
+        //     if(district)
+        //     window.location = `/vehicles?country=${country}&&city=${city}&&district=${district}&&car=${cardetail}`
+        //     else
+        //     window.location = `/vehicles?country=${country}&&city=${city}&&car=${cardetail}`
+        // }
+        const handleAddCar = (value) =>{
             try {
-                const {name, price, quantity, image} = value;
-                const data = {
-                    name,
-                    price,
-                    quantity,
-                    image,
-                    idManufactor: value.idManufactor.value,
-                    idCategory: value.idCategory.value
+                const {idCar, idDistrict} = value;
+                const obj = {
+                    idDistrict, 
+                    idCar
                 }
-                console.log(data)
-                axios.post('https://mighty-meadow-74982.herokuapp.com/vehicle', data)
+                console.log(obj)
+                axios.post(API_URL+"car/district", obj)
                     .then(response=>{
                         Modal.success({
                             content: response.data.result,
                             onOk: ()=>{
                                 const obj ={
-                                    name: '',
-                                    price: '',
-                                    quantity: '',
-                                    idManufactor: '',
-                                    idCategory: '',
-                                    image: ''
+                                    idDistrict: '',
+                                    idCar: '',
                                 }
                                   form.setFieldsValue(obj)
                             }
@@ -80,6 +82,7 @@ import '../../css/carErea.css'
                         style={{backgroundColor: '#fff',boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'0 auto', maxWidth:'700px',padding:'10px 20px'}}
                         initialValues={{ remember: false }}
                         form={form}
+                        onFinish={handleAddCar}
                     >
                             <Form.Item className="former-header"><h5>Thêm xe vào khu vực</h5></Form.Item>
                             <div className=" row">
@@ -123,6 +126,7 @@ import '../../css/carErea.css'
                                     style={{ width: '100%' }}
                                     disabled={!city}
                                     onChange={e=>setDistrict(e)}
+                                    value={district}
                                     placeholder="Chọn quận trong thành phố">
                                     {districtList.map(dis=>{
                                         if(city === dis.idCity){
@@ -133,26 +137,44 @@ import '../../css/carErea.css'
                             </Form.Item>
                             </div>
                         <div className="car-deta col-6">
+                            <h6>Chọn Saler</h6>
+                            <Form.Item
+                                name="saler"
+                                rules={[{ required: true, message:'Vui lòng chọn người dùng' }]}
+                            >
+                                <Select
+                                    style={{ width: '100%' }}
+                                    placeholder="Chọn người dùng"
+                                    onChange={e=>setSaler(e)}>
+                                    {salerList.map(dis=>{
+                                        return(<Option key={dis.id} value={dis.id}> {dis.fullname} </Option>)                                    
+                                    })}    
+                                </Select>
+                            </Form.Item>
                             <h6>Chọn xe</h6>
-                            {carList.length}
                             <Form.Item
                                 name="car"
                                 rules={[{ required: true, message:'Vui lòng chọn xe muốn nhập' }]}
                             >
                                 <Select
                                     style={{ width: '100%' }}
-                                    disabled={!district}
+                                    onChange={e=>setCardetail(e)}
+                                    value={cardetail}
                                     placeholder="Chọn xe muốn nhập vào quận">
-                                    {carList.map(car=>{
-                                        return(<Option key={car.id} value={car.id}> {car.name} </Option>)                                    
+                                    {carList.map(dis=>{
+                                        return(<Option key={dis.id} value={dis.id}> {dis.name} </Option>)                                    
                                     })}    
                                     </Select>
+                            </Form.Item>
+                            <Form.Item></Form.Item>
+                            <Form.Item></Form.Item>
+                            <Form.Item   >
+                                <button className="add-btn" type="submit">Thêm xe</button>
                             </Form.Item>
                         </div>
                         </div>
                     </Form>
                 </div>
-            
     );
 }
 export default AddCarToDistrict;

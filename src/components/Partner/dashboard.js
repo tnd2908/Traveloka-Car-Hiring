@@ -36,9 +36,9 @@ const Dashboard = ({collapse}) =>{
             Option 3
           </Menu.Item>
           <SubMenu className="submenu" key="car" icon={<CarOutlined />} title="Quản lý xe">
-            <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/admin/vehicles"> Xem danh sách xe</Link></Menu.Item>
-            <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles"> Thêm xe mới</Link></Menu.Item>
-            <Menu.Item key="7" icon={<AppstoreAddOutlined/>}><Link to="/admin/add-vehicles-district"> Thêm xe vào quận</Link></Menu.Item>
+            <Menu.Item key="5" icon={<EyeOutlined />}> <Link to="/partner/vehicles"> Xem danh sách xe</Link></Menu.Item>
+            <Menu.Item key="6" icon={<AppstoreAddOutlined/>}><Link to="/partner/add-vehicles"> Thêm xe mới</Link></Menu.Item>
+            <Menu.Item key="7" icon={<AppstoreAddOutlined/>}><Link to="/partner/add-vehicles-district"> Thêm xe vào quận</Link></Menu.Item>
 
             <Menu.Item key="8" icon={<DeleteOutlined />}>Xoá xe</Menu.Item>
             <Menu.Item key="9" icon={<EditOutlined />}>Cập nhật thông tin xe</Menu.Item>
