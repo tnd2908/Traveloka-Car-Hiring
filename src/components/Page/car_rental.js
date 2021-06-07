@@ -5,7 +5,7 @@ import Car from './car';
 import axios from 'axios';
 import Category from './filter';
 import { useDispatch, useSelector } from 'react-redux';
-import { Collapse } from 'antd'
+import { Collapse, Result, Skeleton } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons';
 import { getListCarByPrice, getListCarFromHighPrice, getListCarFromLowPrice, setList } from '../../action/car';
 import { setSchedule } from '../../action/schedule';
@@ -23,6 +23,7 @@ function CarRental() {
     const startDate = useSelector(state=>state.schedule.startDate)
     const endDate = useSelector(state=>state.schedule.endDate)
     const {search} = useLocation()
+    const [isLoading, setIsLoading] = useState(true);
     const param = new URLSearchParams(search)
     const getPriceRange = (value) => {
         const action = getListCarByPrice(value)
@@ -40,11 +41,12 @@ function CarRental() {
         }
     }
     useEffect(() => {
+        setIsLoading(true)
         getListCar();
         const action = setSchedule(param.get("dateStart"),param.get("dateEnd"))
         dispatch(action)
     }, [])
-    
+
     const getListCar = () => {
         try {
             if(param.get("district")){
@@ -52,6 +54,7 @@ function CarRental() {
                 .then(response => {
                     const action = setList(response.data.result, response.data.result)
                     dispatch(action)
+                    
                 })
             }
             else{
@@ -59,11 +62,19 @@ function CarRental() {
                 .then(response => {
                     const action = setList(response.data.result, response.data.result)
                     dispatch(action)
+                    
                 })
+                setIsLoading(false)
             }
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const loadingSkeleton = () => {
+        return (
+            <Skeleton active/>
+        )
     }
     if(param.get("country")){
         return (
@@ -102,9 +113,9 @@ function CarRental() {
                         </div>
                         <div className="col-9">
                             <h6>Tìm thấy {list.length} loại xe</h6>
-                            {list.map(items => (
+                            {list.length ? list.map(items => (
                                 items ? <Car key={items.idVehicle} car={items} /> : <p>Không tìm thấy xe</p>
-                            ))}
+                            )): isLoading ? loadingSkeleton : <Result status="403"/>}
                         </div>
                     </div>
                 </div>
