@@ -4,6 +4,9 @@ import axios from 'axios'
 import { API_URL } from '../../util/util';
 import '../../css/carErea.css'
 
+    const header = {
+        'Authorization' : 'Bearer ' + localStorage.getItem("partner-token")
+    }
     const { Option } = Select
     const layout = {
         labelCol: { span: 8 },
@@ -22,8 +25,6 @@ import '../../css/carErea.css'
         const [districtList, setDistrictList] = useState([])
         const [carList,setCarList] = useState([])
         const [cardetail,setCardetail] = useState('')
-        const [salerList,setSalerList] = useState([])
-        const [saler,setSaler] = useState('')
         
         useEffect(()=>{
             try {
@@ -34,9 +35,7 @@ import '../../css/carErea.css'
                 axios.get(API_URL+"district")
                     .then(res=>setDistrictList(res.data.result))
                 axios.get(API_URL+"car")
-                    .then(res=>setCarList(res.data.result)) 
-                axios.get(API_URL+"car/saler")  
-                    .then(res=>setSalerList(res.data.result))  
+                    .then(res=>setCarList(res.data.result))  
             } catch (error) {
                 console.log(error)
             }
