@@ -1,16 +1,10 @@
 const initialState ={
-    isLogin: false,
-    token: localStorage.getItem("partner-token")
+    partner: {}
 }
 const partnerReducer = (state = initialState, action ) =>{
     switch (action.type){
-        case 'LOGIN_PARTNER' :{
-            const login = true
-            if(state.token)
-            return {...state, isLogin : login}
-            else
-            return {...state, isLogin : !login}
-
+        case 'SET_PARTNER_INFOR' :{
+            return {...state, partner: action.payload}
         }
         default:
             return state

@@ -10,9 +10,32 @@ import {
   CarOutlined,
 } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
+import { API_URL } from '../../util/util';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { setPartnerInfor } from '../../action/partner';
+
 const { SubMenu } = Menu;
 
 const Dashboard = ({collapse}) =>{
+  const dispatch = useDispatch()
+  const header = {
+    'Authorization' : 'Bearer ' + localStorage.getItem("partner-token")
+}
+  useEffect(()=>{
+    try {
+        axios.get(API_URL + "user/token", {
+            headers: header
+        })
+        .then(res=>{
+            const action = setPartnerInfor(res.data.result)
+            dispatch(action)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+},[])
     return(
         <Menu
           defaultSelectedKeys={'1'}
