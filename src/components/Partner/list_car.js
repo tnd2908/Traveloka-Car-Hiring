@@ -56,19 +56,19 @@ const ListCar = () => {
             console.log(error)
         }
     }
-    const header = {
-        'Authorization': 'Bearer ' + localStorage.getItem("partner-token")
-    }
+    const token = localStorage.getItem("partner-token")
     useEffect(() => {
         try {
-            axios.get(API_URL + "user/token", {
+            const header = {'Authorization': token}
+            axios.get("https://oka1kh.azurewebsites.net/api/profiles", {
                 headers: header
             })
                 .then(res => {
-                    const action = setPartnerInfor(res.data.result)
+                    const action = setPartnerInfor(res.data.data.rolePartner[0])
                     dispatch(action)
-                    axios.get(API_URL + "car/saler?id=" + res.data.result.id)
+                    axios.get(API_URL + "car/saler?id=" + res.data.data.rolePartner[0].partnerId)
                         .then(response => {
+                            console.log(response.data)
                             const action = setList(response.data.result, response.data.result)
                             dispatch(action)
                         })
@@ -81,6 +81,7 @@ const ListCar = () => {
     const onSearch = (value) => {
         const action = searchCar(value)
         dispatch(action)
+        setRender(render+1)
     }
     const sortUp = () => {
         const action = getListCarFromLowPrice(list)

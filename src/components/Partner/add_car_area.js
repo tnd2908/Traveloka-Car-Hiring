@@ -25,18 +25,18 @@ const AddCarToDistrict = () => {
     const [districtList, setDistrictList] = useState([])
     const listCar = useSelector(state => state.car.listCar)
     const dispatch = useDispatch()
-    const header = {
-        'Authorization': 'Bearer ' + localStorage.getItem("partner-token")
-    }
+    const token = localStorage.getItem("partner-token")
     const getListCar = () => {
         try {
-            axios.get(API_URL + "user/token", {
+            const header = {'Authorization': token}
+            axios.get("https://oka1kh.azurewebsites.net/api/profiles", {
                 headers: header
             })
                 .then(res => {
-                    const action = setPartnerInfor(res.data.result)
+                    const action = setPartnerInfor(res.data.data.rolePartner[0])
                     dispatch(action)
-                    axios.get(API_URL + "car/saler?id=" + res.data.result.id)
+                    console.log(res.data.data.rolePartner[0])
+                    axios.get(API_URL + "car/saler?id=" + res.data.data.rolePartner[0].partnerId)
                         .then(response => {
                             const action = setList(response.data.result, response.data.result)
                             dispatch(action)
@@ -58,7 +58,7 @@ const AddCarToDistrict = () => {
         } catch (error) {
             console.log(error)
         }
-    }, [])
+    },[])
     const handleAddCar = (value) => {
         try {
             const { idCar, idDistrict } = value

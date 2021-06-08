@@ -35,7 +35,7 @@ const Admin = ({ com }) => {
                                 <div className="col-3">
                                     <div className="admin-infor">
                                         <Dropdown overlay={<Menu/>} placement="bottomRight" arrow>
-                                        <p className="user-icon"><i class="fad fa-user-circle"></i>Xin chào {partner.fullname} </p>
+                                        <p className="user-icon"><i class="fad fa-user-circle"></i>Xin chào </p>
                                         </Dropdown>
                                     </div>
                                 </div>
