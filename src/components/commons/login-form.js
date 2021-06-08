@@ -18,36 +18,23 @@ const LogInForm = () =>{
       const onLogin = (value) =>{
             try {
                   setSpin(true)
-                  axios.post(API_URL + 'user/login', value)
+                  axios.post('https://oka1kh.azurewebsites.net/api/user/login', value)
                       .then(res=>{
                           console.log(res.data)
                           setSpin(false)
-                          if(res.data.status === "SUCCESS"){
-                              const header = {'Authorization': 'Bearer ' + res.data.token}
-                              axios.get(API_URL + 'user/token', {
-                                  headers: header
-                              })
-                              .then(response=>{
-                                  console.log(response.data)
-                                  Modal.success({
-                                      title: 'Success',
-                                      content: (
-                                          <div>
-                                              <p>Đăng nhập thành công</p>
-                                          </div>
-                                      ),
-                                      onOk(){
-                                          if(response.data.result.role === 'saler'){
-                                              localStorage.setItem("partner-token", res.data.token);
-                                              window.location = "/partner"
-                                          }
-                                          else if (response.data.result.role === 'customer'){
-                                              localStorage.setItem("user-token", res.data.token)
-                                              window.location = "/"
-                                          }
-                                      }
-                                  })
-                              })
+                          if(res.data.status === "SUCCES"){
+                            Modal.success({
+                                title: 'Success',
+                                content: (
+                                    <div>
+                                        <p>Đăng nhập thành công</p>
+                                    </div>
+                                ),
+                                onOk(){
+                                    localStorage.setItem("user-token", res.data.data.token)
+                                    window.location = "/"
+                                }
+                            })
                           }
                           else{
                               Modal.error({
@@ -77,7 +64,7 @@ const LogInForm = () =>{
         >
               <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
               <Form.Item
-                    name="gmail"
+                    name="email"
                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
                     label="Email"
                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ email' }]}
@@ -85,7 +72,7 @@ const LogInForm = () =>{
                     <Input name="email" size="large" />
               </Form.Item>
               <Form.Item
-                    name="password"
+                    name="pass"
                     style={{fontWeight:'bold', color:'grey'}}
                     rules={[{ required: true, message: 'Vui lòng nhập password' }]}
                     label="Password"

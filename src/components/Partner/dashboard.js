@@ -19,16 +19,15 @@ const { SubMenu } = Menu;
 
 const Dashboard = ({collapse}) =>{
   const dispatch = useDispatch()
-  const header = {
-    'Authorization' : 'Bearer ' + localStorage.getItem("partner-token")
-}
+  const token = localStorage.getItem("partner-token")
   useEffect(()=>{
     try {
-        axios.get(API_URL + "user/token", {
-            headers: header
-        })
+      const header = {'Authorization': token}
+      axios.get("https://oka1kh.azurewebsites.net/api/profiles", {
+          headers: header
+      })
         .then(res=>{
-            const action = setPartnerInfor(res.data.result)
+            const action = setPartnerInfor(res.data.data.rolePartner[0])
             dispatch(action)
         })
     } catch (error) {

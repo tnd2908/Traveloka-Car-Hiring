@@ -129,18 +129,20 @@ table.table button{
     color: white;
     width: 65px;
     border-style: none;
-    border-radius: 6px;
+    border-radius: 3px;
 }
-table.table .btn-delete{
+table.table .btn-detail{
     background-color: white;
-    border: 1px solid orangered;
-    color: orangered;
+    border: 1px solid green;
+    color: green;
 }
 table.table .btn-edit{
     background-color: #52BE80;
     background-color: orange;
 }
-
+.form-detail li{
+    font-size: 16px;
+}
 .component .form{
     background-color: #eee;
 }

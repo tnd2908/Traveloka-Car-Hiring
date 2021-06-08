@@ -27,19 +27,17 @@ function Nav() {
   }
   const dispatch = useDispatch()
   const user = useSelector(state=>state.user.user)
-  const token = localStorage.getItem("user-token") || localStorage.getItem("partner-token") || ""
-  const header = {
-    'Authorization': token
-  }
+  const token = localStorage.getItem("user-token")
   useEffect(()=>{
     if(token){
       try {
-        axios.get(API_URL + "user/token",{
-          headers: header
-        })
+        const header = {'Authorization': token}
+          axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
+                headers: header
+            })
           .then(res=>{
-            console.log(res.data)
-            const action = setUserInfor(res.data.result)
+            console.log(res.data.data.auth[0])
+            const action = setUserInfor(res.data.data.auth[0])
             dispatch(action)
           })
       } catch (error) {
@@ -74,7 +72,7 @@ function Nav() {
                     trigger="click"  
                     overlay={<UserButton/>}
                     placement="bottomRight" arrow>
-                    <Link id="login">Xin chào <span style={{textTransform:'uppercase', fontWeight:'bold', color:'blue'}}>{user.fullname}</span></Link>
+                    <Link id="login">Xin chào <span style={{textTransform:'uppercase', fontWeight:'bold', color:'blue'}}> {user.fristName} </span></Link>
                  </Dropdown>
               </div>}
             </div>

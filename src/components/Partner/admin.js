@@ -25,12 +25,12 @@ const Admin = ({com}) =>{
                                     <button className="btn" onClick={()=>setCollapse(!collapse)}><i class="fal fa-bars"></i></button>
                                     <h4>Admin</h4>
                                 </div>
-                            </div>
-                            <div className="col-3">
-                                <div className="admin-infor">
-                                    <Dropdown overlay={menu} placement="bottomRight" arrow>
-                                        <p className="user-icon"><i class="fad fa-user-circle"></i></p>
-                                    </Dropdown>
+                                <div className="col-3">
+                                    <div className="admin-infor">
+                                        <Dropdown overlay={<Menu/>} placement="bottomRight" arrow>
+                                        <p className="user-icon"><i class="fad fa-user-circle"></i>Xin chào </p>
+                                        </Dropdown>
+                                    </div>
                                 </div>
                             </div>
                         </div>
