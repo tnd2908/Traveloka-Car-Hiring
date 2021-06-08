@@ -50,7 +50,7 @@ function CarRental() {
     const getListCar = () => {
         try {
             if(param.get("district")){
-                axios.get(API_URL+`car/availableCar?idDistrict=${param.get("district")}`)
+                axios.get(API_URL+`car/availableCar?code=${param.get("district")}`)
                 .then(response => {
                     const action = setList(response.data.result, response.data.result)
                     dispatch(action)
@@ -58,7 +58,7 @@ function CarRental() {
                 })
             }
             else{
-                axios.get(API_URL+`car/available/city?idCity=${param.get("city")}`)
+                axios.get(API_URL+`car/available/city?code=${param.get("city")}`)
                 .then(response => {
                     const action = setList(response.data.result, response.data.result)
                     dispatch(action)

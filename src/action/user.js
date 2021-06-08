@@ -1,4 +1,6 @@
-export const getUserInfo = (info) => ({
-    type: "GET_USER_INFO",
-    info: info
-})
+export const setUserInfor = (infor) =>{
+    return{
+        type: 'SET_USER_INFOR',
+        payload: infor
+    }
+}

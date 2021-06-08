@@ -1,6 +1,15 @@
-import {Switch} from 'antd'
+import {message, Switch} from 'antd'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { API_URL } from '../../../util/util'
 
 const PaymentPage = ({car}) =>{
+    const billId = useSelector(state => state.bill.newBill.id)
+    const submitPayment = () => {
+        axios.put(API_URL + "bill/" + billId)
+        .then(res => message.success("Đơn hàng của bạn đã được thanh toán"))
+        .catch(err => message.error("Đã có lỗi xảy ra vui lòng thử lại"))
+    }
     return(
         <div>
             <div className="input-voucher">
@@ -22,7 +31,7 @@ const PaymentPage = ({car}) =>{
             </div>
             <div className="d-flex justify-content-end end-pay pd-2">
                 <p style={{width:'80%'}}>Bằng việc nhấn thanh toán, bạn đồng ý với <b>Điều khoản, điều kiện</b> và <b>Chính sách quyền riêng tư</b></p>
-                <button>Thanh toán tại cửa hàng</button>
+                <button onClick={submitPayment}>Thanh toán tại cửa hàng</button>
             </div>
         </div>
     )

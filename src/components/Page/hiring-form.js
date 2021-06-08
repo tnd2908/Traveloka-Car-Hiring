@@ -23,7 +23,10 @@ const HiringForm = () => {
     const [cityList, setCityList] = useState([])
     const [countryId, setCountryId] = useState('');
     const [cityId,setCityId] = useState('');
-    const [districtId, setDistrictId] = useState('')
+    const [districtId, setDistrictId] = useState('');
+    const [countryCode, setCountryCode] = useState("");
+    const [cityCode, setCityCode] = useState("");
+    const [districtCode, setDistrictCode] = useState("");
 
     const onPlaceChange = (value) =>{
         console.log(value)
@@ -35,7 +38,8 @@ const HiringForm = () => {
         console.log(dateString);
         setDateEnd(dateString)
     }
-    const submitForm = async (value) =>{ 
+
+    const submitForm = async (value) => { 
         const startTime = {
             startYear: new Date(dateStart).getFullYear(),
             startMonth: new Date(dateStart).getMonth() + 1,
@@ -60,11 +64,11 @@ const HiringForm = () => {
             ) {
             if(district) {
                 await localStorage.setItem("rentalInfo",JSON.stringify(rentalInfo))
-                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryId}&&city=${cityId}&&district=${districtId}`
+                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryCode}&&city=${cityCode}&&district=${districtCode}`
             }
             else{
                 await localStorage.setItem("rentalInfo",JSON.stringify(rentalInfo))
-                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryId}&&city=${cityId}`
+                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryCode}&&city=${cityCode}`
             }
         }        
         else {
@@ -72,19 +76,24 @@ const HiringForm = () => {
         }
     }
     const onChangeCountry = (e) => {
+        console.log(e);
         setCountry(e[0])
         setCountryId(e[1])
+        setCountryCode(e[2])
     }
 
     const onChangeCity = (e) => {
         setCity(e[0]);
         setCityId(e[1]);
+        setCityCode(e[2])
     }
 
     const onChangeDistrict = (e) => {
         setDistrict(e[0])
         setDistrictId(e[1])
+        setDistrictCode(e[2])
     }
+
     useEffect(()=>{
         try {
             axios.get(API_URL+"country")
@@ -129,7 +138,7 @@ const HiringForm = () => {
                                         onChange={e=> onChangeCountry(e)}
                                         placeholder="Chọn khu vực">
                                         {countryList.map(country=>(
-                                            <Option key={country.id} value={[country.name,country.id]}>  
+                                            <Option key={country.id} value={[country.name,country.id,country.code]}>  
                                                 {country.name} 
                                             </Option>
                                         ))}
@@ -149,7 +158,7 @@ const HiringForm = () => {
                                         placeholder="Chọn thành phố">
                                         {cityList.map(city=>{
                                             if(countryId === city.idCountry){
-                                                return(<Option key={city.id} value={[city.name,city.id]}> {city.name} </Option>)
+                                                return(<Option key={city.id} value={[city.name,city.id,city.code]}> {city.name} </Option>)
                                             }
                                         })}
                                     </Select>
@@ -168,7 +177,7 @@ const HiringForm = () => {
                                         placeholder="Chọn quận trong thành phố">
                                         {districtList.map(dis=>{
                                             if(cityId === dis.idCity){
-                                                return(<Option key={dis.id} value={[dis.name,dis.id]}> 
+                                                return(<Option key={dis.id} value={[dis.name,dis.id,dis.code]}> 
                                                     {dis.name} 
                                                 </Option>)
                                             }

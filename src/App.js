@@ -19,49 +19,62 @@ import PaymentPage from './components/Page/payment/payment-cash'
 import CreditCard from './components/Page/payment/credit_card'
 import Rule from './components/Page/payment/payment_rule'
 import { loadStripe } from '@stripe/stripe-js';
+import LoginPartner from './components/commons/login-partner';
+import AddCarToDistrict from './components/Partner/add_car_area';
+
+
 function App() {
       const stripePromise = loadStripe("pk_test_51IVICLDPcgh4yPrvBWLYr3on18d1mqZxFbT6JO3XstNVbQr23QXK1JRxrmYpN4T5dz8ygdcBEnLZRCZipNUMGWi300j8wX9ChL")
       dotenv.config();
       return (
             <Router>
                   <Switch>
-                        <Route exact path="/admin">
+                        <Route exact path="/login-partner">
+                              <LoginPartner/>
+                        </Route>
+                        <Route exact path="/partner">
                               <Admin />
                         </Route>
-                        <Route exact path="/admin/vehicles" >
+                        <Route exact path="/partner/vehicles" >
                               <Admin com={<ListCar />} />
                         </Route>
-                        <Route exact path="/admin/add-vehicles">
+                        <Route exact path="/partner/add-vehicles">
                               <Admin com={<AddCar />} />
                         </Route>
-                        <div>
+                        <Route exact path="/partner/add-car-area">
+                              <Admin com={<AddCarToDistrict />} />
+                        </Route>
+                        <Route exact path="/">
                               <Nav />
-                              <Route exact path="/">
-                                    <CarHomePage />
-                              </Route>
-                              <Route exact path="/vehicles" >
-                                    <CarRental />
-                              </Route>
-                              <Route exact path="/detail/:id">
-                                    <CarDetail />
-                              </Route>
-                              <Route exact path="/vehicles/:idVehicle/input">
-                                    <Reservation/> 
-                              </Route>
-                              <Route exact path="/vehicles/:idVehicle/payment">
-                                    <Payment children={<Rule/>}/> 
-                              </Route>
-                              <Route exact path="/vehicles/:idVehicle/payment/credit">
-                                    <Payment children={
-                                          <Elements stripe={stripePromise}>
-                                                <CreditCard/>
-                                          </Elements>
-                                    }/> 
-                              </Route>
-                              <Route exact path="/cart">
-                                    <Payment className="mt-5"/>
-                              </Route>
-                        </div>
+                              <CarHomePage />
+                        </Route>
+                        <Route exact path="/vehicles" >
+                              <Nav />
+                              <CarRental />
+                        </Route>
+                        <Route exact path="/detail/:id">
+                              <Nav />
+                              <CarDetail />
+                        </Route>
+                        <Route exact path="/vehicles/:idVehicle/input">
+                              <Nav />
+                              <Reservation />
+                        </Route>
+                        
+                        <Route exact path="/vehicles/:idVehicle/payment">
+                              <Nav />
+                              <Payment children={<Rule/>}/>
+                        </Route>
+                        <Route path="/vehicles/:idVehicle/payment/credit">
+                              <Nav />
+                              <Elements stripe={stripePromise}>
+                                    <Payment children={<CreditCard/>}/>
+                              </Elements>
+                        </Route>
+                        <Route exact path="/cart">
+                              <Nav />
+                              <Payment className="mt-5" />
+                        </Route>
                   </Switch>
             </Router>
       );

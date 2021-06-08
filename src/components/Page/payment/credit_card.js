@@ -2,7 +2,10 @@ import { Button, Card, Input, Spin } from "antd"
 import {Elements,CardElement,useStripe,useElements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { Fragment } from "react";
+import StripeCheckout from "react-stripe-checkout"
+
 import {Form} from "antd";
+import { useSelector } from "react-redux";
 
 const paymentIcons = [
     {
@@ -30,10 +33,18 @@ const paymentIcons = [
 const CreditCard = () => {
     const stripe = useStripe();
     const elements = useElements();
-
+    const userInfo = useSelector(state => state.user);
+    const billAddress = useSelector(state => state.bill.newBill);
+    console.log(userInfo);
     const submitPayment = async (e) => {
         console.log(123)
-        
+        const billingDetail = {
+            name: userInfo.name,
+            phone: userInfo.phoneNum,
+            address: billAddress.address,
+            email: userInfo.gmail
+        }
+        console.log(billingDetail);
         if (!stripe || !elements) {
             // Stripe.js has not loaded yet. Make sure to disable
             // form submission until Stripe.js has loaded.
@@ -49,6 +60,7 @@ const CreditCard = () => {
           const {error, paymentMethod} = await stripe.createPaymentMethod({
             type: 'card',
             card: cardElement,
+            billing_details: billingDetail
           });
       
           if (error) {
@@ -86,6 +98,7 @@ const CreditCard = () => {
             }
         }
     };
+
     return (
         <Fragment>
             <Card style={{height:'auto'}} title="Payment detail" description="testing">

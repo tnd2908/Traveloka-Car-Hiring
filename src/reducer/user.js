@@ -1,19 +1,18 @@
-const initialState = {
-    userInfo: {},
-    isPartner: false,
-    isAdmin: false,
-    isCustomer: false 
+const initialState ={
+    name: '',
+    id: '',
+    phoneNum: '',
+    gmail: '',
+    user: {}
 }
-
-const userReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case "GET_USER_INFO": {
-            return {...state, userInfo: action.info};
+const userReducer = (state = initialState, action ) =>{
+    switch (action.type){
+        case 'SET_USER_INFOR' :{
+            const infor = action.payload
+            return{...state, name: infor.fullname, id: infor.id, phoneNum: infor.phoneNum, gmail: infor.gmail, user: infor}
         }
-        default: {
-            return {...state};
-        }
+        default:
+            return state
     }
 }
-
-export default userReducer;
+export default userReducer

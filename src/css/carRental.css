@@ -126,9 +126,9 @@
     border: 1px solid #eee;
     box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.06);
     border-radius: 6px;
-    animation: appear 1s;
+    animation: Appear 1s;
 }
-@keyframes appear{
+@keyframes Appear{
     from{
         opacity: 0;
     }
@@ -276,4 +276,7 @@
 }
 .rent-infor .form-header{
     display: none;
+}
+.login-partner .banner{
+    clip-path: ellipse(60% 70% at 50% 30%);
 }

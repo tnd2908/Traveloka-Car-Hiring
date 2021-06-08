@@ -5,75 +5,48 @@ import {
 import { Button, Dropdown, Menu } from 'antd'
 import LogInForm from "./login-form";
 import axios from "axios";
-import {getUserInfo} from "../../action/user"
 import { API_URL } from "../../util/util";
-import { useDispatch, useSelector } from "react-redux";
-import { MacCommandOutlined, UserOutlined, LogoutOutlined, DollarOutlined } from '@ant-design/icons';
-
+import {useDispatch, useSelector} from 'react-redux'
+import { setUserInfor } from "../../action/user";
+const logout = () =>{
+  localStorage.clear()
+  window.location="/"
+}
+const UserButton = () =>{
+  return(
+    <div className="bg-white d-flex flex-column user-form">
+        <Link className="text-dark" to="/"><i class="fal fa-user"></i>Thông tin cá nhân</Link>
+        <Link className="text-dark" to="/" onClick={()=>logout()}><i class="fal fa-sign-out"></i>Đăng xuất</Link>
+    </div>
+  )
+}
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
-  const userInfo = useSelector(state => state.user.userInfo);
-  const token = localStorage.getItem("userToken");
-  const dispatch = useDispatch();
-  const logout = (
-    <Button icon={<LogoutOutlined />} onClick={() => {
-      localStorage.removeItem("userToken");
-      dispatch(getUserInfo({}))
-    }}>Đăng xuất</Button>
-  )
-  const menu = {
-    customer: (
-        <Menu>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            <Link>Thông tin cá nhân</Link>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<DollarOutlined />}>
-            <Link>Lịch sử đơn hàng</Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            {logout}
-        </Menu.Item>
-        </Menu>
-    ),
-    partner: (
-      <Menu>
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          <Link>Thông tin cá nhân</Link>
-        </Menu.Item>
-        <Menu.Item key="2" icon={<DollarOutlined />}>
-          <Link>Trang saler</Link>
-        </Menu.Item>
-        <Menu.Item key="3">
-          {logout}
-        </Menu.Item>
-      </Menu>
-    ),
-    admin: (
-      <Menu>
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          <Link>Thông tin cá nhân</Link>
-        </Menu.Item>
-        <Menu.Item key="2" icon={<DollarOutlined />}>
-          <Link>Trang admin</Link>
-        </Menu.Item>
-        <Menu.Item key="3">
-          {logout}
-        </Menu.Item>
-      </Menu>
-    )
-  }
-  useEffect(() => {
-    axios.get(API_URL + "user/token",{
-      headers: {
-        "Authorization" : "Bearer " + token
-      }
-    })
-    .then(res => dispatch(getUserInfo(res.data.result)))
-  },[])
- 
   const onVisibleChange = () =>{
-    setFormVisible(!formVisible)
+      setFormVisible(!formVisible)
   }
+  const dispatch = useDispatch()
+  const user = useSelector(state=>state.user.user)
+  const token = localStorage.getItem("user-token") || localStorage.getItem("partner-token") || ""
+  const header = {
+    'Authorization': token
+  }
+  useEffect(()=>{
+    if(token){
+      try {
+        axios.get(API_URL + "user/token",{
+          headers: header
+        })
+          .then(res=>{
+            console.log(res.data)
+            const action = setUserInfor(res.data.result)
+            dispatch(action)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },[token])
   return (
     <Fragment>
       <div className="container-fluid header" style={{ padding: '0' }}>
@@ -85,39 +58,25 @@ function Nav() {
           <div className="col-9">
             <div className="nav-mid">
               <Link><i class="fas fa-percent " style={{ color: 'tomato' }}></i>Khuyến mãi</Link>
-              <Link to="/admin"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
+              <Link to="/partner"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
               <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
-              {
-                token && userInfo && userInfo.role === "customer" && <div className="user">
-                  <Dropdown.Button overlay={menu.customer} placement="bottomCenter" icon={<UserOutlined />}>
-                    Xin chào {userInfo.fullname} 
-                  </Dropdown.Button>
-                </div> 
-              }
-              {
-                token && userInfo && userInfo.role === "saler" && <div className="user saler">
-                  <Dropdown.Button overlay={menu.partner} placement="bottomCenter" icon={<UserOutlined />}>
-                    Xin chào {userInfo.fullname} 
-                  </Dropdown.Button>
-                </div> 
-              }
-              {
-                token && userInfo && userInfo.role === "admin" && <div className="user admin">
-                  <Dropdown.Button overlay={menu.admin} placement="bottomCenter" icon={<UserOutlined />}>
-                    Xin chào {userInfo.fullname} 
-                  </Dropdown.Button>
-                </div> 
-              }
-              {
-                !token && <div className="user">
-                  <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
-                    <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
-                  </Dropdown>
-                  <Link id="signup">Đăng ký</Link>
-                </div>
-              }
-              
+              {!token?<div className="user">
+                <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
+                  <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
+                </Dropdown>
+                <Link id="signup">Đăng ký</Link>
+              </div>
+               :<div className="user">
+                 <Dropdown 
+                    visible={formVisible} 
+                    onVisibleChange={onVisibleChange} 
+                    trigger="click"  
+                    overlay={<UserButton/>}
+                    placement="bottomRight" arrow>
+                    <Link id="login">Xin chào <span style={{textTransform:'uppercase', fontWeight:'bold', color:'blue'}}>{user.fullname}</span></Link>
+                 </Dropdown>
+              </div>}
             </div>
           </div>
         </div>

@@ -2,15 +2,14 @@ import {combineReducers} from 'redux'
 import carReducer from './car'
 import partnerReducer from './partner'
 import scheduleReducer from './schedule';
-import billReducer from "./bill";
-import userReducer from "./user";
-
+import userReducer from './user';
+import billReducer from "./bill"
 const rootReducer = combineReducers({
     car: carReducer,
     partner: partnerReducer,
     schedule: scheduleReducer,
-    bill: billReducer,
-    user: userReducer
+    user: userReducer,
+    bill: billReducer
 })
 
 export default rootReducer;
