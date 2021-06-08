@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
+import { API_URL } from '../../util/util'
 
 const CarDetail = () => {
     let { id } = useParams();
@@ -10,12 +11,14 @@ const CarDetail = () => {
 
     useEffect(() => {
         fetchDetail();
+        window.scrollTo(0,0)
     }, [])
     const fetchDetail = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/detail/${id}`)
+            axios.get(API_URL+"car/detail/" + id)
                 .then(response => {
-                    setCar(response.data.data)
+                    console.log(response.data)
+                    setCar(response.data.result)
                     window.scrollTo(0,0)
                 })
         } catch (error) {
@@ -29,7 +32,7 @@ const CarDetail = () => {
                     <div className="col-9">
                         <div className="car-detail container">
                             <div className="car row d-flex">
-                                <img className="col-xs-12 col-lg-6" alt=".." src={car.image} />
+                                <img className="col-xs-12 col-lg-6" alt=".." src={API_URL+"images/"+car.avatar} />
                                 <div className="info col-xs-12 col-lg-6">
                                     <h4>Tên xe: {car.name} </h4>
                                     <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
@@ -76,7 +79,7 @@ const CarDetail = () => {
                         <h4 style={{ marginTop: '20px' }}>Chi tiết giá</h4>
                         <div className="pursuit">
                             <p>Bạn thanh toán</p>
-                            <h6>{new Intl.NumberFormat().format(car.price)} VND</h6>
+                            <h6>{new Intl.NumberFormat().format(car.self_drive_price)} VND</h6>
                         </div>
                         <div className="next-page">
                             <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
@@ -86,7 +89,7 @@ const CarDetail = () => {
                         <div className="rental-info">
                             <h5>Tóm tắt xe thuê</h5>
                             <div className="d-flex mb-2">
-                                <img alt=".." src={car.image} />
+                                <img alt=".." src={API_URL+"images/"+car.avatar} />
                                 <div className="abc">
                                     <h6 style={{ margin: '0' }}>{car.name}</h6>
                                     <p className="badge bg-warning">Số sàn</p>
@@ -101,11 +104,11 @@ const CarDetail = () => {
                         </div>
                         <div className="payment">
                             <h5>Tổng giá tiền</h5>
-                            <h6>{new Intl.NumberFormat().format(car.price)}</h6>
+                            <h6>{new Intl.NumberFormat().format(car.self_drive_price)}</h6>
                             <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
                             <p>Đã bao gồm thuế, phí</p>
-                            <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.price)} VND</p>
-                            <p>Bạn thanh toán {new Intl.NumberFormat().format(car.price)} VND</p>
+                            <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
+                            <p>Bạn thanh toán {new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
                         </div>
                     </div>
                 </div>

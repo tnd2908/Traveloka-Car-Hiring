@@ -90,7 +90,7 @@ const AddCarToDistrict = () => {
         }
     }
     return (
-        <div className="former container component">
+        <div className=" container component">
             <Form
                 className="container"
                 name="basic"
