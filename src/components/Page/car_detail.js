@@ -61,12 +61,11 @@ const CarDetail = () => {
     const onChange = (info) => {
         setNewInfo({...newInfo,[info.target.name]:info.target.value});
     }
-
     return (
         <div className="cover">
             <div className="container">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-8">
                         <div className="car-detail container">
                             <div className="car row d-flex">
                                 <img className="col-xs-12 col-lg-6" alt=".." src={API_URL + "images/" +car.avatar || ""} />
@@ -75,7 +74,7 @@ const CarDetail = () => {
                                     <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
                                     <div className="iconic">
                                         <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/07/04/1562235110991-221f181276cd7208e907c33bb8554fe5.png?tr=h-24,q-75,w-24'} /><p>Tự lái</p>
-                                        <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p>Số sàn</p>
+                                        <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p> {car.typeCar} </p>
                                         <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p>Năm 2015 trở lên</p>
                                     </div>
                                 </div>
@@ -114,16 +113,17 @@ const CarDetail = () => {
                             </div>
                         </div> 
                     </div>
-                    <div className="col-3">
+                    <div className="col-4 bg-white">
                     <div className="rental-info">
                         <h5>Tóm tắt xe thuê</h5>
-                        <div className="mb-2">
-                            <img alt=".." src={car.image} />
+                        <div className="mb-2 d-flex">
+                            <img alt=".." src={API_URL + "images/" + car.avatar} />
                             <div className="abc">
                                 <h6 style={{ margin: '0' }}>{car.name}</h6>
-                                <p className="badge bg-warning">Số sàn</p>
+                                <p className="badge bg-warning"> {car.typeCar} </p>
                             </div>
-                            <div className="content">
+                        </div>
+                        <div className="content">
                                 <ul style={{paddingLeft:"0"}}>
                                     <li>
                                         {
@@ -148,11 +148,9 @@ const CarDetail = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
                         <Form {...layout}>
                             <div className="user-info mt-3">
                                 <h5>Thông tin liên hệ</h5>
-                                
                                     <Form.Item label="Họ và tên">
                                         <Input value={userInfo.name}/>
                                     </Form.Item>
@@ -160,7 +158,6 @@ const CarDetail = () => {
                                     <Form.Item label="Số điện thoại">
                                         <Input value={userInfo.phoneNum}/>
                                     </Form.Item>
-            
                                     <Form.Item label="Email">
                                         <Input value={userInfo.gmail}/>
                                     </Form.Item>
@@ -168,18 +165,16 @@ const CarDetail = () => {
                                     <Form.Item label="Địa chỉ nhận xe">
                                         <Input name="address" onChange={onChange} value={userInfo.address}/>
                                     </Form.Item>
-                                    <Form.Item className="row" label="Mã khuyến mãi">
-                                        <Input.Password className="col" name="vouncher"/>
+                                    <Form.Item label="Mã khuyến mãi">
+                                        <Input.Password  name="vouncher"/>
                                         <button className="btn btn-success col mt-4">Áp dụng</button>
                                     </Form.Item>
-                            
                             </div>
                             <div className="payment ">
                                 <h5>Tổng giá tiền</h5>
                                     <Form.Item>
-                                        <h6 name="price">{new Intl.NumberFormat().format(car.self_drive_price)}</h6>
+                                        <h4 className="text-danger" name="price">{new Intl.NumberFormat().format(car.self_drive_price)} VND</h4>
                                     </Form.Item>
-                               
                                 <Link to={`/vehicles/${id}/payment`}><button onClick={insertBill}>Tiếp tục</button></Link>
                                 <p>Đã bao gồm thuế, phí</p>
                                 <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
@@ -192,7 +187,7 @@ const CarDetail = () => {
             <h4 style={{ marginTop: '20px' }}>Chi tiết giá</h4>
             <div className="pursuit">
                 <p>Bạn thanh toán</p>
-                <h6>{car.self_drive_price} VND</h6>
+                <h6>{new Intl.NumberFormat().format(car.self_drive_price)} VND</h6>
             </div>
             <div className="next-page">
                 <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>

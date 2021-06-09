@@ -37,7 +37,7 @@ const Dashboard = ({collapse}) =>{
     return(
         <Menu
           defaultSelectedKeys={'1'}
-          defaultOpenKeys={'car'}
+          defaultOpenKeys={['car', 'sub2']}
           mode="inline"
           theme="dark"
           inlineCollapsed = {collapse}
@@ -56,8 +56,7 @@ const Dashboard = ({collapse}) =>{
             <Menu.Item key="7" icon={<AppstoreAddOutlined/>}><Link to="/partner/add-car-area"> Thêm xe vào khu vực</Link></Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<ContainerOutlined />} title="Quản lý đơn hàng">
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <Menu.Item key="11">Option 11</Menu.Item>
+            <Menu.Item key="10">Xem đơn đặt hàng</Menu.Item>
           </SubMenu>
         </Menu>
     );

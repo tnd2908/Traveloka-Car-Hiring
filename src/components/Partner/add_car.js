@@ -1,6 +1,11 @@
-import { Form, Input, InputNumber, Select, Modal } from 'antd';
+import { Form, Input, InputNumber, Select, Upload, message, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
+import {
+    PlusOutlined,
+    LoadingOutlined,
+} from '@ant-design/icons';
+import { API_URL } from '../../util/util';
 const { Option } = Select
 const layout = {
     labelCol: { span: 8 },
@@ -9,61 +14,79 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
+function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  }
 const AddCar = () => {
     const [form] = Form.useForm();
     const [category, setCategory] = useState([])
     const [brand,setBrand] = useState([])
-
-    const getCategoryData = () =>{
-        try {
-            axios.get("https://mighty-meadow-74982.herokuapp.com/cate")
-                .then(response=>{
-                    setCategory(response.data.data)
-                })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const [loading,setLoading] = useState(false)
+    const [imgUrl, setImgUrl] = useState('')
     const getManufactorData = () =>{
         try {
-            axios.get("https://mighty-meadow-74982.herokuapp.com/manufactor")
+            axios.get(API_URL+"manu")
             .then(response=>{
-                setBrand(response.data.data)
-                console.log(response.data.data)
+                setBrand(response.data.result)
             })
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(()=>{                                                         
-        getCategoryData();
         getManufactorData();
     },[])
-    
+    const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
+    const addAvatar = info => {
+        if (info.file.status === 'uploading') {
+          setLoading(true)
+          return;
+        }
+    }
     const handleCreateCar = (value) =>{
         try {
-            const {name, price, quantity, image} = value;
+            const {name, self_drive_price, quantity, Seat, typeCar} = value;
             const data = {
                 name,
-                price,
+                self_drive_price,
                 quantity,
-                image,
+                Seat,
+                typeCar,
                 idManufactor: value.idManufactor.value,
-                idCategory: value.idCategory.value
+                idSaler: 11
             }
             console.log(data)
-            axios.post('https://mighty-meadow-74982.herokuapp.com/vehicle', data)
+            axios.post(API_URL+"car", data)
                 .then(response=>{
+                    console.log(response.data)
                     Modal.success({
                         content: response.data.result,
                         onOk: ()=>{
                             const obj ={
                                 name: '',
-                                price: '',
+                                self_drive_price: '',
                                 quantity: '',
                                 idManufactor: '',
-                                idCategory: '',
-                                image: ''
+                                Seat: '',
+                                typeCar: ''
                             }
                               form.setFieldsValue(obj)
                         }
@@ -95,15 +118,8 @@ const AddCar = () => {
                             <Input  placeholder="Nhập tên xe"/>
                         </Form.Item>
                         <Form.Item
-                            label="idSaler"
-                            name="idSaler"
-                            rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
-                        >
-                            <Input  placeholder="Nhập tên xe"/>
-                        </Form.Item>
-                        <Form.Item
                             label="Giá"
-                            name="price"
+                            name="self_drive_price"
                             rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
                         >
                             <InputNumber placeholder="Nhập giá tiền"  style={{width:'40%'}} />
@@ -116,29 +132,35 @@ const AddCar = () => {
                             <InputNumber placeholder="Nhập số lượng xe"  style={{width:'40%'}}  />
                         </Form.Item>
                         <Form.Item
-                            label="Hình ảnh"
-                            name="image"
-                            rules={[{ required: true, message: 'Vui lòng nhập URL hình' }]}
-                        >
-                            <Input  placeholder="Nhập hình ảnh"/>
-                        </Form.Item>
-
-                        <Form.Item
                             label="Số chỗ ngồi"
-                            name="idCategory"
+                            name="Seat"
                             rules={[{ required: true, message: 'Vui lòng chộn số chỗ ngồi' }]}
                         >
                             <Select
                                 labelInValue
                                 placeholder="Số chỗ"
-                                name="idCategory"
+                                name="Seat"
                             >
-                                {category.map((idCategory, index)=>(
-                                    <Option key={index} value={idCategory.idCategory} >{idCategory.nameCate} chỗ</Option>
-                                ))}
+                                <Option key="4" value="4">4 chỗ</Option>
+                                <Option key="5" value="5">5 chỗ</Option>
+                                <Option key="7" value="7">7 chỗ</Option>
+                                <Option key="16" value="16">16 chỗ</Option>
                             </Select>
                         </Form.Item>
-                        
+                        <Form.Item
+                            label="Số chỗ ngồi"
+                            name="typeCar"
+                            rules={[{ required: true, message: 'Vui lòng loại xe' }]}
+                        >
+                            <Select
+                                labelInValue
+                                placeholder="Số chỗ"
+                                name="typeCar"
+                            >
+                                <Option key="Số tự động" value="4">Số tự động</Option>
+                                <Option key="Số sàn" value="5">Số sàn</Option>
+                            </Select>
+                        </Form.Item>
                         <Form.Item
                             label="Hãng sản xuất"
                             name="idManufactor"
@@ -153,6 +175,20 @@ const AddCar = () => {
                                     <Option key={index} value={id.idManufactor}> {id.name} </Option>
                                 ))}
                             </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label="Hình ảnh"
+                            name="avatar"
+                            rules={[{ required: false, message: 'Vui lòng chọn hình ảnh' }]}
+                        >
+                            <Upload
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                beforeUpload={beforeUpload}
+                                onChange={addAvatar}
+                            >
+                                {imgUrl?<img src={imgUrl} alt="avatar"/>:uploadButton}
+                            </Upload>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <button className="btn-add">Thêm xe</button>

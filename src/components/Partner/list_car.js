@@ -6,6 +6,8 @@ import { Modal, message, Form, Input, InputNumber, Skeleton, Spin, Select, Tag }
 import { useDispatch, useSelector } from 'react-redux';
 import { getListCarFromHighPrice, getListCarFromLowPrice, searchCar, setList } from '../../action/car';
 import { LoadingOutlined } from '@ant-design/icons';
+import { API_URL } from '../../util/util';
+import { setPartnerInfor } from '../../action/partner';
 const layout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 15 },
@@ -15,6 +17,7 @@ const tailLayout = {
 };
 const { Search } = Input
 const { Option } = Select
+
 const ListCar = () => {
     const [form] = Form.useForm();
     const [detailVisible, setDetailVisible] = useState(false)
