@@ -26,6 +26,7 @@ const ListCar = () => {
     const list = useSelector(state=>state.car.listCar)
     const [loading, setLoading] = useState(false)
     const [render,setRender] = useState(0)
+    const partner = useSelector(state=>state.partner.partner)
     const dispatch = useDispatch()
     const showDetailCar = (data) => {
         setDetailVisible(true)
@@ -80,7 +81,6 @@ const ListCar = () => {
     const onSearch = (value) =>{
         const action = searchCar(value)
         dispatch(action)
-        setRender(render+1)
     }
     const sortUp = ()=>{
         const action = getListCarFromLowPrice(list)
