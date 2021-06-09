@@ -1,10 +1,17 @@
 
+import { message } from "antd";
 import {
     Link
   } from "react-router-dom";
 import { API_URL } from "../../util/util";
-function Car({car}){
+function Car({car,isExpire}){
+    console.log(isExpire);
     const id = car.id;
+    const authorizeHanlde = () => {
+        if(isExpire) {
+            message.error("Bạn chưa đăng nhập");
+        }
+    }
     return(
         <div className="container-fluid bg-white car-item">
             <div className="row">
@@ -19,7 +26,7 @@ function Car({car}){
                     <div className="car-price">
                         <p id="car-text">Giá thuê theo ngày từ</p>
                         <p id="car-price">{new Intl.NumberFormat().format(car.self_drive_price)} VNĐ</p>
-                        <Link to={`/detail/${id}`}><span>Tiếp tục</span></Link>
+                        <Link onClick={() => authorizeHanlde()} to={!isExpire && `/detail/${id}`}><span>Tiếp tục</span></Link>
                     </div>
                  </div>
             </div>

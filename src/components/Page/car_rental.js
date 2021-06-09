@@ -13,12 +13,14 @@ import { setSchedule } from '../../action/schedule';
 import HiringForm from './hiring-form';
 import { Redirect, useLocation } from 'react-router-dom';
 import { API_URL } from '../../util/util';
+import { useJwt } from 'react-jwt';
 
 const { Panel } = Collapse
 
 function CarRental() {
     const dispatch = useDispatch()
-
+    const token = localStorage.getItem("user-token") || "";
+    const {decodedToken, isExpired} = useJwt(token);
     const list = useSelector(state => state.car.listCar)
     const startDate = useSelector(state=>state.schedule.startDate)
     const endDate = useSelector(state=>state.schedule.endDate)
@@ -114,7 +116,7 @@ function CarRental() {
                         <div className="col-9">
                             <h6>Tìm thấy {list.length} loại xe</h6>
                             {list.length ? list.map(items => (
-                                items ? <Car key={items.idVehicle} car={items} /> : <p>Không tìm thấy xe</p>
+                                items ? <Car isExpire={isExpired} key={items.idVehicle} car={items} /> : <p>Không tìm thấy xe</p>
                             )): isLoading ? loadingSkeleton : <Result status="403"/>}
                         </div>
                     </div>

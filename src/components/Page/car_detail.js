@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {GoogleMap} from "react-google-maps";
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import GoogleSearchBox from "./GoogleSearchBox";
+import SearchResult from './SearchPopuo'
 
 const CarDetail = () => {
     let { id } = useParams();
@@ -21,14 +22,51 @@ const CarDetail = () => {
     const [rental,setRental] = useState({});
     const rentalInfo = JSON.parse(localStorage.getItem("rentalInfo"));
     const [newInfo, setNewInfo] = useState({});
+    const [location, setLocation] = useState([]);
+    const [result, setResult] = useState([]);
     const userInfo = useSelector(state => state.user.user);
+    console.log(userInfo);
+    const [fields, setFields] = useState([
+        {
+          name: ['fullname'],
+          value: userInfo?.fristName + " " + userInfo?.lastName,
+        },
+        {
+            name: ['phone'],
+            value: userInfo?.phone,
+        },
+        {
+            name: ['email'],
+            value: userInfo?.email,
+        },
+        {
+            name: ['address'],
+            value: userInfo?.userAddress,
+        }
+    ]);
+    console.log(fields);
     const dispatch = useDispatch();
+    const [form] = Form.useForm();
     useEffect(() => {
         getRental();
         fetchDetail();
         window.scrollTo(0,0)
     }, [])
-
+    useEffect(() => {
+        if (rental) {
+            if (rental.district) {
+                console.log(1111);
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=EG8gmoroxzjtdjwe9gEikbxXAE0blI83wpKjqQtX41s`)
+                .then(res => setLocation(res.data.items[0].position))
+            }
+            else if(rental.city) {
+                console.log(2222);
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=EG8gmoroxzjtdjwe9gEikbxXAE0blI83wpKjqQtX41s`)
+                .then(res => setLocation(res.data.items[0].position))
+            }
+        }
+    },[rental])
+  
     const getRental = () => {
         setRental(rentalInfo);
     }
@@ -59,8 +97,32 @@ const CarDetail = () => {
         .then(res => dispatch(getNewBill(res.data.result)));
     }
     const onChange = (info) => {
+        console.log(info);
+        form.setFieldsValue({[info.target.name]:info.target.value})
+        console.log(form.getFieldValue())
         setNewInfo({...newInfo,[info.target.name]:info.target.value});
     }
+    const onChangeLocation = (e) => {
+        const result = {
+            address: e
+        }
+        form.setFieldsValue(result);
+        const iat = Object.values(location).toString();
+        const MAP_URL = `https://places.ls.hereapi.com/places/v1/discover/explore?at=${iat}&Accept-Language=vi-VN%2Cvi%3Bq%3D0.9%2Cfr-FR%3Bq%3D0.8%2Cfr%3Bq%3D0.7%2Cen-US%3Bq%3D0.6%2Cen%3Bq%3D0.5&app_id=Rq2W3egvN4ZOHf3n4Ba0&app_code=pIsWVmUXrtPIicRNz1hj3g`
+        axios.get(MAP_URL).then(res => {
+            const arr = []
+            res.data.results.items.map(item => {
+                if(item && item.title.toLowerCase().includes(e)) {
+                    arr.push({
+                        title: item.title,
+                        address: item.vicinity.replace("<br/>", " ,")
+                    })
+                }
+            })
+            setResult(arr);
+        })
+    }
+    console.log(form.getFieldValue())
     return (
         <div className="cover">
             <div className="container">
@@ -151,21 +213,21 @@ const CarDetail = () => {
                         <Form {...layout}>
                             <div className="user-info mt-3">
                                 <h5>Thông tin liên hệ</h5>
-                                    <Form.Item label="Họ và tên">
-                                        <Input value={userInfo.name}/>
+                                    <Form.Item  name="fullname" label="Họ và tên">
+                                        <Input name="fullname" onChange={onChange} value={`${userInfo?.fristName || ""}  ${userInfo?.lastName || ""} ` || ""}/>
                                     </Form.Item>
 
-                                    <Form.Item label="Số điện thoại">
-                                        <Input value={userInfo.phoneNum}/>
+                                    <Form.Item name="phone" label="Số điện thoại">
+                                        <Input name="phone" onChange={onChange} value={userInfo?.phoneNum || ""}/>
                                     </Form.Item>
-                                    <Form.Item label="Email">
-                                        <Input value={userInfo.gmail}/>
+                                    <Form.Item name="email" onChange={onChange} label="Email">
+                                        <Input name="email" value={userInfo?.email || ""}/>
                                     </Form.Item>
                                 
-                                    <Form.Item label="Địa chỉ nhận xe">
-                                        <Input name="address" onChange={onChange} value={userInfo.address}/>
+                                    <Form.Item name="address" label="Địa chỉ nhận xe">
+                                        <SearchResult name="address" value={userInfo.userAddress || ""} result={result} onChange={onChangeLocation}/>
                                     </Form.Item>
-                                    <Form.Item label="Mã khuyến mãi">
+                                    <Form.Item name="vouncher" label="Mã khuyến mãi">
                                         <Input.Password  name="vouncher"/>
                                         <button className="btn btn-success col mt-4">Áp dụng</button>
                                     </Form.Item>
