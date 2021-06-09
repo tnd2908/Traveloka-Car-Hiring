@@ -11,6 +11,7 @@ import {GoogleMap} from "react-google-maps";
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import GoogleSearchBox from "./GoogleSearchBox";
 import SearchResult from './SearchPopuo'
+import { setUserInfor } from '../../action/user'
 
 const CarDetail = () => {
     let { id } = useParams();
@@ -66,7 +67,25 @@ const CarDetail = () => {
             }
         }
     },[rental])
-  
+    useEffect(()=>{
+        try {
+            const header = {'Authorization': localStorage.getItem("user-token")}
+              axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
+                    headers: header
+                })
+              .then(res=>{
+                form.setFieldsValue({
+                    ...res.data.data.auth[0], 
+                    fullname: `${res.data.data.auth[0].fristName} ${res.data.data.auth[0].lastName}`,
+                    address: res.data.data.auth[0].userAddress
+                })
+                const action = setUserInfor(res.data.data.auth[0])
+                dispatch(action)
+              })
+          } catch (error) {
+            console.log(error)
+          }
+    },[])
     const getRental = () => {
         setRental(rentalInfo);
     }
@@ -210,7 +229,7 @@ const CarDetail = () => {
                                     </li>
                                 </ul>
                             </div>
-                        <Form {...layout}>
+                        <Form form={form} {...layout}>
                             <div className="user-info mt-3">
                                 <h5>Thông tin liên hệ</h5>
                                     <Form.Item  name="fullname" label="Họ và tên">
