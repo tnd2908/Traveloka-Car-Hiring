@@ -16,7 +16,7 @@ import Reservation from './components/Page/payment/car_reservation';
 import Payment from './components/Page/payment/payment';
 import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
-
+import PurchaseList from './components/Page/history';
 
 function App() {
       dotenv.config();
@@ -61,6 +61,10 @@ function App() {
                         <Route exact path="/cart">
                               <Nav />
                               <Payment className="mt-5" />
+                        </Route>
+                        <Route exact path="user/history">
+                              <Nav />
+                              <PurchaseList />
                         </Route>
                   </Switch>
             </Router>
