@@ -1,10 +1,9 @@
 import Dashboard from './dashboard'
 import { Dropdown } from 'antd';
-import { useEffect, useReducer, useState } from 'react';
+import {  useState } from 'react';
 import '../../css/admin.css'
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
-import { API_URL } from '../../util/util';
+import { useSelector } from 'react-redux';
 
 const Menu = () => {
     return (
@@ -14,23 +13,9 @@ const Menu = () => {
         </div>
     )
 }
-const header = {
-    'Authorization' : 'Bearer ' + localStorage.getItem("partner-token")
-}
 const Admin = ({ com }) => {
-    useEffect(()=>{
-        try {
-            axios.get(API_URL + "user/token", {
-                headers: header
-            })
-            .then(res=>{
-                console.log(res.data)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },[])
     const [collapse, setCollapse] = useState(false)
+    const partner = useSelector(state=>state.partner.partner)
     if (localStorage.getItem("partner-token"))
         return (
             <div className="container-fluid" style={{ backgroundColor: '#eee', padding: '0' }}>
@@ -50,7 +35,7 @@ const Admin = ({ com }) => {
                                 <div className="col-3">
                                     <div className="admin-infor">
                                         <Dropdown overlay={<Menu/>} placement="bottomRight" arrow>
-                                            <p className="user-icon"><i class="fad fa-user-circle"></i></p>
+                                        <p className="user-icon"><i class="fad fa-user-circle"></i>Xin chào {partner.fullname} </p>
                                         </Dropdown>
                                     </div>
                                 </div>
