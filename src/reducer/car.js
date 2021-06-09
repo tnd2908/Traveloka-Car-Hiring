@@ -1,6 +1,7 @@
 const initialState ={
     listCar: [],
-    defaultList: []
+    defaultList: [],
+    isLoading: false
 }
 const carReducer = (state = initialState, action)=>{
     switch (action.type){

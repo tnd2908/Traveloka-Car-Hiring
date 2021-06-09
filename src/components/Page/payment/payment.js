@@ -5,7 +5,8 @@ import RentInfor from './rent-infor';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-const Payment = () => {
+import { API_URL } from '../../../util/util';
+const Payment = (props) => {
     let { idVehicle } = useParams();
     const [car,setCar] = useState({})
 
@@ -14,9 +15,9 @@ const Payment = () => {
     }, [])
     const fetchDetail = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/detail/${idVehicle}`)
+            axios.get(API_URL + "car/detail/" + idVehicle)
                 .then(response => {
-                    setCar(response.data.data)
+                    setCar(response.data.result)
                 })
         } catch (error) {
             console.log(error)
@@ -29,9 +30,13 @@ const Payment = () => {
                     <div className="col-12">
                         <h4 id="payment-title">Thanh toán</h4>
                     </div>
-                    <div className="col-md-9 d-flex">
-                        <Dashboard />
-                        <PaymentPage car = {car}/>
+                    <div className="col-md-9 d-flex container">
+                        <Dashboard car={car} />
+                        <div className="row payment-method-cover ml-3">
+                            {props.children}
+                            <PaymentPage car={car} />
+                        </div>
+                        
                     </div>
                     <div className="col-md-3">
                         <RentInfor car = {car}/>

@@ -3,39 +3,78 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
+import { API_URL } from "../../util/util";
+import { Button, Form, Input, Tag } from 'antd'
+import {getNewBill} from "../../action/bill";
+import { useDispatch, useSelector } from 'react-redux'
+import {GoogleMap} from "react-google-maps";
+import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
+import GoogleSearchBox from "./GoogleSearchBox";
 
 const CarDetail = () => {
     let { id } = useParams();
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16,},
+    }
     const [car, setCar] = useState({})
-
+    const [rental,setRental] = useState({});
+    const rentalInfo = JSON.parse(localStorage.getItem("rentalInfo"));
+    const [newInfo, setNewInfo] = useState({});
+    const userInfo = useSelector(state => state.user);
+    const dispatch = useDispatch();
     useEffect(() => {
+        getRental();
         fetchDetail();
+        window.scrollTo(0,0)
     }, [])
+
+    const getRental = () => {
+        setRental(rentalInfo);
+    }
+
     const fetchDetail = () => {
         try {
-            axios.get(`https://mighty-meadow-74982.herokuapp.com/vehicle/detail/${id}`)
+            axios.get(API_URL + "car/detail/" + id)
                 .then(response => {
-                    setCar(response.data.data)
+                    setCar(response.data.result)
                     window.scrollTo(0,0)
                 })
         } catch (error) {
             console.log(error)
         }
     }
+
+    const insertBill = () => {
+        const carInsert = {
+            ...newInfo,
+            idUser: userInfo.id,
+            listCar: car.id,
+            idSaler: car.idSaler,
+            startDate: Object.values(rental.startTime).toString(),
+            endDate: Object.values(rental.endTime).toString(),
+            total: car.self_drive_price,
+        }
+        axios.post(API_URL + "bill", carInsert)
+        .then(res => dispatch(getNewBill(res.data.result)));
+    }
+    const onChange = (info) => {
+        setNewInfo({...newInfo,[info.target.name]:info.target.value});
+    }
     return (
         <div className="cover">
             <div className="container">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-8">
                         <div className="car-detail container">
                             <div className="car row d-flex">
-                                <img className="col-xs-12 col-lg-6" alt=".." src={car.image} />
+                                <img className="col-xs-12 col-lg-6" alt=".." src={API_URL + "images/" +car.avatar || ""} />
                                 <div className="info col-xs-12 col-lg-6">
                                     <h4>Tên xe: {car.name} </h4>
                                     <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
                                     <div className="iconic">
                                         <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/07/04/1562235110991-221f181276cd7208e907c33bb8554fe5.png?tr=h-24,q-75,w-24'} /><p>Tự lái</p>
-                                        <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p>Số sàn</p>
+                                        <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p> {car.typeCar} </p>
                                         <img alt=".." src={process.env.PUBLIC_URL + 'https://ik.imagekit.io/tvlk/image/imageResource/2019/10/18/1571396866495-94f335c88b623b7484537b663c79c3c8.png?tr=h-24,q-75,w-24'} /><p>Năm 2015 trở lên</p>
                                     </div>
                                 </div>
@@ -72,45 +111,90 @@ const CarDetail = () => {
                                     <li>Đọc và ký thỏa thuận thuê xe của nhà cung cấp, sau đó bạn có thể sử dụng dịch vụ.</li>
                                 </ol>
                             </div>
-                        </div>
-                        <h4 style={{ marginTop: '20px' }}>Chi tiết giá</h4>
-                        <div className="pursuit">
-                            <p>Bạn thanh toán</p>
-                            <h6>{new Intl.NumberFormat().format(car.price)} VND</h6>
-                        </div>
-                        <div className="next-page">
-                            <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
-                        </div>
+                        </div> 
                     </div>
-                    <div className="col-3">
-                        <div className="rental-info">
-                            <h5>Tóm tắt xe thuê</h5>
-                            <div className="d-flex mb-2">
-                                <img alt=".." src={car.image} />
-                                <div className="abc">
-                                    <h6 style={{ margin: '0' }}>{car.name}</h6>
-                                    <p className="badge bg-warning">Số sàn</p>
-                                </div>
+                    <div className="col-4 bg-white">
+                    <div className="rental-info">
+                        <h5>Tóm tắt xe thuê</h5>
+                        <div className="mb-2 d-flex">
+                            <img alt=".." src={API_URL + "images/" + car.avatar} />
+                            <div className="abc">
+                                <h6 style={{ margin: '0' }}>{car.name}</h6>
+                                <p className="badge bg-warning"> {car.typeCar} </p>
                             </div>
-                            <div className="content">
-                                <ul>
-                                    <li>Jakarta</li>
-                                    <li>T6, 07 Th05 2021 10:30 - T7, 08 Th05 2021 10:30</li>
+                        </div>
+                        <div className="content">
+                                <ul style={{paddingLeft:"0"}}>
+                                    <li>
+                                        {
+                                            rental?.country && <Tag color="gold">{rental?.country}</Tag>
+                                        }
+                                        {
+                                            rental?.city && <Tag color="gold">{rental?.city}</Tag>
+                                        }
+                                        {
+                                            rental?.district && <Tag color="gold">{rental?.district}</Tag>
+                                        }
+                                    </li>
+                                    <li className="mt-2">
+                                        {
+                                            rental?.startTime && 
+                                                <Tag color="blue">{rental.startTime.startYear} - {rental.startTime.startMonth} - {rental.startTime.startDate}</Tag>
+                                        } - {
+                                            rental?.endTime && 
+                                                <Tag color="blue">{rental.endTime.endYear} - {rental.endTime.endMonth} - {rental.endTime.endDate}</Tag>
+                                        }
+                                        
+                                    </li>
                                 </ul>
                             </div>
-                        </div>
-                        <div className="payment">
-                            <h5>Tổng giá tiền</h5>
-                            <h6>{new Intl.NumberFormat().format(car.price)}</h6>
-                            <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
-                            <p>Đã bao gồm thuế, phí</p>
-                            <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.price)} VND</p>
-                            <p>Bạn thanh toán {new Intl.NumberFormat().format(car.price)} VND</p>
-                        </div>
+                        <Form {...layout}>
+                            <div className="user-info mt-3">
+                                <h5>Thông tin liên hệ</h5>
+                                    <Form.Item label="Họ và tên">
+                                        <Input value={userInfo.name}/>
+                                    </Form.Item>
+
+                                    <Form.Item label="Số điện thoại">
+                                        <Input value={userInfo.phoneNum}/>
+                                    </Form.Item>
+                                    <Form.Item label="Email">
+                                        <Input value={userInfo.gmail}/>
+                                    </Form.Item>
+                                
+                                    <Form.Item label="Địa chỉ nhận xe">
+                                        <Input name="address" onChange={onChange} value={userInfo.address}/>
+                                    </Form.Item>
+                                    <Form.Item label="Mã khuyến mãi">
+                                        <Input.Password  name="vouncher"/>
+                                        <button className="btn btn-success col mt-4">Áp dụng</button>
+                                    </Form.Item>
+                            </div>
+                            <div className="payment ">
+                                <h5>Tổng giá tiền</h5>
+                                    <Form.Item>
+                                        <h4 className="text-danger" name="price">{new Intl.NumberFormat().format(car.self_drive_price)} VND</h4>
+                                    </Form.Item>
+                                <Link to={`/vehicles/${id}/payment`}><button onClick={insertBill}>Tiếp tục</button></Link>
+                                <p>Đã bao gồm thuế, phí</p>
+                                <p>Giá thuê cơ bản {new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
+                                <p>Bạn thanh toán {new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
+                            </div> 
+                        </Form>
                     </div>
                 </div>
+           
+            <h4 style={{ marginTop: '20px' }}>Chi tiết giá</h4>
+            <div className="pursuit">
+                <p>Bạn thanh toán</p>
+                <h6>{new Intl.NumberFormat().format(car.self_drive_price)} VND</h6>
+            </div>
+            <div className="next-page">
+                <Link to={`/vehicles/${id}/payment`}><button>Tiếp tục</button></Link>
             </div>
         </div>
+    </div>
+</div>
     );
 }
 export default CarDetail

@@ -1,11 +1,11 @@
-import { Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { Form, Input, InputNumber, Select, Upload, message, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
-import { API_URL } from '../../util/util';
 import {
     PlusOutlined,
     LoadingOutlined,
 } from '@ant-design/icons';
+import { API_URL } from '../../util/util';
 const { Option } = Select
 const layout = {
     labelCol: { span: 8 },
@@ -31,10 +31,24 @@ function beforeUpload(file) {
     return isJpgOrPng && isLt2M;
   }
 const AddCar = () => {
+    const [form] = Form.useForm();
+    const [category, setCategory] = useState([])
+    const [brand,setBrand] = useState([])
     const [loading,setLoading] = useState(false)
     const [imgUrl, setImgUrl] = useState('')
-    const [form] = Form.useForm();
-    const [brand, setBrand] = useState([])
+    const getManufactorData = () =>{
+        try {
+            axios.get(API_URL+"manu")
+            .then(response=>{
+                setBrand(response.data.result)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{                                                         
+        getManufactorData();
+    },[])
     const uploadButton = (
         <div>
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -46,59 +60,39 @@ const AddCar = () => {
           setLoading(true)
           return;
         }
-        if (info.file.status === 'done') {
-          getBase64(info.file.originFileObj, imageUrl =>{
-            setLoading(false)
-            setImgUrl(imageUrl)
-            });
-        }
-    };
-    const getManufactorData = () => {
-        try {
-            axios.get(API_URL + "manu")
-                .then(response => {
-                    setBrand(response.data.result)
-                    console.log(response.data.result)
-                })
-        } catch (error) {
-            console.log(error)
-        }
     }
-    useEffect(() => {
-        getManufactorData();
-    }, [])
-
-    const handleCreateCar = (value) => {
+    const handleCreateCar = (value) =>{
         try {
-            console.log(value)
-            // const {name, price, quantity, image} = value;
-            // const data = {
-            //     name,
-            //     price,
-            //     quantity,
-            //     image,
-            //     idManufactor: value.idManufactor.value,
-            //     idCategory: value.idCategory.value
-            // }
-            // console.log(data)
-            // axios.post('https://mighty-meadow-74982.herokuapp.com/vehicle', data)
-            //     .then(response=>{
-            //         Modal.success({
-            //             content: response.data.result,
-            //             onOk: ()=>{
-            //                 const obj ={
-            //                     name: '',
-            //                     price: '',
-            //                     quantity: '',
-            //                     idManufactor: '',
-            //                     idCategory: '',
-            //                     image: ''
-            //                 }
-            //                   form.setFieldsValue(obj)
-            //             }
-            //         })
-            //         console.log(response)
-            //     })
+            const {name, self_drive_price, quantity, Seat, typeCar} = value;
+            const data = {
+                name,
+                self_drive_price,
+                quantity,
+                Seat,
+                typeCar,
+                idManufactor: value.idManufactor.value,
+                idSaler: 11
+            }
+            console.log(data)
+            axios.post(API_URL+"car", data)
+                .then(response=>{
+                    console.log(response.data)
+                    Modal.success({
+                        content: response.data.result,
+                        onOk: ()=>{
+                            const obj ={
+                                name: '',
+                                self_drive_price: '',
+                                quantity: '',
+                                idManufactor: '',
+                                Seat: '',
+                                typeCar: ''
+                            }
+                              form.setFieldsValue(obj)
+                        }
+                    })
+                    console.log(response)
+                })
         } catch (error) {
             console.log(error)
         }
@@ -110,7 +104,7 @@ const AddCar = () => {
                     <Form
                         {...layout}
                         name="basic"
-                        style={{ backgroundColor: '#fff', boxShadow: '1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius: '7px', overflow: 'hidden', margin: 'auto', maxWidth: '700px' }}
+                        style={{backgroundColor: '#fff',boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
                         initialValues={{ remember: false }}
                         form={form}
                         onFinish={handleCreateCar}
@@ -121,21 +115,21 @@ const AddCar = () => {
                             name="name"
                             rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
                         >
-                            <Input placeholder="Nhập tên xe" />
+                            <Input  placeholder="Nhập tên xe"/>
                         </Form.Item>
                         <Form.Item
                             label="Giá"
                             name="self_drive_price"
                             rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
                         >
-                            <InputNumber placeholder="Nhập giá tiền" style={{ width: '40%' }} />
+                            <InputNumber placeholder="Nhập giá tiền"  style={{width:'40%'}} />
                         </Form.Item>
                         <Form.Item
                             label="Số lượng"
                             name="quantity"
                             rules={[{ required: true, message: 'Vui lòng nhập số lượng xe' }]}
                         >
-                            <InputNumber placeholder="Nhập số lượng xe" style={{ width: '40%' }} />
+                            <InputNumber placeholder="Nhập số lượng xe"  style={{width:'40%'}}  />
                         </Form.Item>
                         <Form.Item
                             label="Số chỗ ngồi"
@@ -143,7 +137,9 @@ const AddCar = () => {
                             rules={[{ required: true, message: 'Vui lòng chộn số chỗ ngồi' }]}
                         >
                             <Select
+                                labelInValue
                                 placeholder="Số chỗ"
+                                name="Seat"
                             >
                                 <Option key="4" value="4">4 chỗ</Option>
                                 <Option key="5" value="5">5 chỗ</Option>
@@ -152,14 +148,30 @@ const AddCar = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item
+                            label="Số chỗ ngồi"
+                            name="typeCar"
+                            rules={[{ required: true, message: 'Vui lòng loại xe' }]}
+                        >
+                            <Select
+                                labelInValue
+                                placeholder="Số chỗ"
+                                name="typeCar"
+                            >
+                                <Option key="Số tự động" value="4">Số tự động</Option>
+                                <Option key="Số sàn" value="5">Số sàn</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
                             label="Hãng sản xuất"
                             name="idManufactor"
                             rules={[{ required: true, message: 'Vui lòng chọn hãng xe' }]}
                         >
                             <Select
+                                labelInValue
                                 placeholder="Hãng sản xuất"
+                                name="idManufactor"
                             >
-                                {brand.map((id, index) => (
+                                {brand.map((id, index)=>(
                                     <Option key={index} value={id.idManufactor}> {id.name} </Option>
                                 ))}
                             </Select>
@@ -167,7 +179,7 @@ const AddCar = () => {
                         <Form.Item
                             label="Hình ảnh"
                             name="avatar"
-                            rules={[{ required: true, message: 'Vui lòng nhập URL hình' }]}
+                            rules={[{ required: false, message: 'Vui lòng chọn hình ảnh' }]}
                         >
                             <Upload
                                 listType="picture-card"
@@ -179,7 +191,7 @@ const AddCar = () => {
                             </Upload>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
-                            <button type="submit" className="btn-add">Thêm xe</button>
+                            <button className="btn-add">Thêm xe</button>
                         </Form.Item>
                     </Form>
                 </div>

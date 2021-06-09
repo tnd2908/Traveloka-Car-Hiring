@@ -1,4 +1,4 @@
-import { Form, DatePicker, Select } from 'antd';
+import { Form, DatePicker, Select, message } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -21,6 +21,12 @@ const HiringForm = () => {
     const [countryList, setCountryList] = useState([])
     const [city, setCity] = useState('')
     const [cityList, setCityList] = useState([])
+    const [countryId, setCountryId] = useState('');
+    const [cityId,setCityId] = useState('');
+    const [districtId, setDistrictId] = useState('');
+    const [countryCode, setCountryCode] = useState("");
+    const [cityCode, setCityCode] = useState("");
+    const [districtCode, setDistrictCode] = useState("");
 
     const onPlaceChange = (value) =>{
         console.log(value)
@@ -29,28 +35,78 @@ const HiringForm = () => {
         setDateStart(dateString)
     }
     const onDateEndChange = (date, dateString) => {
+        console.log(dateString);
         setDateEnd(dateString)
     }
-    const submitForm = (value) =>{
-        console.log(value)
-        if(district)
-        window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${country}&&city=${city}&&district=${district}`
-        else
-        window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${country}&&city=${city}`
+
+    const submitForm = async (value) => { 
+        const startTime = {
+            startYear: new Date(dateStart).getFullYear(),
+            startMonth: new Date(dateStart).getMonth() + 1,
+            startDate: new Date(dateStart).getDate()
+        };
+        const endTime = {
+            endYear: new Date(dateEnd).getFullYear(),
+            endMonth: new Date(dateEnd).getMonth() + 1,
+            endDate: new Date(dateEnd).getDate()
+        };
+        const rentalInfo = { 
+            startTime: startTime || "", 
+            endTime: endTime || "",
+            country: country || "",
+            city: city || "",
+            district: district || "",
+        }
+        if (
+            startTime.startYear <= endTime.endYear && 
+            startTime.startMonth <= endTime.endMonth && 
+            startTime.startDate < endTime.endDate
+            ) {
+            if(district) {
+                await localStorage.setItem("rentalInfo",JSON.stringify(rentalInfo))
+                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryCode}&&city=${cityCode}&&district=${districtCode}`
+            }
+            else{
+                await localStorage.setItem("rentalInfo",JSON.stringify(rentalInfo))
+                window.location = `/vehicles?dateStart=${dateStart}&&dateEnd=${dateEnd}&&country=${countryCode}&&city=${cityCode}`
+            }
+        }        
+        else {
+            message.error("Ngày bắt đầu không được thấp hơn hoặc bằng ngày kết thúc")
+        }
     }
-    
+    const onChangeCountry = (e) => {
+        console.log(e);
+        setCountry(e[0])
+        setCountryId(e[1])
+        setCountryCode(e[2])
+    }
+
+    const onChangeCity = (e) => {
+        setCity(e[0]);
+        setCityId(e[1]);
+        setCityCode(e[2])
+    }
+
+    const onChangeDistrict = (e) => {
+        setDistrict(e[0])
+        setDistrictId(e[1])
+        setDistrictCode(e[2])
+    }
+
     useEffect(()=>{
         try {
             axios.get(API_URL+"country")
-                .then(res=>setCountryList(res.data.result))
+                .then(res=> setCountryList(res.data.result))
             axios.get(API_URL+"district")
-                .then(res=>setDistrictList(res.data.result))
+                .then(res=> setDistrictList(res.data.result))
             axios.get(API_URL+"city")
-                .then(res=>setCityList(res.data.result))
+                .then(res=> setCityList(res.data.result))
         } catch (error) {
             console.log(error)
         }
     },[])
+
     return (
                 <Form
                     {...layout}
@@ -79,10 +135,12 @@ const HiringForm = () => {
                                 >
                                     <Select
                                         style={{ width: '100%' }}
-                                        onChange={e=>setCountry(e)}
+                                        onChange={e=> onChangeCountry(e)}
                                         placeholder="Chọn khu vực">
                                         {countryList.map(country=>(
-                                            <Option key={country.name} value={country.id}> {country.name} </Option>
+                                            <Option key={country.id} value={[country.name,country.id,country.code]}>  
+                                                {country.name} 
+                                            </Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
@@ -95,12 +153,12 @@ const HiringForm = () => {
                                 >
                                     <Select
                                         style={{ width: '100%' }}
-                                        onChange={e=>setCity(e)}
-                                        disabled={!country}
+                                        onChange={e=> onChangeCity(e)}
+                                        disabled={!countryId}
                                         placeholder="Chọn thành phố">
                                         {cityList.map(city=>{
-                                            if(country === city.idCountry){
-                                                return(<Option key={city.id} value={city.id}> {city.name} </Option>)
+                                            if(countryId === city.idCountry){
+                                                return(<Option key={city.id} value={[city.name,city.id,city.code]}> {city.name} </Option>)
                                             }
                                         })}
                                     </Select>
@@ -114,12 +172,14 @@ const HiringForm = () => {
                                 >
                                     <Select
                                         style={{ width: '100%' }}
-                                        disabled={!city}
-                                        onChange={e=>setDistrict(e)}
+                                        disabled={!cityId}
+                                        onChange={e=> onChangeDistrict(e)}
                                         placeholder="Chọn quận trong thành phố">
                                         {districtList.map(dis=>{
-                                            if(city === dis.idCity){
-                                                return(<Option key={dis.id} value={dis.id}> {dis.name} </Option>)
+                                            if(cityId === dis.idCity){
+                                                return(<Option key={dis.id} value={[dis.name,dis.id,dis.code]}> 
+                                                    {dis.name} 
+                                                </Option>)
                                             }
                                         })}
                                     </Select>
