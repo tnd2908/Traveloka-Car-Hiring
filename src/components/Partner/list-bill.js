@@ -1,4 +1,4 @@
-import { Table} from 'antd'
+import { Table, Tag} from 'antd'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -36,7 +36,14 @@ const ListBill = () =>{
             >
                 <Column title="Ngày nhận" dataIndex="startDate" key="startDate" />
                 <Column title="Ngày trả" dataIndex="endDate" key="endDate" />
-                <Column title="Trạng thái" dataIndex="status" key="endDate" />
+                <Column title="Trạng thái" key="status" 
+                    render={data=>{
+                        if(data.status === "In progress")
+                        return <Tag color="processing"> {data.status} </Tag>
+                        else
+                        return <Tag color="gold"> {data.status} </Tag>
+                    }}
+                />
                 <Column title="Tổng tiển"  key="total" 
                     render={data=>(
                         <span> {new Intl.NumberFormat().format(data.total)} VND</span>
@@ -46,7 +53,7 @@ const ListBill = () =>{
                 <Column title="Hành động" key="action" width="120px"
                     render={action => (
                         <div className="d-flex">
-                            <button className="btn-detail">Detail</button>
+                            <button className="btn-detail">Chi tiết</button>
                         </div>
                     )}
                 />

@@ -21,7 +21,7 @@ const CarDetail = () => {
     const [rental,setRental] = useState({});
     const rentalInfo = JSON.parse(localStorage.getItem("rentalInfo"));
     const [newInfo, setNewInfo] = useState({});
-    const userInfo = useSelector(state => state.user);
+    const userInfo = useSelector(state => state.user.user);
     const dispatch = useDispatch();
     useEffect(() => {
         getRental();
@@ -48,7 +48,7 @@ const CarDetail = () => {
     const insertBill = () => {
         const carInsert = {
             ...newInfo,
-            idUser: userInfo.id,
+            idUser: userInfo.userId,
             listCar: car.id,
             idSaler: car.idSaler,
             startDate: Object.values(rental.startTime).toString(),
