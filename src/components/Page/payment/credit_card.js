@@ -1,11 +1,11 @@
-import { Button, Card, Input, Spin } from "antd"
+import { Button, Card, Input, message, Spin } from "antd"
 import {Elements,CardElement,useStripe,useElements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { Fragment } from "react";
 import StripeCheckout from "react-stripe-checkout"
-
+import { getVisaPaymnet } from "../../../action/bill"
 import {Form} from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const paymentIcons = [
     {
@@ -33,18 +33,17 @@ const paymentIcons = [
 const CreditCard = () => {
     const stripe = useStripe();
     const elements = useElements();
-    const userInfo = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const userInfo = useSelector(state => state.user.user);
     const billAddress = useSelector(state => state.bill.newBill);
-    console.log(userInfo);
     const submitPayment = async (e) => {
-        console.log(123)
         const billingDetail = {
-            name: userInfo.name,
-            phone: userInfo.phoneNum,
+            name: userInfo.fristName + userInfo.lastName,
+            phone: userInfo.phone,
             address: billAddress.address,
-            email: userInfo.gmail
+            email: userInfo.email
         }
-        console.log(billingDetail);
+
         if (!stripe || !elements) {
             // Stripe.js has not loaded yet. Make sure to disable
             // form submission until Stripe.js has loaded.
@@ -65,8 +64,17 @@ const CreditCard = () => {
       
           if (error) {
             console.log('[error]', error);
+            message.error("Thẻ không hợp lệ vui lòng thử lại")
           } else {
             console.log('[PaymentMethod]', paymentMethod);
+            const visaInfo = {
+                ...billingDetail,
+                card: paymentMethod.type,
+                id: paymentMethod.id,
+                method : paymentMethod.card.brand
+            }
+            dispatch(getVisaPaymnet(visaInfo));
+            message.success("Liên kết thẻ thành công")
           }
     }
 

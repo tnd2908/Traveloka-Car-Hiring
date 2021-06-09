@@ -8,7 +8,7 @@ const RentInfor = ({car}) =>{
     const [rental, setRental] = useState({});
     const [startTime,setStartTime] = useState("");
     const [endTime,setEndTime] = useState("");
-    const userInfo = useSelector(state => state.user)
+    const userInfo = useSelector(state => state.user.user)
     useEffect(() => {
         setRental(rentalInfo);
     },[])
@@ -53,20 +53,20 @@ const RentInfor = ({car}) =>{
                         label="Họ và tên:"
                         name="name"
                     >
-                        {userInfo.name}
+                        {userInfo.fristName + userInfo.lastName}
                     </Form.Item>
                     <Form.Item
                         label="Số điện thoại:"
                         name="phoneNum"
                     >
-                        {userInfo.phoneNum}    
+                        {userInfo.phone}    
                     </Form.Item>
                     <Form.Item
                         label="Gmail: "
                         name="gmail"
                        
                     >
-                     {userInfo.gmail}    
+                     {userInfo.email}    
                     </Form.Item>
 
                     <Form.Item

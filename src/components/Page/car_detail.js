@@ -56,12 +56,12 @@ const CarDetail = () => {
         if (rental) {
             if (rental.district) {
                 console.log(1111);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=EG8gmoroxzjtdjwe9gEikbxXAE0blI83wpKjqQtX41s`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=bKZWY90iGFRNUXknG_Gdt5YzKf0eDx496brjXbHmkew`)
                 .then(res => setLocation(res.data.items[0].position))
             }
             else if(rental.city) {
                 console.log(2222);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=EG8gmoroxzjtdjwe9gEikbxXAE0blI83wpKjqQtX41s`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=bKZWY90iGFRNUXknG_Gdt5YzKf0eDx496brjXbHmkew`)
                 .then(res => setLocation(res.data.items[0].position))
             }
         }

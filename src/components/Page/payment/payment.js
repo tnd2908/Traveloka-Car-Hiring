@@ -6,10 +6,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { API_URL } from '../../../util/util';
+import { useSelector } from 'react-redux';
 const Payment = (props) => {
     let { idVehicle } = useParams();
     const [car,setCar] = useState({})
-
     useEffect(() => {
         fetchDetail();
     }, [])
