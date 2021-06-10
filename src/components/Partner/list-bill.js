@@ -33,6 +33,7 @@ const ListBill = () => {
             console.log(error)
         }
     }, [])
+
     const showDetail = (data) => {
         setVisible(true)
         setBillDetail(data)
