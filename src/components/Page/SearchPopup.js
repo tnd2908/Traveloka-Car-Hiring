@@ -1,7 +1,7 @@
 import { Input, AutoComplete } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-const renderTitle = (title) => (
+const renderTitle = (title, address) => (
   <span>
     {title}
     <a
@@ -14,19 +14,17 @@ const renderTitle = (title) => (
     >
       more
     </a>
+    <p>{address}</p>
   </span>
 );
 
-const renderItem = (title, count) => ({
+const renderItem = (title, address) => ({
   value: title,
   label: (
     <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
     >
-      {title}
+      <h5>{title}</h5><br/>
+      <h7>{address}</h7>
     </div>
   ),
 });
@@ -48,7 +46,7 @@ const options = [
 
 const SearchPopup = (props) => {
 const option = props.result.map(item => ({
-    options: [renderItem(item.title), renderItem(item.address)]
+    options: [renderItem(item.title,item.address)]
 }))
 return (
     <AutoComplete

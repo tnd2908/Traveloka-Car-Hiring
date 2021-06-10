@@ -74,6 +74,7 @@ const CreditCard = () => {
                 method : paymentMethod.card.brand
             }
             dispatch(getVisaPaymnet(visaInfo));
+        
             message.success("Liên kết thẻ thành công")
           }
     }

@@ -23,9 +23,15 @@ const ListBill = () => {
                 .then(res => {
                     const action = setPartnerInfor(res.data.data.rolePartner[0])
                     dispatch(action)
-                    axios.get(API_URL + "bill/saler/" + res.data.data.rolePartner[0].partnerId)
+                    console.log(API_URL + "bill/saler/" + res.data.data.rolePartner[0].partnerId)
+                    axios.get("http://localhost:3301/" + "bill/saler/" + res.data.data.rolePartner[0].partnerId)
                         .then(response => {
-                            console.log(response.data.result)
+                            response.data.result.map(item => {
+                                axios.get("http://localhost:3301/" + "bill/endDate/" + item.idBill + "?endDate=" + item.endDate)
+                                .then(res => {
+                                    console.log(res);
+                                }) 
+                            })
                             setBill(response.data.result)
                         })
                 })
@@ -34,11 +40,13 @@ const ListBill = () => {
         }
     }, [])
     const showDetail = (data) => {
+        console.log(data);
         setVisible(true)
         setBillDetail(data)
     }
     const start = billDetail.startDate.split(" ").slice(2,3)[0]
     const end = billDetail.endDate.split(" ").slice(2,3)[0]
+    console.log(billDetail)
     return (
         <div className="container compo mt-5">
             <div className="row">
@@ -49,7 +57,7 @@ const ListBill = () => {
                     </Descriptions.Item>
                     <Descriptions.Item label="Trạng thái" span={2}>
                         {billDetail.status === "In progress"?<Tag color="processing"> {billDetail.status} </Tag>
-                        :<Tag color="gold"> {billDetail.status} </Tag>}
+                    : billDetail.status === "DONE" ? <Tag color="green"> {billDetail.status} </Tag> : <Tag color="gold"> {billDetail.status} </Tag>}
                     </Descriptions.Item>
                     <Descriptions.Item label="Ngày nhận">
                         {billDetail.startDate}
@@ -82,6 +90,8 @@ const ListBill = () => {
                         render={data => {
                             if (data.status === "In progress")
                                 return <Tag color="processing"> {data.status} </Tag>
+                            if(data.status === "DONE") 
+                                return <Tag color="green"> {data.status} </Tag>
                             else
                                 return <Tag color="gold"> {data.status} </Tag>
                         }}
