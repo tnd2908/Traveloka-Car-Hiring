@@ -74,7 +74,7 @@ const RentInfor = ({car}) =>{
                         name="address"
                         
                     >
-                    {resultBill.address}    
+                    {userInfo.userAddress}    
                     </Form.Item>
             </Form>
         </div>

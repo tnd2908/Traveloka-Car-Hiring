@@ -50,7 +50,9 @@ const PaymentPage = ({car}) =>{
                 <p style={{width:'80%'}}>Bằng việc nhấn thanh toán, bạn đồng ý với <b>Điều khoản, điều kiện</b> và <b>Chính sách quyền riêng tư</b></p>
                 <button onClick={submitPayment}>Thanh toán tại cửa hàng</button>
             </div>
-            <Result onOk={() => window.location="/"} loadingPayment={isLoading} result={result} visible={isModalOpen}/>
+            {
+                result && <Result onOk={() => window.location="/"} loadingPayment={isLoading} result={result} visible={isModalOpen}/>
+            } 
         </div>
     )
 }

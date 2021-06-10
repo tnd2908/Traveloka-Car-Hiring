@@ -26,7 +26,6 @@ const CarDetail = () => {
     const [location, setLocation] = useState([]);
     const [result, setResult] = useState([]);
     const userInfo = useSelector(state => state.user.user);
-    console.log(userInfo);
     const [fields, setFields] = useState([
         {
           name: ['fullname'],
@@ -45,7 +44,6 @@ const CarDetail = () => {
             value: userInfo?.userAddress,
         }
     ]);
-    console.log(fields);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     useEffect(() => {
@@ -57,16 +55,16 @@ const CarDetail = () => {
         if (rental) {
             if (rental.district) {
                 console.log(1111);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=bKZWY90iGFRNUXknG_Gdt5YzKf0eDx496brjXbHmkew`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=oS4VF1OHv0RHThzb6PWfXG5eCY80ugcJC9v2zvmpB-s`)
                 .then(res => setLocation(res.data.items[0].position))
             }
             else if(rental.city) {
-                console.log(2222);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=bKZWY90iGFRNUXknG_Gdt5YzKf0eDx496brjXbHmkew`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=oS4VF1OHv0RHThzb6PWfXG5eCY80ugcJC9v2zvmpB-s`)
                 .then(res => setLocation(res.data.items[0].position))
             }
         }
     },[rental])
+    console.log(location)
     useEffect(()=>{
         try {
             const header = {'Authorization': localStorage.getItem("user-token")}
@@ -101,8 +99,12 @@ const CarDetail = () => {
             console.log(error)
         }
     }
+    useEffect(() => {
+        setNewInfo(userInfo);
+    }, [JSON.stringify(userInfo)])
 
     const insertBill = () => {
+        dispatch(setUserInfor(newInfo))
         const carInsert = {
             ...newInfo,
             idUser: userInfo.userId,
@@ -118,14 +120,11 @@ const CarDetail = () => {
     const onChange = (info) => {
         console.log(info);
         form.setFieldsValue({[info.target.name]:info.target.value})
-        console.log(form.getFieldValue())
         setNewInfo({...newInfo,[info.target.name]:info.target.value});
     }
+    console.log(newInfo)
     const onChangeLocation = (e) => {
-        const result = {
-            address: e
-        }
-        form.setFieldsValue(result);
+        setNewInfo({...newInfo, userAddress: e})
         const iat = Object.values(location).toString();
         const MAP_URL = `https://places.ls.hereapi.com/places/v1/discover/explore?at=${iat}&Accept-Language=vi-VN%2Cvi%3Bq%3D0.9%2Cfr-FR%3Bq%3D0.8%2Cfr%3Bq%3D0.7%2Cen-US%3Bq%3D0.6%2Cen%3Bq%3D0.5&app_id=Rq2W3egvN4ZOHf3n4Ba0&app_code=pIsWVmUXrtPIicRNz1hj3g`
         axios.get(MAP_URL).then(res => {
@@ -141,7 +140,7 @@ const CarDetail = () => {
             setResult(arr);
         })
     }
-    console.log(form.getFieldValue())
+
     return (
         <div className="cover">
             <div className="container">
@@ -243,8 +242,8 @@ const CarDetail = () => {
                                         <Input name="email" value={userInfo?.email || ""}/>
                                     </Form.Item>
                                 
-                                    <Form.Item name="address" label="Địa chỉ nhận xe">
-                                        <SearchResult name="address" value={userInfo.userAddress || ""} result={result} onChange={onChangeLocation}/>
+                                    <Form.Item name="userAddress" label="Địa chỉ nhận xe">
+                                        <SearchResult name="userAddress" value={userInfo.userAddress || ""} result={result} onChange={onChangeLocation}/>
                                     </Form.Item>
                                     <Form.Item name="vouncher" label="Mã khuyến mãi">
                                         <Input.Password  name="vouncher"/>
