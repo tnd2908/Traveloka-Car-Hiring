@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {GoogleMap} from "react-google-maps";
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import GoogleSearchBox from "./GoogleSearchBox";
-import SearchResult from './SearchPopuo'
+import SearchResult from './SearchPopup'
 import { setUserInfor } from '../../action/user'
 
 const CarDetail = () => {
@@ -51,22 +51,22 @@ const CarDetail = () => {
         fetchDetail();
         window.scrollTo(0,0)
     }, [])
+
     useEffect(() => {
+        const API_KEY='MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU'
         if (rental) {
             if (rental.district) {
                 console.log(1111);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU
-                `)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
                 .then(res => setLocation(res.data.items[0].position))
             }
             else if(rental.city) {
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU
-                `)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
                 .then(res => setLocation(res.data.items[0].position))
             }
         }
     },[rental])
-    console.log(location)
+
     useEffect(()=>{
         try {
             const header = {'Authorization': localStorage.getItem("user-token")}
@@ -126,7 +126,7 @@ const CarDetail = () => {
     }
     console.log(newInfo)
     const onChangeLocation = (e) => {
-        setNewInfo({...newInfo, userAddress: e})
+        setNewInfo({...newInfo, address: e, userAddress: e})
         const iat = Object.values(location).toString();
         const MAP_URL = `https://places.ls.hereapi.com/places/v1/discover/explore?at=${iat}&Accept-Language=vi-VN%2Cvi%3Bq%3D0.9%2Cfr-FR%3Bq%3D0.8%2Cfr%3Bq%3D0.7%2Cen-US%3Bq%3D0.6%2Cen%3Bq%3D0.5&app_id=Rq2W3egvN4ZOHf3n4Ba0&app_code=pIsWVmUXrtPIicRNz1hj3g`
         axios.get(MAP_URL).then(res => {

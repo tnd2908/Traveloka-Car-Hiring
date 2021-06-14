@@ -79,6 +79,8 @@ const AddCar = () => {
             });
           }
     }
+    
+    
     const handleCreateCar = (value) =>{
         try {
             const {name, self_drive_price, quantity, Seat, typeCar ,idManufactor} = value;
@@ -91,26 +93,30 @@ const AddCar = () => {
                 idManufactor,
                 idSaler: partner.partnerId
             }
-            const formData = new FormData()
-            formData.append("file", image)
             axios.post(API_URL+"car", data)
                 .then(response=>{
-                    console.log(response.data)
-                    Modal.success({
-                        content: response.data.result,
-                        onOk: ()=>{
-                            const obj ={
-                                name: '',
-                                self_drive_price: '',
-                                quantity: '',
-                                idManufactor: '',
-                                Seat: '',
-                                typeCar: ''
+                    if(response.data.status === 'SUCCESS'){
+                        Modal.success({
+                            content: response.data.result,
+                            onOk: ()=>{
+                                const obj ={
+                                    name: '',
+                                    self_drive_price: '',
+                                    quantity: '',
+                                    idManufactor: '',
+                                    Seat: '',
+                                    typeCar: ''
+                                }
+                                  form.setFieldsValue(obj)
                             }
-                              form.setFieldsValue(obj)
-                        }
-                    })
-                    console.log(response)
+                        })
+                    }
+                    else{
+                        Modal.error({
+                            content: response.data.error.message
+                        })
+                    }
+                    console.log(response.data)
                 })
         } catch (error) {
             console.log(error)
@@ -121,6 +127,7 @@ const AddCar = () => {
             <div className="row" >
                 <div className="form">
                     <Form
+                        id="form"
                         {...layout}
                         name="basic"
                         style={{backgroundColor: '#fff',boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
