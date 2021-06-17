@@ -251,7 +251,7 @@ const CarDetail = () => {
                                         <button className="btn btn-success col mt-4">Áp dụng</button>
                                     </Form.Item>
                             </div>
-                            <div className="payment ">
+                            <div className="payment">
                                 <h5>Tổng giá tiền</h5>
                                     <Form.Item>
                                         <h4 className="text-danger" name="price">{new Intl.NumberFormat().format(car.self_drive_price)} VND</h4>
