@@ -79,6 +79,11 @@ const AddCar = () => {
             });
           }
     }
+
+    const onChangeFile = e => {
+        setImageURL(e.target.files[0])
+    }
+    console.log(imageURL);
     const handleCreateCar = (value) =>{
         try {
             const {name, self_drive_price, quantity, Seat, typeCar ,idManufactor} = value;
@@ -89,17 +94,31 @@ const AddCar = () => {
                 Seat,
                 typeCar,
                 idManufactor,
+                image: [imageURL, imageURL.name] || [],
                 idSaler: partner.partnerId
             }
+
             const formData = new FormData()
-            formData.append("file", image)
-            axios.post(API_URL+"car", data)
+            Object.entries(data).map(item => {
+                if(item[0] === "image") {
+                    formData.append(item[0], item[1][0], item[1][1])
+                }
+                else {
+                    formData.append(item[0], item[1]);
+                }
+            })
+           
+            axios.post(API_URL + "car", formData, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*"
+                }
+            })
                 .then(response=>{
                     console.log(response.data)
                     Modal.success({
                         content: response.data.result,
-                        onOk: ()=>{
-                            const obj ={
+                        onOk: () => {
+                            const obj = {
                                 name: '',
                                 self_drive_price: '',
                                 quantity: '',
@@ -197,15 +216,7 @@ const AddCar = () => {
                             name="avatar"
                             rules={[{ required: false, message: 'Vui lòng chọn hình ảnh' }]}
                         >
-                            <Upload
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                beforeUpload={beforeUpload}
-                                showUploadList={false}
-                                onChange={addAvatar}
-                            >
-                                {imageURL?<img src={imageURL} alt="avatar"/>:uploadButton}
-                            </Upload>
+                            <Input type="file" name="image" onChange={onChangeFile}/>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <button className="btn-add">Thêm xe</button>

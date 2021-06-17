@@ -1,5 +1,5 @@
 
-import { message } from "antd";
+import { Button, message } from "antd";
 import {
     Link
   } from "react-router-dom";
@@ -12,6 +12,7 @@ function Car({car,isExpire}){
             message.error("Bạn chưa đăng nhập");
         }
     }
+    console.log(car);
     return(
         <div className="container-fluid bg-white car-item">
             <div className="row">
@@ -26,7 +27,9 @@ function Car({car,isExpire}){
                     <div className="car-price">
                         <p id="car-text">Giá thuê theo ngày từ</p>
                         <p id="car-price">{new Intl.NumberFormat().format(car.self_drive_price)} VNĐ</p>
-                        <Link onClick={() => authorizeHanlde()} to={!isExpire && `/detail/${id}`}><span>Tiếp tục</span></Link>
+                        {
+                            car.quantity <= 0 ? <Button disabled={true}>Hết xe</Button> : <Link onClick={() => authorizeHanlde()} to={!isExpire && `/detail/${id}`}><span>Tiếp tục</span></Link>
+                        }
                     </div>
                  </div>
             </div>

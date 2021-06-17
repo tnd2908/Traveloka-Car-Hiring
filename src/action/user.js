@@ -4,3 +4,4 @@ export const setUserInfor = (infor) =>{
         payload: infor
     }
 }
+

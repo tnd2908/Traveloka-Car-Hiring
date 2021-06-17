@@ -53,17 +53,17 @@ const CarDetail = () => {
     }, [])
 
     useEffect(() => {
-        const API_KEY='MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU'
+        const API_KEY='UJauhxfyncnr-KGklRyGlGJmLfBdB8S3bZVovCWcp4U'
         if (rental) {
             if (rental.district) {
                 console.log(1111);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=${API_KEY}`)
                 .then(res => setLocation(res.data.items[0].position))
             }
-            else if(rental.city) {
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
-                .then(res => setLocation(res.data.items[0].position))
-            }
+            // else if(rental.city) {
+            //     axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=${API_KEY}`)
+            //     .then(res => setLocation(res.data.items[0].position))
+            // }
         }
     },[rental])
 
@@ -116,15 +116,14 @@ const CarDetail = () => {
             endDate: Object.values(rental.endTime).toString(),
             total: car.self_drive_price,
         }
-        axios.post(API_URL + "bill", carInsert)
+        axios.post("http://localhost:3301/" + "bill", carInsert)
         .then(res => dispatch(getNewBill(res.data.result)));
     }
     const onChange = (info) => {
-        console.log(info);
         form.setFieldsValue({[info.target.name]:info.target.value})
         setNewInfo({...newInfo,[info.target.name]:info.target.value});
     }
-    console.log(newInfo)
+
     const onChangeLocation = (e) => {
         setNewInfo({...newInfo, address: e, userAddress: e})
         const iat = Object.values(location).toString();

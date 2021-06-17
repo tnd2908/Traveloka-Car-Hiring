@@ -9,10 +9,11 @@ const RentInfor = ({car}) =>{
     const [startTime,setStartTime] = useState("");
     const [endTime,setEndTime] = useState("");
     const userInfo = useSelector(state => state.user.user)
+    console.log(userInfo)
     useEffect(() => {
         setRental(rentalInfo);
     },[])
-    
+    console.log(userInfo);
     useEffect(() => {
         const startTimeString = Object.values(rentalInfo.startTime).map(date => date);
         const endTimeString = Object.values(rentalInfo.endTime).map(date => date)
@@ -53,7 +54,7 @@ const RentInfor = ({car}) =>{
                         label="Họ và tên:"
                         name="name"
                     >
-                        {userInfo.fristName + userInfo.lastName}
+                        {userInfo.fullname}
                     </Form.Item>
                     <Form.Item
                         label="Số điện thoại:"
