@@ -1,4 +1,6 @@
 import { Form, DatePicker, Select, message } from 'antd';
+import locale from 'antd/lib/date-picker/locale/en_US';
+import 'moment/locale/zh-cn';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -195,7 +197,7 @@ const HiringForm = () => {
                                     label="Ngày bắt đầu"
                                     rules={[{ required: true, message: 'Vui lòng nhập ngày bắt đầu' }]}
                                     >
-                                    <DatePicker onChange={onDateStartChange} id="startDate" dateFormat={dateFormat} />
+                                    <DatePicker locale={locale} onChange={onDateStartChange} id="startDate" dateFormat={dateFormat} />
                                 </Form.Item>
                             </div>
                             
@@ -205,7 +207,7 @@ const HiringForm = () => {
                                     label="Ngày kết thúc"
                                     rules={[{ required: true, message: 'Vui lòng nhập ngày kết thúc' }]}
                                 >
-                                    <DatePicker  onChange={onDateEndChange} id="startDate" dateFormat={dateFormat} />
+                                    <DatePicker locale={locale} onChange={onDateEndChange} id="startDate" dateFormat={dateFormat} />
                                 </Form.Item>
                             </div>
                             
