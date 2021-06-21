@@ -2,12 +2,24 @@ import {message, Switch} from 'antd'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { API_URL } from '../../../util/util'
+import {DollarCircleOutlined} from "@ant-design/icons"
+import { useState } from 'react'
+import Result from './result'
 
 const PaymentPage = ({car}) =>{
     const billId = useSelector(state => state.bill.newBill.id)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [result , setResult] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const visaInfo = useSelector(state => state.bill.visaInfo)
     const submitPayment = () => {
+        setIsLoading(true)
         axios.put(API_URL + "bill/" + billId)
-        .then(res => message.success("Đơn hàng của bạn đã được thanh toán"))
+        .then(res => {
+            setIsModalOpen(true);
+            setResult(res);
+            setIsLoading(false)
+        })
         .catch(err => message.error("Đã có lỗi xảy ra vui lòng thử lại"))
     }
     return(
@@ -24,6 +36,11 @@ const PaymentPage = ({car}) =>{
                     <p>{car.name}</p>
                     <p>{new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
                 </div>
+                {
+                    visaInfo?.card && <div className="d-flex justify-content-between">
+                        <p>Thanh toán {visaInfo?.card}: {visaInfo?.method} <DollarCircleOutlined/></p>
+                    </div>
+                }
                 <div className="d-flex justify-content-between show-total-price-2">
                     <p>Tổng tiền: </p>
                     <p id="final-price">{new Intl.NumberFormat().format(car.self_drive_price)} VND</p>
@@ -33,6 +50,9 @@ const PaymentPage = ({car}) =>{
                 <p style={{width:'80%'}}>Bằng việc nhấn thanh toán, bạn đồng ý với <b>Điều khoản, điều kiện</b> và <b>Chính sách quyền riêng tư</b></p>
                 <button onClick={submitPayment}>Thanh toán tại cửa hàng</button>
             </div>
+            {
+                result && <Result onOk={() => window.location="/"} loadingPayment={isLoading} result={result} visible={isModalOpen}/>
+            } 
         </div>
     )
 }

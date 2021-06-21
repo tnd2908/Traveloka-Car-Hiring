@@ -56,7 +56,7 @@ const Dashboard = ({collapse}) =>{
             <Menu.Item key="7" icon={<AppstoreAddOutlined/>}><Link to="/partner/add-car-area"> Thêm xe vào khu vực</Link></Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" icon={<ContainerOutlined />} title="Quản lý đơn hàng">
-            <Menu.Item key="10">Xem đơn đặt hàng</Menu.Item>
+            <Menu.Item key="10"><Link to="/partner/bill">Xem đơn đặt hàng</Link></Menu.Item>
           </SubMenu>
         </Menu>
     );

@@ -21,6 +21,7 @@ import Rule from './components/Page/payment/payment_rule'
 import { loadStripe } from '@stripe/stripe-js';
 import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
+import ListBill from './components/Partner/list-bill';
 
 
 function App() {
@@ -43,6 +44,9 @@ function App() {
                         </Route>
                         <Route exact path="/partner/add-car-area">
                               <Admin com={<AddCarToDistrict />} />
+                        </Route>
+                        <Route exact path="/partner/bill">
+                              <Admin com={<ListBill/>} />
                         </Route>
                         <Route exact path="/">
                               <Nav />

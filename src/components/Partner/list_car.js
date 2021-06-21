@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import '../../css/admin.css'
 import React from 'react'
 import axios from 'axios'
@@ -26,6 +26,7 @@ const ListCar = () => {
     const list = useSelector(state=>state.car.listCar)
     const [loading, setLoading] = useState(false)
     const [render,setRender] = useState(0)
+    const partner = useSelector(state=>state.user.user)
     const dispatch = useDispatch()
     const showDetailCar = (data) => {
         setDetailVisible(true)
@@ -59,20 +60,12 @@ const ListCar = () => {
     const token = localStorage.getItem("partner-token")
     useEffect(() => {
         try {
-            const header = {'Authorization': token}
-            axios.get("https://oka1kh.azurewebsites.net/api/profiles", {
-                headers: header
+            axios.get(API_URL + "car/saler?id=" + partner.partnerId)
+            .then(response => {
+                console.log(response.data)
+                const action = setList(response.data.result, response.data.result)
+                dispatch(action)
             })
-                .then(res => {
-                    const action = setPartnerInfor(res.data.data.rolePartner[0])
-                    dispatch(action)
-                    axios.get(API_URL + "car/saler?id=" + res.data.data.rolePartner[0].partnerId)
-                        .then(response => {
-                            console.log(response.data)
-                            const action = setList(response.data.result, response.data.result)
-                            dispatch(action)
-                        })
-                })
         } catch (error) {
             console.log(error)
         }
@@ -80,7 +73,6 @@ const ListCar = () => {
     const onSearch = (value) =>{
         const action = searchCar(value)
         dispatch(action)
-        setRender(render+1)
     }
     const sortUp = ()=>{
         const action = getListCarFromLowPrice(list)
@@ -115,58 +107,58 @@ const ListCar = () => {
             </div>
             <div className="row">
                 <div className="col-12">
-                    {isVisible && <Modal footer={null} title="Edit" visible={true} onCancel={() => setIsvisible(false)}>
-                        <div className="car-infor shadow rounded-3" style={{ padding: '10px 20px', marginBottom: '15px', background: 'orange', color: 'white' }}>
-                            <h5 className="text-light">Sửa thông tin xe</h5>
-                        </div>
-                        <Form
-                            {...layout}
-                            className="edit-form"
-                            name="basic"
-                            form={form}
-                            style={{ backgroundColor: '#fff', boxShadow: '1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius: '7px', overflow: 'hidden' }}
-                            initialValues={{ remember: true }}
-                            onFinish={handleEdit}
+                    <Modal footer={null} title="Edit" visible={isVisible} onCancel={() => setIsvisible(false)}>
+                    <div className="car-infor shadow rounded-3" style={{ padding: '10px 20px', marginBottom: '15px', background: 'orange', color: 'white' }}>
+                        <h5 className="text-light">Sửa thông tin xe</h5>
+                    </div>
+                    <Form
+                        {...layout}
+                        className="edit-form"
+                        name="basic"
+                        form={form}
+                        style={{ backgroundColor: '#fff', boxShadow: '1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius: '7px', overflow: 'hidden' }}
+                        initialValues={{ remember: true }}
+                        onFinish={handleEdit}
+                    >
+                        <Form.Item
+                            label="Tên xe"
+                            name="name"
+                            rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
+                            style={{ marginTop: '30px' }}
                         >
-                            <Form.Item
-                                label="Tên xe"
-                                name="name"
-                                rules={[{ required: true, message: 'Vui lòng nhập tên xe' }]}
-                                style={{ marginTop: '30px' }}
-                            >
-                                <Input placeholder="Nhập tên xe" />
-                            </Form.Item>
-                            <Form.Item
-                                label="Giá"
-                                name="self_drive_price"
-                                rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
-                            >
-                                <InputNumber placeholder="Nhập giá tiền" style={{ width: '100%' }} />
-                            </Form.Item>
-                            <Form.Item
-                                label="Số lượng"
-                                name="quantity"
-                                rules={[{ required: true, message: 'Vui lòng nhập số lượng xe' }]}
-                            >
-                                <InputNumber placeholder="Nhập số lượng xe" style={{ width: '100%' }} />
-                            </Form.Item>
-                            <Form.Item
-                                label="Loại xe"
-                                name="typeCar"
-                                rules={[{ required: true, message: 'Vui lòng chọn loại xe' }]}
-                                style={{ marginTop: '30px' }}
-                            >
-                                <Select>
-                                    <Option key="Số sàn" value="Số sàn">Số sàn</Option>
-                                    <Option key="Số tự động" value="Số tự động">Số tự động</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item  {...tailLayout}>
-                                <button style={{ float: 'right', backgroundColor: 'orange', color: 'white', width: '100px' }} type="submit" className="btn"> {loading ? <Spin indicator={<LoadingOutlined style={{ color: 'white' }} />} /> : <span>Chỉnh sửa</span>}</button>
-                            </Form.Item>
-                        </Form>
-                    </Modal>}
-                    {detailVisible && <Modal width={1000} footer={null} title="Chi tiết xe" visible={detailVisible} onCancel={() => setDetailVisible(false)}>
+                            <Input placeholder="Nhập tên xe" />
+                        </Form.Item>
+                        <Form.Item
+                            label="Giá"
+                            name="self_drive_price"
+                            rules={[{ required: true, message: 'Vui lòng nhập giá tiền' }]}
+                        >
+                            <InputNumber placeholder="Nhập giá tiền" style={{ width: '100%' }} />
+                        </Form.Item>
+                        <Form.Item
+                            label="Số lượng"
+                            name="quantity"
+                            rules={[{ required: true, message: 'Vui lòng nhập số lượng xe' }]}
+                        >
+                            <InputNumber placeholder="Nhập số lượng xe" style={{ width: '100%' }} />
+                        </Form.Item>
+                        <Form.Item
+                            label="Loại xe"
+                            name="typeCar"
+                            rules={[{ required: true, message: 'Vui lòng chọn loại xe' }]}
+                            style={{ marginTop: '30px' }}
+                        >
+                            <Select>
+                                <Option key="Số sàn" value="Số sàn">Số sàn</Option>
+                                <Option key="Số tự động" value="Số tự động">Số tự động</Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item  {...tailLayout}>
+                            <button style={{ float: 'right', backgroundColor: 'orange', color: 'white', width: '100px' }} type="submit" className="btn"> {loading ? <Spin indicator={<LoadingOutlined style={{ color: 'white' }} />} /> : <span>Chỉnh sửa</span>}</button>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+                    <Modal width={1000} footer={null} title="Chi tiết xe" visible={detailVisible} onCancel={() => setDetailVisible(false)}>
                         <div className="container">
                             <div className="row">
                                 <div className="col-6">
@@ -199,8 +191,7 @@ const ListCar = () => {
                                 </div>
                             </div>
                         </div>
-
-                    </Modal>}
+                    </Modal>
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -209,6 +200,7 @@ const ListCar = () => {
                                 <th scope="col">Loại xe</th>
                                 <th scope="col">Giá</th>
                                 <th scope="col">Số lượng</th>
+                                <th scope="col">Doanh thu</th>
                                 <th scope="col">Hành động</th>
                             </tr>
                         </thead>
@@ -220,7 +212,14 @@ const ListCar = () => {
                                         <td> {car.name}</td>
                                         <td> {car.typeCar}</td>
                                         <td> {new Intl.NumberFormat().format(car.self_drive_price)} / Ngày</td>
-                                        <td style={{ width: '100px' }}> {car.quantity}</td>
+                                        <td style={{ width: '100px' }}>
+                                            {
+                                                car.quantity >= 0 ? car.quantity :  <Fragment>
+                                                    {car.quantity} <Tag color="error">Hết xe</Tag>
+                                                </Fragment>
+                                            }
+                                        </td>
+                                        <td style={{ width: '100px' }}> {car.HiredCount}</td>
                                         <td style={{ width: '150px' }} >
                                             <div className="d-flex">
                                                 <button onClick={() => showDetailCar(car)} className="btn-detail">Chi tiết</button>

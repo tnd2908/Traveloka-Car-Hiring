@@ -6,6 +6,7 @@ import {
     LoadingOutlined,
 } from '@ant-design/icons';
 import { API_URL } from '../../util/util';
+import { useSelector } from 'react-redux';
 const { Option } = Select
 const layout = {
     labelCol: { span: 8 },
@@ -32,10 +33,12 @@ function beforeUpload(file) {
   }
 const AddCar = () => {
     const [form] = Form.useForm();
-    const [category, setCategory] = useState([])
+    const [imageName, setImageName] = useState("");
     const [brand,setBrand] = useState([])
     const [loading,setLoading] = useState(false)
-    const [imgUrl, setImgUrl] = useState('')
+    const [image, setImage] = useState("");
+    const [imageURL, setImageURL] = useState("");
+    const partner = useSelector(state=>state.partner.partner)
     const getManufactorData = () =>{
         try {
             axios.get(API_URL+"manu")
@@ -60,27 +63,62 @@ const AddCar = () => {
           setLoading(true)
           return;
         }
+        else if (info.file.status === 'error') {
+            setLoading(false)
+            message.error("Fail to upload")
+            return;
+          }
+        else if (info.file.status === "done") {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, (imageUrl) => {
+              setImage(info.file.originFileObj);
+      
+              setImageName(info.file.name);
+              setImageURL(imageUrl);
+              setLoading(false);
+            });
+          }
     }
+
+    const onChangeFile = e => {
+        setImageURL(e.target.files[0])
+    }
+    console.log(imageURL);
     const handleCreateCar = (value) =>{
         try {
-            const {name, self_drive_price, quantity, Seat, typeCar} = value;
+            const {name, self_drive_price, quantity, Seat, typeCar ,idManufactor} = value;
             const data = {
                 name,
                 self_drive_price,
                 quantity,
                 Seat,
                 typeCar,
-                idManufactor: value.idManufactor.value,
-                idSaler: 11
+                idManufactor,
+                image: [imageURL, imageURL.name] || [],
+                idSaler: partner.partnerId
             }
-            console.log(data)
-            axios.post(API_URL+"car", data)
+
+            const formData = new FormData()
+            Object.entries(data).map(item => {
+                if(item[0] === "image") {
+                    formData.append(item[0], item[1][0], item[1][1])
+                }
+                else {
+                    formData.append(item[0], item[1]);
+                }
+            })
+           
+            axios.post(API_URL + "car", formData, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*"
+                }
+            })
                 .then(response=>{
                     console.log(response.data)
                     Modal.success({
                         content: response.data.result,
-                        onOk: ()=>{
-                            const obj ={
+                        onOk: () => {
+                            const obj = {
                                 name: '',
                                 self_drive_price: '',
                                 quantity: '',
@@ -137,7 +175,6 @@ const AddCar = () => {
                             rules={[{ required: true, message: 'Vui lòng chộn số chỗ ngồi' }]}
                         >
                             <Select
-                                labelInValue
                                 placeholder="Số chỗ"
                                 name="Seat"
                             >
@@ -148,12 +185,11 @@ const AddCar = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            label="Số chỗ ngồi"
+                            label="Loại xe"
                             name="typeCar"
                             rules={[{ required: true, message: 'Vui lòng loại xe' }]}
                         >
                             <Select
-                                labelInValue
                                 placeholder="Số chỗ"
                                 name="typeCar"
                             >
@@ -167,12 +203,11 @@ const AddCar = () => {
                             rules={[{ required: true, message: 'Vui lòng chọn hãng xe' }]}
                         >
                             <Select
-                                labelInValue
                                 placeholder="Hãng sản xuất"
                                 name="idManufactor"
                             >
-                                {brand.map((id, index)=>(
-                                    <Option key={index} value={id.idManufactor}> {id.name} </Option>
+                                {brand.map(id=>(
+                                    <Option key={id.id}> {id.name} </Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -181,14 +216,7 @@ const AddCar = () => {
                             name="avatar"
                             rules={[{ required: false, message: 'Vui lòng chọn hình ảnh' }]}
                         >
-                            <Upload
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                beforeUpload={beforeUpload}
-                                onChange={addAvatar}
-                            >
-                                {imgUrl?<img src={imgUrl} alt="avatar"/>:uploadButton}
-                            </Upload>
+                            <Input type="file" name="image" onChange={onChangeFile}/>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <button className="btn-add">Thêm xe</button>

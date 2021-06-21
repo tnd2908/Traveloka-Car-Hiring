@@ -8,11 +8,12 @@ const RentInfor = ({car}) =>{
     const [rental, setRental] = useState({});
     const [startTime,setStartTime] = useState("");
     const [endTime,setEndTime] = useState("");
-    const userInfo = useSelector(state => state.user)
+    const userInfo = useSelector(state => state.user.user)
+    console.log(userInfo)
     useEffect(() => {
         setRental(rentalInfo);
     },[])
-    
+    console.log(userInfo);
     useEffect(() => {
         const startTimeString = Object.values(rentalInfo.startTime).map(date => date);
         const endTimeString = Object.values(rentalInfo.endTime).map(date => date)
@@ -53,20 +54,20 @@ const RentInfor = ({car}) =>{
                         label="Họ và tên:"
                         name="name"
                     >
-                        {userInfo.name}
+                        {userInfo.fullname}
                     </Form.Item>
                     <Form.Item
                         label="Số điện thoại:"
                         name="phoneNum"
                     >
-                        {userInfo.phoneNum}    
+                        {userInfo.phone}    
                     </Form.Item>
                     <Form.Item
                         label="Gmail: "
                         name="gmail"
                        
                     >
-                     {userInfo.gmail}    
+                     {userInfo.email}    
                     </Form.Item>
 
                     <Form.Item
@@ -74,7 +75,7 @@ const RentInfor = ({car}) =>{
                         name="address"
                         
                     >
-                    {resultBill.address}    
+                    {userInfo.userAddress}    
                     </Form.Item>
             </Form>
         </div>

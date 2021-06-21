@@ -8,6 +8,9 @@ import axios from "axios";
 import { API_URL } from "../../util/util";
 import {useDispatch, useSelector} from 'react-redux'
 import { setUserInfor } from "../../action/user";
+import { useJwt } from "react-jwt";
+import Modal from "antd/lib/modal/Modal";
+
 const logout = () =>{
   localStorage.clear()
   window.location="/"
@@ -22,12 +25,14 @@ const UserButton = () =>{
 }
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
+  const [isOpen, setIsOpen] = useState(true);
   const onVisibleChange = () =>{
       setFormVisible(!formVisible)
   }
   const dispatch = useDispatch()
   const user = useSelector(state=>state.user.user)
-  const token = localStorage.getItem("user-token")
+  const token = localStorage.getItem("user-token") || '';
+  const {decodedToken, isExpired} = useJwt(token);
   useEffect(()=>{
     if(token){
       try {
@@ -59,7 +64,12 @@ function Nav() {
               <Link to="/partner"><i class="far fa-handshake " style={{ color: 'blueviolet' }}></i>Hợp tác với chúng tôi</Link>
               <Link><i class="far fa-bookmark " style={{ color: 'darkblue' }}></i>Đã lưu</Link>
               <Link><i class="far fa-file-invoice " style={{ color: 'darkblue' }}></i>Đặt chỗ của tôi</Link>
-              {!token?<div className="user">
+              {
+                isExpired && <Modal title="expire" visible={isOpen} onOk={() => setIsOpen(false)} onCancel={() => setIsOpen(false)}>
+                  Phiên làm việc đã hết vui lòng đăng nhập lại
+                </Modal>
+              }
+              {!token ? <div className="user">
                 <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
