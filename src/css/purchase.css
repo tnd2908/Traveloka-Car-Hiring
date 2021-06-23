@@ -20,23 +20,34 @@
     margin-right: 15px;
     font-size: x-large;
 }
+<<<<<<< HEAD
 .dark-text h5{
     font-size: medium;
 }
+=======
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
 .time{
     margin: 0 5px;
     border-radius: 5px;
     border: solid rgb(231, 231, 231) 0.5px;
 }
 .time h6{
+<<<<<<< HEAD
     padding: 5px 20px;
+=======
+    padding: 3px 20px;
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
     font-weight: bolder;
     color: cornflowerblue;
 }
 .purchaselist{
     margin-top: 20px;
+<<<<<<< HEAD
 }
 .purchaselist button:disabled{
     opacity: 0.6;
     cursor: not-allowed;
 }
+=======
+}   
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a

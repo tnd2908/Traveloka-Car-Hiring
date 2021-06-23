@@ -19,7 +19,12 @@ const logout = () =>{
 const UserButton = () =>{
   return(
     <div className="bg-white d-flex flex-column user-form">
+<<<<<<< HEAD
         <Link className="text-dark" to="/user"><i class="fal fa-user"></i>Thông tin cá nhân</Link>
+=======
+        <Link className="text-dark" to="/"><i class="fal fa-user"></i>Thông tin cá nhân</Link>
+        <Link to="/user/history" className="text-dark" ><i class="fad fa-clipboard-list"></i>Danh sách đơn hàng</Link>
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
         <Link className="text-dark" to="/" onClick={()=>logout()}><i class="fal fa-sign-out"></i>Đăng xuất</Link>
     </div>
   )
