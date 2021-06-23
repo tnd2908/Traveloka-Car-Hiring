@@ -21,17 +21,13 @@ import { loadStripe } from '@stripe/stripe-js';
 import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
 import ListBill from './components/Partner/list-bill';
-import Revenue from "./components/Partner/Revenue"
-<<<<<<< HEAD
+import Revenue from "./components/Partner/Revenue";
 
 import PurchaseList from './components/Page/purchase/history';
 import Partner from './components/Partner/admin.js';
 import Admin from './components/Admin/admin';
 import Costumer from './components/Admin/customerlist';
 import Saler from './components/Admin/salerlist';
-=======
-import PurchaseList from './components/user/history';
->>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
 
 function App() {
       const stripePromise = loadStripe("pk_test_51IVICLDPcgh4yPrvBWLYr3on18d1mqZxFbT6JO3XstNVbQr23QXK1JRxrmYpN4T5dz8ygdcBEnLZRCZipNUMGWi300j8wX9ChL")
@@ -78,11 +74,7 @@ function App() {
                               <Nav />
                               <CarDetail />
                         </Route>
-<<<<<<< HEAD
                         <Route exact path="/user">
-=======
-                        <Route exact path="/user/history">
->>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
                               <Nav />
                               <PurchaseList />
                         </Route>
