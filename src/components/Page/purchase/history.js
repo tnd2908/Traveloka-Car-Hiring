@@ -5,12 +5,20 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../../util/util';
 import BillDetail from './BillDetail';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUserInfor } from "../../../action/user";
 
 
 const PurchaseList = () =>{
     
+    const dispatch = useDispatch()
+    const user = useSelector(state=>state.user.user)
+    const token = localStorage.getItem("user-token")
     const [listBill,setListBill] = useState([])
-
+    const logout = () =>{
+        localStorage.clear()
+        window.location="/"
+      }
     useEffect(()=>{
         // getCostumerBill()
         fetchDetail();
@@ -23,7 +31,7 @@ const PurchaseList = () =>{
     // } 
     const fetchDetail = () => {
         try {
-            axios.get(API_URL + "bill/customer/2015" )
+            axios.get(API_URL + `bill/customer/${user.userId}` )
                 .then(response => {
                     setListBill(response.data.result)
                     console.log(response.data.result)
@@ -33,6 +41,26 @@ const PurchaseList = () =>{
             console.log(error)
         }
     }
+    var FN = user.fristName.charAt(0)
+    var LN = user.lastName.charAt(0)
+
+    useEffect(()=>{
+        if(token){
+          try {
+            const header = {'Authorization': token}
+              axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
+                    headers: header
+                })
+              .then(res=>{
+                console.log(res.data.data.auth[0])
+                const action = setUserInfor(res.data.data.auth[0])
+                dispatch(action)
+              })
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      },[token])
     return(
         <div style={{margin:'30px 0'}}>    
             <div className="container-fluid">
@@ -41,11 +69,11 @@ const PurchaseList = () =>{
                     </div>
                     <div style={{margin:'10px 0',backgroundColor:'white'}} className="col-3 ">
                         <div style={{boxShadow:'0 2px 0 0 rgb(235, 230, 230)'}} className="user-navi d-flex">
-                            <div className="user-in4">
-                                <h4>AB</h4>
+                            < div className="user-in4" style={{textTransform:'uppercase'}}>
+                                <h4>{FN}{LN}</h4>
                             </div>
                             <div style={{padding:'15px 20px'}} className="user-name">
-                                <h5>Tien Pham</h5>
+                                <h5>{user.fristName} {user.lastName}</h5>
                             </div>
                         </div>    
                         <div className="coupon-user" style={{padding:'20px 10px',boxShadow:'0 2px 0 0 rgb(235, 230, 230)'}}>
@@ -59,7 +87,7 @@ const PurchaseList = () =>{
                         </div>
                         <div className="user-manu" style={{padding:'20px 10px'}}>
                         <Link to="/" className="dark-text d-flex" ><i class="far fa-cog"></i> <h5>Tài khoản</h5> </Link>
-                        <Link to="/" className="dark-text d-flex" ><i class="fal fa-power-off"></i><h5>Đăng xuất</h5> </Link>
+                        <Link onClick={()=>logout()} to="/" className="dark-text d-flex" ><i class="fal fa-power-off"></i><h5>Đăng xuất</h5> </Link>
                         </div>
                     </div>
                     <div style={{margin:'30px 20px'}} className="col-5">
@@ -78,7 +106,7 @@ const PurchaseList = () =>{
                             </div>
                         </div>
                         <div style={{backgroundColor:'white'}} className="purchaselist">
-                        <table className="table table-striped">
+                        <table className="table">
                             <thead>
                                 <tr>
                                     <th scope="col">Stt</th>
