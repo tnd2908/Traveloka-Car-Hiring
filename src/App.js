@@ -23,7 +23,7 @@ import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
 import ListBill from './components/Partner/list-bill';
 import Revenue from "./components/Partner/Revenue"
-
+import PurchaseList from './components/user/history';
 
 function App() {
       const stripePromise = loadStripe("pk_test_51IVICLDPcgh4yPrvBWLYr3on18d1mqZxFbT6JO3XstNVbQr23QXK1JRxrmYpN4T5dz8ygdcBEnLZRCZipNUMGWi300j8wX9ChL")
@@ -60,6 +60,10 @@ function App() {
                         <Route exact path="/detail/:id">
                               <Nav />
                               <CarDetail />
+                        </Route>
+                        <Route exact path="/user/history">
+                              <Nav />
+                              <PurchaseList />
                         </Route>
                         <Route exact path="/vehicles/:idVehicle/input">
                               <Nav />
