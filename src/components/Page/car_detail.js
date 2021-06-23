@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import '../../css/carDetail.css'
-import { API_URL } from "../../util/util";
-import { Button, Form, Input, Tag } from 'antd'
+import { API_URL, DEV_URL, VOUNCHER_API_URL, VOUNCHER_ENDPOINT } from "../../util/util";
+import { Button, Form, Input, message, Tag } from 'antd'
 import {getNewBill} from "../../action/bill";
 import { useDispatch, useSelector } from 'react-redux'
 import {GoogleMap} from "react-google-maps";
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox"
 import GoogleSearchBox from "./GoogleSearchBox";
-import SearchResult from './SearchPopup'
+import SearchResult from './SearchBox/SearchPopup'
+import VouncherPopup from './SearchBox/VouncherFilter'
 import { setUserInfor } from '../../action/user'
 
 const CarDetail = () => {
@@ -25,6 +26,11 @@ const CarDetail = () => {
     const [newInfo, setNewInfo] = useState({});
     const [location, setLocation] = useState([]);
     const [result, setResult] = useState([]);
+    const [vouncher, setVouncher] = useState([]);
+    const [vouncherDetail, setVouncherDetail] = useState([]);
+    const [discountValue, setDiscountvalue] = useState(0)
+    const [isVouncher, setIsVouncher] = useState(false);
+    const [vouncherName, setVouncherName] = useState("")
     const userInfo = useSelector(state => state.user.user);
     const [fields, setFields] = useState([
         {
@@ -46,28 +52,58 @@ const CarDetail = () => {
     ]);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    
+    const getVouncherByUser = () => {
+        axios.get(VOUNCHER_API_URL + VOUNCHER_ENDPOINT.GET_VOUNCHER_BY_EMAIL + userInfo.email)
+        .then(res => {
+            setVouncher(res.data.recordset);
+        })
+    }
+
+    const getVouncherDetail = () => {
+        if(vouncher.length > 0) {
+            let promise = [];
+            vouncher.map(item => {
+                if(item.CatalogID === "thueXe") {
+                    promise.push (
+                        axios.get(VOUNCHER_API_URL + VOUNCHER_ENDPOINT.GET_VOUNCHER_INFO_BY_ID + item.Voucher_id)
+                        .then(res => res.data.recordset[0])
+                    )
+                }
+            })
+            Promise.all(promise).then(res => setVouncherDetail(res))
+        }
+    }
+
+    useEffect(() => {
+        getVouncherByUser(); 
+    },[])
+
     useEffect(() => {
         getRental();
         fetchDetail();
         window.scrollTo(0,0)
-    }, [])
+    }, []);
 
     useEffect(() => {
-        const API_KEY='MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU'
+        getVouncherDetail(); 
+    },[JSON.stringify(vouncher)])
+
+    useEffect(() => {
+        const API_KEY='UJauhxfyncnr-KGklRyGlGJmLfBdB8S3bZVovCWcp4U'
         if (rental) {
             if (rental.district) {
-                console.log(1111);
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
+                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.district}&apiKey=${API_KEY}`)
                 .then(res => setLocation(res.data.items[0].position))
             }
-            else if(rental.city) {
-                axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=MBc5WX8KIlUI3hz4mvtJK4AHl_qNyHTN9goucUA4HFU`)
-                .then(res => setLocation(res.data.items[0].position))
-            }
+            // else if(rental.city) {
+            //     axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${rental.city}&apiKey=${API_KEY}`)
+            //     .then(res => setLocation(res.data.items[0].position))
+            // }
         }
     },[rental])
 
-    useEffect(()=>{
+    useEffect(() => {
         try {
             const header = {'Authorization': localStorage.getItem("user-token")}
               axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
@@ -117,14 +153,17 @@ const CarDetail = () => {
             total: car.self_drive_price,
         }
         axios.post(API_URL + "bill", carInsert)
-        .then(res => dispatch(getNewBill(res.data.result)));
+        .then(res => {
+            localStorage.setItem("idBill", res.data.result.id)
+            localStorage.setItem("carPrice", car.self_drive_price)
+            dispatch(getNewBill(res.data.result))
+        });
     }
     const onChange = (info) => {
-        console.log(info);
         form.setFieldsValue({[info.target.name]:info.target.value})
         setNewInfo({...newInfo,[info.target.name]:info.target.value});
     }
-    console.log(newInfo)
+
     const onChangeLocation = (e) => {
         setNewInfo({...newInfo, address: e, userAddress: e})
         const iat = Object.values(location).toString();
@@ -142,7 +181,23 @@ const CarDetail = () => {
             setResult(arr);
         })
     }
+    
+    const onChangeVouncher = (e) => {
+        vouncherDetail.map(item =>{
+            if(item.VoucherID === e) {
+                setDiscountvalue(item.Discount);
+                setVouncherName(item.VoucherID);
+                return
+            }
+        })
+    }
 
+    const submitVouncher = (e) => {
+        console.log(car.self_drive_price * (discountValue/100))
+        setCar({...car, self_drive_price: car.self_drive_price * (discountValue/100)})
+        setIsVouncher(true)
+        message.success("Áp dụng mã giảm giá thành công",3)
+    } 
     return (
         <div className="cover">
             <div className="container">
@@ -150,7 +205,7 @@ const CarDetail = () => {
                     <div className="col-8">
                         <div className="car-detail container">
                             <div className="car row d-flex">
-                                <img className="col-xs-12 col-lg-6" alt=".." src={API_URL + "images/" +car.avatar || ""} />
+                                <img className="col-xs-12 col-lg-6" alt=".." src={API_URL + "images/" + car.avatar || ""} />
                                 <div className="info col-xs-12 col-lg-6">
                                     <h4>Tên xe: {car.name} </h4>
                                     <p>Cung cấp bởi Smart Rent Car Driverless Jakarta</p>
@@ -248,11 +303,18 @@ const CarDetail = () => {
                                         <SearchResult name="userAddress" value={userInfo.userAddress || ""} result={result} onChange={onChangeLocation}/>
                                     </Form.Item>
                                     <Form.Item name="vouncher" label="Mã khuyến mãi">
-                                        <Input.Password  name="vouncher"/>
-                                        <button className="btn btn-success col mt-4">Áp dụng</button>
+                                        {
+                                            isVouncher ? <Tag color="green">{vouncherName}</Tag> : <Fragment>
+                                            <VouncherPopup name="userAddress"
+                                                result={vouncherDetail} 
+                                                onChange={onChangeVouncher}
+                                            />
+                                            <button className="btn btn-success col mt-4" onClick={submitVouncher}>Áp dụng</button>
+                                            </Fragment>
+                                        }
                                     </Form.Item>
                             </div>
-                            <div className="payment ">
+                            <div className="payment">
                                 <h5>Tổng giá tiền</h5>
                                     <Form.Item>
                                         <h4 className="text-danger" name="price">{new Intl.NumberFormat().format(car.self_drive_price)} VND</h4>

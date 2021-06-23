@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import { Button, Dropdown, Menu } from 'antd'
 import LogInForm from "./login-form";
+import Register from "./register-form";
 import axios from "axios";
 import { API_URL } from "../../util/util";
 import {useDispatch, useSelector} from 'react-redux'
@@ -26,8 +27,12 @@ const UserButton = () =>{
 function Nav() {
   const [formVisible, setFormVisible] = useState(false)
   const [isOpen, setIsOpen] = useState(true);
+  const [visible, setVisible] = useState(false)
   const onVisibleChange = () =>{
       setFormVisible(!formVisible)
+  }
+  const visibleChange = () =>{
+    setVisible(!visible)
   }
   const dispatch = useDispatch()
   const user = useSelector(state=>state.user.user)
@@ -40,10 +45,12 @@ function Nav() {
           axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
                 headers: header
             })
-          .then(res=>{
-            console.log(res.data.data.auth[0])
-            const action = setUserInfor(res.data.data.auth[0])
-            dispatch(action)
+          .then(res=> {
+            if(res.data.data) {
+              console.log(res.data.data.auth[0])
+              const action = setUserInfor(res.data.data.auth[0])
+              dispatch(action)
+            }
           })
       } catch (error) {
         console.log(error)
@@ -69,11 +76,13 @@ function Nav() {
                   Phiên làm việc đã hết vui lòng đăng nhập lại
                 </Modal>
               }
-              {!token ? <div className="user">
+              {!token && isExpired ? <div className="user">
                 <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
-                <Link id="signup">Đăng ký</Link>
+                <Dropdown visible={visible} overlay={<Register/>} onVisibleChange={visibleChange} trigger="click" overlayStyle={{ width: '500px' }} placement="bottomLeft" arrow>
+                  <Link id="signup"><i class="fad fa-user-circle"></i>Đăng ký</Link>
+                </Dropdown>
               </div>
                :<div className="user">
                  <Dropdown 

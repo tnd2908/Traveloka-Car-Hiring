@@ -79,8 +79,11 @@ const AddCar = () => {
             });
           }
     }
-    
-    
+
+    const onChangeFile = e => {
+        setImageURL(e.target.files[0])
+    }
+    console.log(imageURL);
     const handleCreateCar = (value) =>{
         try {
             const {name, self_drive_price, quantity, Seat, typeCar ,idManufactor} = value;
@@ -91,32 +94,42 @@ const AddCar = () => {
                 Seat,
                 typeCar,
                 idManufactor,
+                image: [imageURL, imageURL.name] || [],
                 idSaler: partner.partnerId
             }
-            axios.post(API_URL+"car", data)
+
+            const formData = new FormData()
+            Object.entries(data).map(item => {
+                if(item[0] === "image") {
+                    formData.append(item[0], item[1][0], item[1][1])
+                }
+                else {
+                    formData.append(item[0], item[1]);
+                }
+            })
+           
+            axios.post(API_URL + "car", formData, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*"
+                }
+            })
                 .then(response=>{
-                    if(response.data.status === 'SUCCESS'){
-                        Modal.success({
-                            content: response.data.result,
-                            onOk: ()=>{
-                                const obj ={
-                                    name: '',
-                                    self_drive_price: '',
-                                    quantity: '',
-                                    idManufactor: '',
-                                    Seat: '',
-                                    typeCar: ''
-                                }
-                                  form.setFieldsValue(obj)
-                            }
-                        })
-                    }
-                    else{
-                        Modal.error({
-                            content: response.data.error.message
-                        })
-                    }
                     console.log(response.data)
+                    Modal.success({
+                        content: response.data.result,
+                        onOk: () => {
+                            const obj = {
+                                name: '',
+                                self_drive_price: '',
+                                quantity: '',
+                                idManufactor: '',
+                                Seat: '',
+                                typeCar: ''
+                            }
+                              form.setFieldsValue(obj)
+                        }
+                    })
+                    console.log(response)
                 })
         } catch (error) {
             console.log(error)
@@ -127,7 +140,6 @@ const AddCar = () => {
             <div className="row" >
                 <div className="form">
                     <Form
-                        id="form"
                         {...layout}
                         name="basic"
                         style={{backgroundColor: '#fff',boxShadow:'1px 5px 15px rgba(0, 0, 0, 0.2)', borderRadius:'7px', overflow:'hidden',margin:'auto', maxWidth:'700px'}}
@@ -204,15 +216,7 @@ const AddCar = () => {
                             name="avatar"
                             rules={[{ required: false, message: 'Vui lòng chọn hình ảnh' }]}
                         >
-                            <Upload
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                beforeUpload={beforeUpload}
-                                showUploadList={false}
-                                onChange={addAvatar}
-                            >
-                                {imageURL?<img src={imageURL} alt="avatar"/>:uploadButton}
-                            </Upload>
+                            <Input type="file" name="image" onChange={onChangeFile}/>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <button className="btn-add">Thêm xe</button>

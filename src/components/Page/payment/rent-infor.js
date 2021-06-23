@@ -8,7 +8,9 @@ const RentInfor = ({car}) =>{
     const [rental, setRental] = useState({});
     const [startTime,setStartTime] = useState("");
     const [endTime,setEndTime] = useState("");
-    const userInfo = useSelector(state => state.user.user)
+    const billId = localStorage.getItem("idBill");
+    const userInfo = useSelector(state => state.user.user);
+    console.log(userInfo)
     useEffect(() => {
         setRental(rentalInfo);
     },[])
@@ -27,7 +29,7 @@ const RentInfor = ({car}) =>{
         <div className="rent-info">
             <div className="rent-code" >
                 <p>Mã đặt chỗ</p>
-                <p>{resultBill.id}</p>
+                <p>{resultBill.id || billId}</p>
             </div>
             <div className="rent-details">
                 <h5> {car.name} </h5>
@@ -53,7 +55,7 @@ const RentInfor = ({car}) =>{
                         label="Họ và tên:"
                         name="name"
                     >
-                        {userInfo.fristName + userInfo.lastName}
+                        {userInfo.fristName} {userInfo.lastName}
                     </Form.Item>
                     <Form.Item
                         label="Số điện thoại:"

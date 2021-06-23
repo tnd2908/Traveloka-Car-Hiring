@@ -6,6 +6,8 @@ import StripeCheckout from "react-stripe-checkout"
 import { getVisaPaymnet } from "../../../action/bill"
 import {Form} from "antd";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { API_URL, DEV_URL } from "../../../util/util";
 
 const paymentIcons = [
     {
@@ -36,12 +38,15 @@ const CreditCard = () => {
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user.user);
     const billAddress = useSelector(state => state.bill.newBill);
+    const price = localStorage.getItem("carPrice");
+    const carName = localStorage.getItem("carName");
+
     const submitPayment = async (e) => {
         const billingDetail = {
-            name: userInfo.fristName + userInfo.lastName,
-            phone: userInfo.phone,
-            address: billAddress.address,
-            email: userInfo.email
+            name: userInfo.fristName + userInfo.lastName || "",
+            phone: userInfo.phone || "",
+            address: userInfo.userAddress || "",
+            email: userInfo.email || ""
         }
 
         if (!stripe || !elements) {
@@ -71,8 +76,13 @@ const CreditCard = () => {
                 ...billingDetail,
                 card: paymentMethod.type,
                 id: paymentMethod.id,
-                method : paymentMethod.card.brand
+                method: paymentMethod.card.brand,
+                amount: price,
+                car: carName
             }
+            console.log(visaInfo);
+            // axios.post(DEV_URL + "bill/stripe", visaInfo)
+            // .then(res => console.log(res))
             dispatch(getVisaPaymnet(visaInfo));
         
             message.success("Liên kết thẻ thành công")
