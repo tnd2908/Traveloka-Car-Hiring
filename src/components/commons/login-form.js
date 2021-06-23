@@ -1,7 +1,7 @@
 import {Form, Input, Modal, Spin} from 'antd'
-import axios from 'axios';
 import {Link} from 'react-router-dom'
 import { API_URL } from '../../util/util';
+import Axios from 'axios'
 import {
       LoadingOutlined
   } from '@ant-design/icons';
@@ -18,7 +18,7 @@ const LogInForm = () =>{
       const onLogin = (value) =>{
             try {
                   setSpin(true)
-                  axios.post('https://oka1kh.azurewebsites.net/api/user/login', value)
+                  Axios.post('https://oka1kh.azurewebsites.net/api/user/login', value)
                       .then(res=>{
                           console.log(res.data)
                           setSpin(false)
