@@ -8,7 +8,6 @@ const renderTitle = (title, address) => (
       style={{
         float: 'right',
       }}
-      href="https://www.google.com/search?q=antd"
       target="_blank"
       rel="noopener noreferrer"
     >

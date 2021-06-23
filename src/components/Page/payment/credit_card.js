@@ -7,6 +7,7 @@ import { getVisaPaymnet } from "../../../action/bill"
 import {Form} from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { API_URL, DEV_URL } from "../../../util/util";
 
 const paymentIcons = [
     {
@@ -39,13 +40,13 @@ const CreditCard = () => {
     const billAddress = useSelector(state => state.bill.newBill);
     const price = localStorage.getItem("carPrice");
     const carName = localStorage.getItem("carName");
- 
+
     const submitPayment = async (e) => {
         const billingDetail = {
-            name: userInfo.fullname || "",
-            phone: userInfo.phone,
-            address: billAddress.address,
-            email: userInfo.email
+            name: userInfo.fristName + userInfo.lastName || "",
+            phone: userInfo.phone || "",
+            address: userInfo.userAddress || "",
+            email: userInfo.email || ""
         }
 
         if (!stripe || !elements) {
@@ -79,8 +80,9 @@ const CreditCard = () => {
                 amount: price,
                 car: carName
             }
-            axios.post("http://localhost:3301/" + "bill/stripe", visaInfo)
-            .then(res => console.log(res))
+            console.log(visaInfo);
+            // axios.post(DEV_URL + "bill/stripe", visaInfo)
+            // .then(res => console.log(res))
             dispatch(getVisaPaymnet(visaInfo));
         
             message.success("Liên kết thẻ thành công")

@@ -22,6 +22,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
 import ListBill from './components/Partner/list-bill';
+import Revenue from "./components/Partner/Revenue"
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
                               <LoginPartner/>
                         </Route>
                         <Route exact path="/partner">
-                              <Admin />
+                              <Admin com={<Revenue/>}/>
                         </Route>
                         <Route exact path="/partner/vehicles" >
                               <Admin com={<ListCar />} />

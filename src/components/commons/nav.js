@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import { Button, Dropdown, Menu } from 'antd'
 import LogInForm from "./login-form";
+import Register from "./register-form";
 import axios from "axios";
 import { API_URL } from "../../util/util";
 import {useDispatch, useSelector} from 'react-redux'
@@ -40,10 +41,12 @@ function Nav() {
           axios.get( 'https://oka1kh.azurewebsites.net/api/profiles', {
                 headers: header
             })
-          .then(res=>{
-            console.log(res.data.data.auth[0])
-            const action = setUserInfor(res.data.data.auth[0])
-            dispatch(action)
+          .then(res=> {
+            if(res.data.data) {
+              console.log(res.data.data.auth[0])
+              const action = setUserInfor(res.data.data.auth[0])
+              dispatch(action)
+            }
           })
       } catch (error) {
         console.log(error)
@@ -69,11 +72,13 @@ function Nav() {
                   Phiên làm việc đã hết vui lòng đăng nhập lại
                 </Modal>
               }
-              {!token ? <div className="user">
+              {!token && isExpired ? <div className="user">
                 <Dropdown visible={formVisible} onVisibleChange={onVisibleChange} trigger="click" overlay={<LogInForm/>} overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
                   <Link id="login"><i class="fad fa-user-circle"></i>Đăng nhập</Link>
                 </Dropdown>
-                <Link id="signup">Đăng ký</Link>
+                <Dropdown overlay={<Register/>} onVisibleChange={onVisibleChange} trigger="click" overlayStyle={{ width: '300px' }} placement="bottomLeft" arrow>
+                  <Link id="signup"><i class="fad fa-user-circle"></i>Đăng ký</Link>
+                </Dropdown>
               </div>
                :<div className="user">
                  <Dropdown 
