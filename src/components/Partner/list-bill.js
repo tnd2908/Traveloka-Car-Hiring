@@ -35,7 +35,7 @@ const ListBill = () => {
         try {  
             if(partnerInfo.partnerId) {
                 setIsLoading(true);
-                axios.get(DEV_URL + "bill/saler/" + partnerInfo.partnerId)
+                axios.get(API_URL + "bill/saler/" + partnerInfo.partnerId)
                 .then(response => {
                     let totalPrice = 0;
                     let expireArr = [];
@@ -169,7 +169,7 @@ const ListBill = () => {
     const handleRetakeOk = () => {
         listExpireBill.map(item => {
             console.log(item);
-            axios.get(DEV_URL + "bill/endDate/" + item.idBill + "?endDate=" + item.endDate)
+            axios.get(API_URL + "bill/endDate/" + item.idBill + "?endDate=" + item.endDate)
             .then(res => {
                 console.log(res)
                 message.success("Duyệt hóa đơn thành công",4)
@@ -350,10 +350,10 @@ const ListBill = () => {
                         <Statistic title=" Tổng doanh thu visa" value={totalVisa + " VND"} precision={2}/>
                     </Col>
                     <Col span={8}>
-                        <Statistic title="Tháng hiện tại" value={new Date().getMonth()}/>
+                        <Statistic title="Tháng hiện tại" value={new Date().getMonth() +1}/>
                     </Col>
                     <Col span={8}>
-                            <Statistic title="Chỉ tiêu đặt ra" value={target + " VND"}/>
+                            <Statistic title="Chỉ tiêu đặt ra" value={new Intl.NumberFormat().format(target) + " VND"}/>
                         </Col>
                     <Col span={8}>
                         <Statistic title="Phần trăm đạt được" value={(totalCurrent/target) * 100} precision={2}/>

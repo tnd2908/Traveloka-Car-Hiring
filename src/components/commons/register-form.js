@@ -7,8 +7,8 @@ import {
   } from '@ant-design/icons';
 import {useState} from 'react'
 const layout = {
-    labelCol: { span: 24 },
-    wrapperCol: { span: 24 },
+    labelCol: { span: 7 },
+    wrapperCol: { span: 14 },
   };
   const antIcon = <LoadingOutlined style={{ fontSize: 24, color: 'white' }} />;
 const Register = () =>{
@@ -17,12 +17,9 @@ const Register = () =>{
 
       const onRegister = (value) => {
             try {
+                  console.log(value)
                     setSpin(true)
-                    axios.post("https://oka1kh.azurewebsites.net/api/adduserall", {...value, cards: "123456"}, {
-                        headers: {
-                            "Access-Control-Allow-Origin": "*"
-                        }
-                    })
+                    axios.post("https://oka1kh.azurewebsites.net/api/adduserall", {...value, cards: "123456"})
                     .then(res=> {
                           console.log(res.data)
                           setSpin(false)
@@ -33,11 +30,7 @@ const Register = () =>{
                                     <div>
                                         <p>Đăng ký thành công</p>
                                     </div>
-                                ),
-                                onOk(){
-                                    localStorage.setItem("user-token", res.data.data.token)
-                                    window.location = "/"
-                                }
+                                )
                             })
                           }
                           else{
@@ -66,7 +59,7 @@ const Register = () =>{
               form={form}
               onFinish={onRegister}
         >
-              <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng ký tài khoản</h6>
+              <h6 id="h6-register" style={{fontWeight:'bold', marginBottom:'20px'}}>Đăng ký tài khoản</h6>
               <Form.Item
                     name="fristName"
                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
@@ -115,7 +108,9 @@ const Register = () =>{
               >
                     <Input.Password size="large" />
               </Form.Item>
-              <Form.Item>
+              <Form.Item
+                  wrapperCol={{offset: 7}}
+              >
                     <div className="d-flex">
                         <button type="submit" className="login-btn">
                               <Spin
@@ -123,7 +118,7 @@ const Register = () =>{
                               indicator={antIcon}
                               style={{ marginRight: '12px' }}
                                 /> 
-                              {!spin&& <span>Đăng nhập</span>}
+                              {!spin&& <span>Đăng ky</span>}
                         </button>
                     </div>
               </Form.Item>

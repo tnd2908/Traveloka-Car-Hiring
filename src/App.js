@@ -2,7 +2,6 @@ import './App.css';
 import CarRental from './components/Page/car_rental.js';
 import CarHomePage from './components/Page/homepage';
 import CarDetail from './components/Page/car_detail.js';
-import Admin from './components/Partner/admin.js'
 import dotenv from 'dotenv'
 import {Elements} from '@stripe/react-stripe-js'
 import {
@@ -23,7 +22,16 @@ import LoginPartner from './components/commons/login-partner';
 import AddCarToDistrict from './components/Partner/add_car_area';
 import ListBill from './components/Partner/list-bill';
 import Revenue from "./components/Partner/Revenue"
+<<<<<<< HEAD
 
+import PurchaseList from './components/Page/purchase/history';
+import Partner from './components/Partner/admin.js';
+import Admin from './components/Admin/admin';
+import Costumer from './components/Admin/customerlist';
+import Saler from './components/Admin/salerlist';
+=======
+import PurchaseList from './components/user/history';
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
 
 function App() {
       const stripePromise = loadStripe("pk_test_51IVICLDPcgh4yPrvBWLYr3on18d1mqZxFbT6JO3XstNVbQr23QXK1JRxrmYpN4T5dz8ygdcBEnLZRCZipNUMGWi300j8wX9ChL")
@@ -31,23 +39,32 @@ function App() {
       return (
             <Router>
                   <Switch>
+                        {/* <Route exact path="/admin">
+                              <Admin />
+                        </Route>
+                        <Route exact path="/admin/costumer" >
+                              <Admin com={<Costumer />} />
+                        </Route>
+                        <Route exact path="/admin/saler" >
+                              <Admin com={<Saler />} />
+                        </Route> */}
                         <Route exact path="/login-partner">
                               <LoginPartner/>
                         </Route>
                         <Route exact path="/partner">
-                              <Admin com={<Revenue/>}/>
+                              <Partner com={<Revenue/>}/>
                         </Route>
                         <Route exact path="/partner/vehicles" >
-                              <Admin com={<ListCar />} />
+                              <Partner com={<ListCar />} />
                         </Route>
                         <Route exact path="/partner/add-vehicles">
-                              <Admin com={<AddCar />} />
+                              <Partner com={<AddCar />} />
                         </Route>
                         <Route exact path="/partner/add-car-area">
-                              <Admin com={<AddCarToDistrict />} />
+                              <Partner com={<AddCarToDistrict />} />
                         </Route>
                         <Route exact path="/partner/bill">
-                              <Admin com={<ListBill/>} />
+                              <Partner com={<ListBill/>} />
                         </Route>
                         <Route exact path="/">
                               <Nav />
@@ -61,11 +78,18 @@ function App() {
                               <Nav />
                               <CarDetail />
                         </Route>
+<<<<<<< HEAD
+                        <Route exact path="/user">
+=======
+                        <Route exact path="/user/history">
+>>>>>>> ed14166c175dd9b765f4cbc6de0242cee38bc81a
+                              <Nav />
+                              <PurchaseList />
+                        </Route>
                         <Route exact path="/vehicles/:idVehicle/input">
                               <Nav />
                               <Reservation />
-                        </Route>
-                        
+                        </Route>                 
                         <Route exact path="/vehicles/:idVehicle/payment">
                               <Nav />
                               <Payment children={<Rule/>}/>

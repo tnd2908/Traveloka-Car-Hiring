@@ -25,7 +25,7 @@ const PaymentPage = ({car}) =>{
             axios.post(DEV_URL + "bill/stripe", visaInfo)
             .then(res => console.log(res))
         }
-        axios.put(DEV_URL + "bill/" + billId, payment)
+        axios.put(API_URL + "bill/" + billId, payment)
         .then(res => {
             setResult(res);
             setIsModalOpen(true);

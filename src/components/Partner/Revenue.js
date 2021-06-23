@@ -20,7 +20,8 @@ const Revenue = (props) => {
             setIsLoading(true)
             axios.get(API_URL + "car/saler?id=" + partnerInfo.partnerId)
             .then(response => {
-                setListCar(response.data.result);
+                const filter = response.data.result.sort((a,b)=>b.saled - a.saled).slice(0,5)
+                setListCar(filter);
                 const action = setList(response.data.result, response.data.result)
                 dispatch(action)
                 setIsLoading(false)
@@ -30,7 +31,7 @@ const Revenue = (props) => {
 
     useEffect(() => {
         if(partnerInfo.partnerId) {
-                axios.get(DEV_URL + `bill/KPI/${partnerInfo.partnerId}?year=${new Date().getFullYear()}`)
+                axios.get(API_URL + `bill/KPI/${partnerInfo.partnerId}?year=${new Date().getFullYear()}`)
                 .then(res => {
                 console.log(res);
                 setMonthRevenue(res.data.result)
@@ -39,12 +40,25 @@ const Revenue = (props) => {
     },[partnerInfo.partnerId])
 
     return (
-        <div className="container">
+        <div className="container p-2">
             {
                 !isLoading ? <Fragment>
-                    <Bar data={monthRevenue}/>
+                    
+                    <div className="row mt-5 pt-5">
+                        <div className="col-8 bg-white">
+                        <Bar 
+                        data={monthRevenue}
+                        options={{
+                            maintainAspectratio: false
+                        }}
+                    />
+                        </div>
+                        <div className="col-4 bg-white">
+                        <Donut data={listCar}/>
+                        </div>
+                    </div>
                     <Divider/>
-                    <Donut data={listCar}/>
+
                 </Fragment> : <Spin size="large"/>
             }    
         </div>
