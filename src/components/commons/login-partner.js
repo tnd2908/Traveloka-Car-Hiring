@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Spin } from 'antd';
+import { Form, Input, message, Modal, Select, Spin } from 'antd';
 import {
     LoadingOutlined
 } from '@ant-design/icons';
@@ -14,10 +14,44 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 6, span: 16 },
 };
+const {Option} = Select
 const antIcon = <LoadingOutlined style={{ fontSize: 24, color: 'white' }} />;
 const LoginPartner = () => {
     const [login, setLogin] = useState(true)
     const [spin, setSpin] = useState(false)
+    const [isSPin, setIsSpin] = useState(false)
+    const [form] = Form.useForm()
+    const onRegister = (value) =>{
+        const {partnerUsername, partnerPass, partnerRole} = value
+        const data = {partnerUsername, partnerPass, partnerRole}
+        console.log(data)
+        setIsSpin(true)
+        try {
+            axios.post('https://oka1kh.azurewebsites.net/api/partner', data)
+                .then(res=>{
+                    if(res.data.status === "SUCCES"){
+                        Modal.success({
+                            title: 'Success',
+                            content: (
+                                <div>
+                                    <p>Đăng ky thành công</p>
+                                </div>
+                            ),
+                            onOk(){window.location="/login-partner"}
+                        })
+                    }
+                    else{
+                        Modal.error({
+                            title: 'Không thể đăng ký tài khoản vào lúc này'
+                        })
+                    }
+                    setIsSpin(false)
+                })
+        } catch (error) {
+            message.error("Register fail")
+            console.log(error)
+        }
+    }
     const loginPartner = (value) =>{
         try {
             setSpin(true)
@@ -55,6 +89,24 @@ const LoginPartner = () => {
             setSpin(false)
         }        
     }
+    const role = [
+        {
+            label: 'Khách sạn',
+            value: 'KS'
+        },
+        {
+            label: 'Thuê xe',
+            value: 'TX'
+        },
+        {
+            label: 'Vé máy bay',
+            value: 'VMB'
+        },
+        {
+            label: 'Tour du lịch',
+            value: 'TDL'
+        },
+    ]
     return (
         <div className="container-fluid login-partner" style={{ padding: '0', minHeight: '100vh' }}>
             <nav>
@@ -108,7 +160,9 @@ const LoginPartner = () => {
                     <Form
                         {...layout}
                         name="basic"
+                        form={form}
                         size="middle"
+                        onFinish={onRegister}
                         initialValues={{ remember: true }}
                     >
                         <div className="inside-form rounded shadow-sm ">
@@ -117,45 +171,58 @@ const LoginPartner = () => {
                             </div>
                             <div className="form-right">
                             <Form.Item
-                                label="Họ tên"
-                                name="fullname"
+                                label="Tên đăng nhập"
+                                name="partnerUsername"
                                 rules={[{ required: true, message: 'Please input your username!' }]}
                             >
-                                <Input />
+                                <Input name="partnerUsername"/>
                             </Form.Item>
                             <Form.Item
-                                label="Số điện thoại"
-                                name="phoneNum"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Form.Item
-                                label="Tên công ty"
-                                name="company"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Form.Item
-                                label="Email"
-                                name="email"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
-                            <Form.Item
-                                label="Password"
-                                name="password"
+                                label="Mật khẩu"
+                                name="partnerPass"
                                 rules={[{ required: true, message: 'Please input your password!' }]}
                             >
                                 <Input.Password />
                             </Form.Item>
+                            <Form.Item
+                              name="confirm"
+                              label="Nhập lại mật khẩu"
+                              dependencies={['partnerPass']}
+                              hasFeedback
+                              rules={[
+                                    {
+                                          required: true,
+                                          message: 'Vui lòng nhập lại mật khẩu',
+                                    },
+                                    ({ getFieldValue }) => ({
+                                          validator(_, value) {
+                                                if (!value || getFieldValue('partnerPass') === value) {
+                                                      return Promise.resolve();
+                                                }
+
+                                                return Promise.reject(new Error('Mật khẩu không trùng khớp'));
+                                          },
+                                    }),
+                              ]}
+                        >
+                              <Input.Password />
+                        </Form.Item>
+                            <Form.Item
+                                label="Vai trò"
+                                name="partnerRole"
+                                rules={[{ required: true, message: 'Please input your username!' }]}
+                            >
+                                <Select name="partnerRole">
+                                    {role.map(item=>(
+                                        <Option key={item.value} value={item.value}>{item.label}</Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
                             <Form.Item {...tailLayout}>
                                 <p onClick={()=>setLogin(true)} id="cooperation-link">Đăng nhập ngay</p>
-                                <button className="btn-login-partner rounded">
+                                <button type="submit" className="btn-login-partner rounded">
                                     <Spin
-                                        spinning={true}
+                                        spinning={isSPin}
                                         indicator={antIcon}
                                         style={{ marginRight: '12px' }}
                                     />

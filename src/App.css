@@ -187,6 +187,10 @@ nav{
 .user-form a i{
   margin-right: 10px;
 }
+.times h6{
+  margin-bottom: 0;
+  padding: 5px 10px;
+}
 @keyframes ToRight{
   from {
     transform: translateX(80%);

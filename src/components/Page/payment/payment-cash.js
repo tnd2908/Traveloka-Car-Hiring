@@ -20,7 +20,7 @@ const PaymentPage = ({car}) =>{
         const payment = {
             payment: visaInfo?.id ? "visa" : "cash"
         }
-        axios.put(DEV_URL + "bill/" + billId, payment)
+        axios.put(API_URL + "bill/" + billId, payment)
         .then(res => {
             setResult(res);
             setIsModalOpen(true);
