@@ -9,7 +9,7 @@ import { API_URL } from '../../../util/util';
 import { useSelector } from 'react-redux';
 const Payment = (props) => {
     let { idVehicle } = useParams();
-    const [car,setCar] = useState({})
+    const [car,setCar] = useState({});
     useEffect(() => {
         fetchDetail();
     }, [])
@@ -23,6 +23,7 @@ const Payment = (props) => {
             console.log(error)
         }
     }
+
     return (
         <div className="container-fluid cover">
             <div className="container payment-page">

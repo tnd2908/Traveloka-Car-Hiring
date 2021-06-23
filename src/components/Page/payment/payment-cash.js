@@ -1,7 +1,7 @@
 import {message, Switch} from 'antd'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import { API_URL } from '../../../util/util'
+import { API_URL, DEV_URL, VOUNCHER_API_URL } from '../../../util/util'
 import {DollarCircleOutlined} from "@ant-design/icons"
 import { useState } from 'react'
 import Result from './result'
@@ -11,14 +11,20 @@ const PaymentPage = ({car}) =>{
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [result , setResult] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [point, setPoint] = useState("")
     const visaInfo = useSelector(state => state.bill.visaInfo)
+    const userInfo = useSelector(state => state.user.user);
+    console.log(visaInfo);
     const submitPayment = () => {
         setIsLoading(true)
-        axios.put(API_URL + "bill/" + billId)
+        const payment = {
+            payment: visaInfo?.id ? "visa" : "cash"
+        }
+        axios.put(DEV_URL + "bill/" + billId, payment)
         .then(res => {
-            setIsModalOpen(true);
             setResult(res);
-            setIsLoading(false)
+            setIsModalOpen(true);
+            setIsLoading(false);
         })
         .catch(err => message.error("Đã có lỗi xảy ra vui lòng thử lại"))
     }

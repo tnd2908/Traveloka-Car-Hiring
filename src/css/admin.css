@@ -232,3 +232,7 @@ table .btn-detail{
     color: orange;
     border: 1px solid orange;
 }
+#h6-register{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}

@@ -1,25 +1,26 @@
 import {Form, Input, Modal, Spin} from 'antd'
+import axios from 'axios';
 import {Link} from 'react-router-dom'
-import { API_URL } from '../../util/util';
-import Axios from 'axios'
+import { API_URL, PROFILE_API_URL } from '../../util/util';
 import {
       LoadingOutlined
   } from '@ant-design/icons';
 import {useState} from 'react'
 const layout = {
-    labelCol: { span: 24 },
-    wrapperCol: { span: 24 },
+    labelCol: { span: 7 },
+    wrapperCol: { span: 14 },
   };
   const antIcon = <LoadingOutlined style={{ fontSize: 24, color: 'white' }} />;
-const LogInForm = () =>{
+const Register = () =>{
       const [form] = Form.useForm()
       const [spin, setSpin] = useState(false)
 
-      const onLogin = (value) =>{
+      const onRegister = (value) => {
             try {
-                  setSpin(true)
-                  Axios.post('https://oka1kh.azurewebsites.net/api/user/login', value)
-                      .then(res=>{
+                  console.log(value)
+                    setSpin(true)
+                    axios.post("https://oka1kh.azurewebsites.net/api/adduserall", {...value, cards: "123456"})
+                    .then(res=> {
                           console.log(res.data)
                           setSpin(false)
                           if(res.data.status === "SUCCES"){
@@ -27,13 +28,9 @@ const LogInForm = () =>{
                                 title: 'Success',
                                 content: (
                                     <div>
-                                        <p>Đăng nhập thành công</p>
+                                        <p>Đăng ký thành công</p>
                                     </div>
-                                ),
-                                onOk(){
-                                    localStorage.setItem("user-token", res.data.data.token)
-                                    window.location = "/"
-                                }
+                                )
                             })
                           }
                           else{
@@ -41,7 +38,7 @@ const LogInForm = () =>{
                                   title: 'FAIL',
                                   content: (
                                       <div>
-                                          <p>Sai email hoặc password</p>
+                                          <p>Đã có lỗi xảy ra</p>
                                       </div>
                                   ),
                               })
@@ -60,9 +57,41 @@ const LogInForm = () =>{
               style={{padding: '12px', paddingTop:'20px'}}
               className="login-form bg-white shadow-sm"
               form={form}
-              onFinish={onLogin}
+              onFinish={onRegister}
         >
-              <h6 style={{fontWeight:'bold', marginBottom:'10px'}}>Đăng nhập tài khoản</h6>
+              <h6 id="h6-register" style={{fontWeight:'bold', marginBottom:'20px'}}>Đăng ký tài khoản</h6>
+              <Form.Item
+                    name="fristName"
+                    style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
+                    label="Họ"
+                    rules={[{ required: true, message: 'Vui lòng nhập họ' }]}
+              >
+                    <Input name="fristName" size="large" />
+              </Form.Item>
+              <Form.Item
+                    name="lastName"
+                    style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
+                    label="Tên"
+                    rules={[{ required: true, message: 'Vui lòng nhập tên' }]}
+              >
+                    <Input name="lastName" size="large" />
+              </Form.Item>
+              <Form.Item
+                    name="userAddress"
+                    style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
+                    label="Địa chỉ"
+                    rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
+              >
+                    <Input name="userAddress" size="large" />
+              </Form.Item>
+              <Form.Item
+                    name="phone"
+                    style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
+                    label="Số điện thoại"
+                    rules={[{ required: true, message: 'Vui lòng nhập sdt' }]}
+              >
+                    <Input name="phone" size="large" />
+              </Form.Item>
               <Form.Item
                     name="email"
                     style={{fontWeight:'bold', color:'grey', marginBottom:'10px'}}
@@ -79,7 +108,9 @@ const LogInForm = () =>{
               >
                     <Input.Password size="large" />
               </Form.Item>
-              <Form.Item>
+              <Form.Item
+                  wrapperCol={{offset: 7}}
+              >
                     <div className="d-flex">
                         <button type="submit" className="login-btn">
                               <Spin
@@ -87,15 +118,11 @@ const LogInForm = () =>{
                               indicator={antIcon}
                               style={{ marginRight: '12px' }}
                                 /> 
-                              {!spin&& <span>Đăng nhập</span>}
+                              {!spin&& <span>Đăng ky</span>}
                         </button>
-                        <div className="signup-link">
-                              <p>Bạn chưa có tài khoản?</p>
-                              <Link>Đăng ký ngay</Link>
-                        </div>
                     </div>
               </Form.Item>
         </Form>
     )
 }
-export default LogInForm
+export default Register

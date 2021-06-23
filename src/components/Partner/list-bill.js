@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setPartnerInfor } from '../../action/partner'
-import { API_URL } from '../../util/util'
+import { API_URL, DEV_URL } from '../../util/util'
 import moment from "moment";
 
 const { Column } = Table
@@ -13,6 +13,8 @@ const ListBill = () => {
     const [bill, setBill] = useState([])
     const dispatch = useDispatch()
     const [visible, setVisible] = useState(false)
+    const [totalVisa, setTotalVisa] = useState(0);
+    const [totalCurrent, setTotalCurrent] = useState(0);
     const [total, setTotal] = useState(0);
     const [result, setResult] = useState(0);
     const [isPopconfirm, setIsPopconfirm] = useState(false);
@@ -30,32 +32,68 @@ const ListBill = () => {
 
     useEffect(() => {
         try {  
-            setIsLoading(true);
-            axios.get(API_URL + "bill/saler/" + partnerInfo.partnerId)
-            .then(response => {
-                let totalPrice = 0;
-                response.data.result.map(item => {
-                    if (new Date(item.endDate) <= new Date && item.status !== "DONE") {
-                        setListExpireBill([...listExpireBill, item])
-                    }
-                    const startDay = item.startDate.split(" ").slice(2,3)[0];
-                    const endDay = item.endDate.split(" ").slice(2,3)[0];
-                    totalPrice += item.total * (endDay - startDay);
+            if(partnerInfo.partnerId) {
+                setIsLoading(true);
+                axios.get(API_URL + "bill/saler/" + partnerInfo.partnerId)
+                .then(response => {
+                    let totalPrice = 0;
+                    let expireArr = [];
+                    response.data.result.map(item => {
+                        console.log(item)
+                        const startDay = item.startDate.split(" ").slice(2,3)[0];
+                        const endDay = item.endDate.split(" ").slice(2,3)[0];
+                        if(item.payment === "cash") {
+                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 365) > 48) {
+                            //Hủy bill 
+                            }
+                            if(item.status === "In progress") {
+                                console.log(total + item.total * (endDay - startDay) *  50/100)
+                                setTotal(total + item.total * (endDay - startDay) *  50/100)
+                            }
+                            if (new Date(item.endDate) <= new Date && item.status !== "DONE") {
+                                //setTotal(total + item.total * (endDay - startDay) *  50/100)
+                                expireArr.push(item)
+                            }
+                            if(item.status === "DONE") {
+                                setTotal(total + item.total * (endDay - startDay) *  50/100)
+                            }
+                        }
+                        else if(item.payment === "visa") {
+                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 36e5) > 48) {
+                                //Hủy bill 
+                            }
+                            if(item.status === "In progress") {
+                                setTotalVisa(totalVisa + item.total * (endDay - startDay) *  50/100)
+                            }
+                            if (new Date(item.endDate) <= new Date && item.status !== "DONE") {
+                                //setTotal(total + item.total * (endDay - startDay) *  50/100)
+                                expireArr.push(item)
+                            }
+                            if(item.status === "DONE") {
+                                setTotalVisa(totalVisa + item.total * (endDay - startDay) *  50/100)
+                            }
+                        }
+                        setListExpireBill(expireArr);
+                    })
+                    setBill(response.data.result);
+                    setIsLoading(false);
                 })
-                setTotal(totalPrice);
-                setBill(response.data.result);
-                setIsLoading(false);
-            })
+            }
         } catch (error) {
             console.log(error)
         }
-    }, [])
+    }, [partnerInfo.partnerId])
 
+    useEffect(() => {
+        const current = total + totalVisa;
+        setTotalCurrent(current);
+    }, [total, totalVisa])
+    
     useEffect(() => {
         if(listExpireBill.length > 0) {
             setIsPopCarRetake(true);
         }
-    },[listExpireBill.length])
+    }, [listExpireBill.length])
 
     useEffect(() => {
         setResult(total/target * 100)
@@ -96,7 +134,7 @@ const ListBill = () => {
             total: total || 0,
             result: result || 0
         }
-        axios.post(API_URL + "bill/KPI", newKPI)
+        axios.post(DEV_URL + "bill/KPI", newKPI)
         .then(res => {
             setSubmitModal(false);
             message.success("Lưu KPI thành công")
@@ -116,9 +154,10 @@ const ListBill = () => {
     const handleAlertCancel = () => {
         setIsPopCarRetake(false);
     }
-
+    console.log(bill)
     const handleRetakeOk = () => {
         listExpireBill.map(item => {
+            console.log(item);
             axios.get(API_URL + "bill/endDate/" + item.idBill + "?endDate=" + item.endDate)
             .then(res => {
                 console.log(res)
@@ -205,7 +244,7 @@ const ListBill = () => {
                             <Statistic title="Chỉ tiêu đặt ra" value={target}/>
                         </Col>
                         <Col span={8}>
-                            <Statistic title="Phần trăm đạt được" value={total/target * 100}/>
+                            <Statistic title="Phần trăm đạt được" value={totalCurrent/target * 100}/>
                         </Col>
                     </Row>
                 </Modal>
@@ -248,16 +287,22 @@ const ListBill = () => {
 
                 <Row className="mt-5" gutter={16}>
                     <Col span={8}>
-                        <Statistic title=" Tổng doanh thu hiện tại" value={total + " VND"} precision={2}/>
+                        <Statistic title=" Tổng doanh thu hiện tại" value={totalCurrent + " VND"} precision={2}/>
                     </Col>
                     <Col span={8}>
-                        <Statistic title="Tháng hiện tại" value={new Date().getMonth()}/>
+                        <Statistic title=" Tổng doanh thu tiền mặt" value={total + " VND"} precision={2}/>
                     </Col>
                     <Col span={8}>
-                            <Statistic title="Chỉ tiêu đặt ra" value={target+ " VND"}/>
+                        <Statistic title=" Tổng doanh thu visa" value={totalVisa + " VND"} precision={2}/>
+                    </Col>
+                    <Col span={8}>
+                        <Statistic title="Tháng hiện tại" value={new Date().getMonth() +1}/>
+                    </Col>
+                    <Col span={8}>
+                            <Statistic title="Chỉ tiêu đặt ra" value={new Intl.NumberFormat().format(target) + " VND"}/>
                         </Col>
                     <Col span={8}>
-                        <Statistic title="Phần trăm đạt được" value={(total/target) * 100} precision={2}/>
+                        <Statistic title="Phần trăm đạt được" value={(totalCurrent/target) * 100} precision={2}/>
                     </Col>
                 </Row>
 
@@ -267,7 +312,7 @@ const ListBill = () => {
                     dataSource={bill}
                     loading={isLoading}
                 >
-                    <Column title="Ngày nhận" dataIndex="startDate" render={time => moment(time).format("YYYY-MM-DD hh:mm")}  key="startDate" />
+                    <Column title="Ngày nhận nè" dataIndex="startDate" render={time => moment(time).format("YYYY-MM-DD hh:mm")}  key="startDate" />
                     <Column title="Ngày trả" dataIndex="endDate" render={time => moment(time).format("YYYY-MM-DD hh:mm")} key="endDate" />
                     <Column title="Trạng thái" key="status"
                         render={data => {
