@@ -77,7 +77,7 @@ const CreditCard = () => {
                 card: paymentMethod.type,
                 id: paymentMethod.id,
                 method: paymentMethod.card.brand,
-                amount: price,
+                amount: price / 2,
                 car: carName
             }
             console.log(visaInfo);

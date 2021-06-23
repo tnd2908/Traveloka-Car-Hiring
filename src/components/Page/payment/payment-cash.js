@@ -7,7 +7,7 @@ import { useState } from 'react'
 import Result from './result'
 
 const PaymentPage = ({car}) =>{
-    const billId = useSelector(state => state.bill.newBill.id)
+    const billId = useSelector(state => state.bill.newBill.id) || localStorage.getItem("idBill")
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [result , setResult] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,12 @@ const PaymentPage = ({car}) =>{
     const submitPayment = () => {
         setIsLoading(true)
         const payment = {
-            payment: visaInfo?.id ? "visa" : "cash"
+            payment: visaInfo?.id ? "visa" : "cash",
+            id_stripe: visaInfo?.id || ""
+        }
+        if(visaInfo) {
+            axios.post(DEV_URL + "bill/stripe", visaInfo)
+            .then(res => console.log(res))
         }
         axios.put(DEV_URL + "bill/" + billId, payment)
         .then(res => {

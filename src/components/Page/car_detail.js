@@ -140,7 +140,7 @@ const CarDetail = () => {
     useEffect(() => {
         setNewInfo(userInfo);
     }, [JSON.stringify(userInfo)])
-
+    console.log(car);
     const insertBill = () => {
         dispatch(setUserInfor(newInfo))
         const carInsert = {
@@ -156,6 +156,7 @@ const CarDetail = () => {
         .then(res => {
             localStorage.setItem("idBill", res.data.result.id)
             localStorage.setItem("carPrice", car.self_drive_price)
+            localStorage.setItem("carName", car.name)
             dispatch(getNewBill(res.data.result))
         });
     }
