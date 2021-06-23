@@ -1,4 +1,4 @@
-import { Table, Tag, Descriptions, Badge, Row, Col, Statistic, Popconfirm, message } from 'antd'
+import { Table, Tag, Descriptions, Badge, Row, Col, Statistic, Popconfirm, message, Button } from 'antd'
 import Modal from 'antd/lib/modal/Modal'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -23,6 +23,7 @@ const ListBill = () => {
     const [submitModal, setSubmitModal] = useState(false);
     const [carRetakeModal, setCarRetakeModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false)
     const [billDetail, setBillDetail] = useState({
         startDate: '',
         endDate: '',
@@ -30,7 +31,7 @@ const ListBill = () => {
     const target = 100000000;
     const partnerInfo = useSelector(state => state.user.user)
 
-    useEffect(() => {
+    const getAllBill = () => {
         try {  
             if(partnerInfo.partnerId) {
                 setIsLoading(true);
@@ -39,12 +40,15 @@ const ListBill = () => {
                     let totalPrice = 0;
                     let expireArr = [];
                     response.data.result.map(item => {
-                        console.log(item)
                         const startDay = item.startDate.split(" ").slice(2,3)[0];
                         const endDay = item.endDate.split(" ").slice(2,3)[0];
                         if(item.payment === "cash") {
-                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 365) > 48) {
-                            //Hủy bill 
+                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 36e5) > 0.5) {
+                                axios.delete(DEV_URL + "bill/" + item.idBill)
+                            }
+                            if(item.status === "Delivery" && new Date() >= new Date(item.startDate)) {
+                                axios.put(DEV_URL + "bill/progress/" + item.idBill)
+                                .then(res => console.log(res))
                             }
                             if(item.status === "In progress") {
                                 console.log(total + item.total * (endDay - startDay) *  50/100)
@@ -59,8 +63,8 @@ const ListBill = () => {
                             }
                         }
                         else if(item.payment === "visa") {
-                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 36e5) > 48) {
-                                //Hủy bill 
+                            if(item.status === "Waiting" && Math.abs((new Date - new Date(item.created_at)) / 36e5) > 0.5) {
+                                axios.delete(DEV_URL + "bill/" + item.idBill)
                             }
                             if(item.status === "In progress") {
                                 setTotalVisa(totalVisa + item.total * (endDay - startDay) *  50/100)
@@ -73,22 +77,29 @@ const ListBill = () => {
                                 setTotalVisa(totalVisa + item.total * (endDay - startDay) *  50/100)
                             }
                         }
-                        setListExpireBill(expireArr);
+                        setListExpireBill(expireArr); 
+                        setBill(response.data.result);
                     })
-                    setBill(response.data.result);
                     setIsLoading(false);
                 })
             }
         } catch (error) {
             console.log(error)
         }
+    }
+    useEffect(() => {
+        getAllBill()
     }, [partnerInfo.partnerId])
+
+    useEffect(() => {
+
+    }, [JSON.stringify(bill)])
 
     useEffect(() => {
         const current = total + totalVisa;
         setTotalCurrent(current);
     }, [total, totalVisa])
-    
+
     useEffect(() => {
         if(listExpireBill.length > 0) {
             setIsPopCarRetake(true);
@@ -154,7 +165,7 @@ const ListBill = () => {
     const handleAlertCancel = () => {
         setIsPopCarRetake(false);
     }
-    console.log(bill)
+   
     const handleRetakeOk = () => {
         listExpireBill.map(item => {
             console.log(item);
@@ -171,6 +182,37 @@ const ListBill = () => {
         setCarRetakeModal(false);
     }
 
+    const deleteBill = (detail) => {
+        console.log(detail);
+        setLoadingButton(true);
+        if(detail.payment === "visa") {
+            axios.delete(DEV_URL + "bill/stripe/" + detail.id_stripe)
+            .then(res => {
+                console.log(res);
+                axios.delete(DEV_URL + "bill/" + detail.idBill)
+                .then(res => {
+                    setLoadingButton(false)
+                    console.log(res);
+                    setVisible(false);
+                    getAllBill();
+                    message.success("Xóa hủy hóa đơn này")
+                })
+            })
+        }
+        else {
+            console.log(1)
+            
+        }
+        axios.delete(DEV_URL + "bill/" + detail.idBill)
+            .then(res => {
+                console.log(res)
+                setLoadingButton(false)
+                setVisible(false);
+                getAllBill();
+                message.success("Xóa hủy hóa đơn này")
+            })
+    }
+    console.log(bill)
     return (
         <div className="container compo mt-5">
             <div className="row">
@@ -199,7 +241,8 @@ const ListBill = () => {
                         </Descriptions.Item>
                         <Descriptions.Item label="Trạng thái" span={2}>
                             {billDetail.status === "In progress"?<Tag color="processing"> {billDetail.status} </Tag>
-                        : billDetail.status === "DONE" ? <Tag color="green"> {billDetail.status} </Tag> : <Tag color="gold"> {billDetail.status} </Tag>}
+                                : billDetail.status === "DONE" ? <Tag color="green"> {billDetail.status} </Tag> : <Tag color="gold"> {billDetail.status} </Tag>}
+                            <Button className="ml-5" type="ghost" danger onClick={()=>deleteBill(billDetail)} loading={loadingButton}> Hủy hóa đơn </Button>
                         </Descriptions.Item>
                         <Descriptions.Item label="Ngày nhận">
                             {billDetail.startDate}
@@ -207,8 +250,11 @@ const ListBill = () => {
                         <Descriptions.Item label="Ngày trả" span={2}>
                             {billDetail.endDate}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Địa chỉ" span={3}>
+                        <Descriptions.Item label="Địa chỉ" span={1}>
                             {billDetail.address}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Phương thức thanh toán" span={3}>
+                            {billDetail.payment}
                         </Descriptions.Item>
                         <Descriptions.Item label="Tên xe"> {billDetail.name} </Descriptions.Item>
                         <Descriptions.Item label="Giá theo ngày"> {new Intl.NumberFormat().format(billDetail.total)} VND</Descriptions.Item>
@@ -220,6 +266,14 @@ const ListBill = () => {
                                 <b>{new Intl.NumberFormat().format(billDetail.total*(end-start))} VND</b>
                             </h6>
                         </Descriptions.Item>
+                        {
+                            billDetail.status === "In progress" && <Descriptions.Item label="Đặt cọc">
+                            <h6 style={{marginBottom:'0'}}>
+                                <b>{new Intl.NumberFormat().format(billDetail.total*(end-start)/2)} VND</b>
+                            </h6>
+                        </Descriptions.Item>
+                        }
+                        
                     </Descriptions>
                 </Modal>
 
@@ -316,6 +370,8 @@ const ListBill = () => {
                     <Column title="Ngày trả" dataIndex="endDate" render={time => moment(time).format("YYYY-MM-DD hh:mm")} key="endDate" />
                     <Column title="Trạng thái" key="status"
                         render={data => {
+                            if(data.status === "Cancel") 
+                                return <Tag color="red">{data.status} </Tag>
                             if (data.status === "In progress")
                                 return <Tag color="processing"> {data.status} </Tag>
                             if(data.status === "DONE") 

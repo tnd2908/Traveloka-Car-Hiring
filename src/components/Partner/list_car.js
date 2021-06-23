@@ -214,7 +214,7 @@ const ListCar = () => {
                                         <td> {new Intl.NumberFormat().format(car.self_drive_price)} / Ngày</td>
                                         <td style={{ width: '100px' }}>
                                             {
-                                                car.quantity >= 0 ? car.quantity :  <Fragment>
+                                                car.quantity > 0 ? car.quantity : <Fragment>
                                                     {car.quantity} <Tag color="error">Hết xe</Tag>
                                                 </Fragment>
                                             }
