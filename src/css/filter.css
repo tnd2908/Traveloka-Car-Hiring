@@ -1,5 +1,9 @@
 .ant-menu-item.ant-menu-item-only-child.ant-menu-item-selected{
     color: black;
+    background-color: unset;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background-color: unset;
 }
 .ant-menu-inline .ant-menu-item::after{
     border-style: none;
@@ -9,6 +13,11 @@
     color: black;
 }
 .ant-menu-item-selected{
+    color: black;
+}
+.ant-tooltip-inner, .ant-tooltip-arrow-content{
+    background-color: #fff;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
     color: black;
 }
 .ant-menu-submenu-arrow{

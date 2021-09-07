@@ -6,9 +6,29 @@
 * p{
   margin: 0;
 }
+button:active{
+  outline: none;
+  border: none;
+}
+  
+button:focus{
+  outline:0;
+}
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.btn:active{
+  border-style: none;
+  outline: none;
+}
+
 .container-fluid{
   background-color: #f6f6f6;
   overflow-x: hidden;
+}
+.container-fluid.bgcolor{
+  background-color: #e6eaed ;
 }
 .header{
   background-color: #fff;
@@ -33,10 +53,12 @@
   line-height: 40px;
   padding-left: 30px;
 }
-.nav-top .open-left-menu{
+.nav-top .btn.open-left-menu{
   margin-left: 30px;
   font-size: 20px;
   color: rgb(73, 73, 252);
+  border-style: none;
+  margin-right: 3px;
 }
 .nav-top .logo{
   height: 55px;
@@ -61,13 +83,16 @@
 .nav-mid .user{
   margin: 0 20px;
   margin-right: 80px;
+  display: flex;
+  align-items: center;
+  height: 40px;
 }
 .nav-mid .user a{
   margin-left: 10px;
 }
 #login{
   background-color: whitesmoke;
-  padding: 7px 10px;
+  padding: 0 10px;
   border-radius: 5px;
   color: royalblue;
 }
@@ -80,13 +105,14 @@
   background-color: royalblue;
   color: white;
   border-radius: 5px;
-  padding: 17px 5px;
+  padding: 5px 8px;
 }
 .header .nav-bottom{
-  background-color: #f6f6f6;
+  background-color: whitesmoke;
   line-height: 40px;
   padding-left: 40px;
   display: flex;
+
 }
 .nav-bottom a{
   color: dimgray;
@@ -98,4 +124,86 @@
 }
 .prev-icon{
   margin-right: 10px;
+}
+.login-partner-form{
+  transform: translateY(-100px);
+  margin-bottom: 30px;
+  padding: 20px;
+  padding-top: 10px;
+}
+.inside-form{
+  background-color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  overflow: hidden;
+  min-height: 50vh;
+}
+
+.app-logo{
+  width: auto;
+  cursor: pointer;
+  height: 90px;
+  margin-bottom: 20px
+}
+nav{
+  background-color: #fff;
+  padding-left: 50px;
+}
+.app-logo-nav{
+  width: auto;
+  cursor: pointer;
+  height: 50px;
+  transform: translateY(-3px)scale(1.1);
+}
+.btn-login-partner{
+  width: 140px;
+  height: 38px;
+  border-style: none;
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+  background-color: dodgerblue;
+}
+#cooperation-link{
+  cursor: pointer;
+  color: black;
+  margin: 10px 0;
+  font-size: 16px;
+}
+.form-left{
+  animation: toLeft 0.7s ease;
+}
+.form-right{
+  animation: ToRight 0.7s ease;
+}
+.user-form{
+  width: 200px;
+  padding: 10px 20px;
+}
+.user-form a{
+  padding: 5px 0;
+}
+.user-form a i{
+  margin-right: 10px;
+}
+.times h6{
+  margin-bottom: 0;
+  padding: 5px 10px;
+}
+@keyframes ToRight{
+  from {
+    transform: translateX(80%);
+  }
+  to{
+    transform: translateX(0);
+  }
+}
+@keyframes toLeft{
+  from {
+    transform: translateX(-80%);
+  }
+  to{
+    transform: translateX(0);
+  }
 }

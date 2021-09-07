@@ -1,0 +1,149 @@
+li {
+    list-style: none;
+}
+.cover{
+    width: 100%;
+    background-color: #e6eaed;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 50px;
+}
+@media screen and(max-width: 1024px){
+    .cover{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+.car-detail{
+    background-color: white;
+    align-content: center;
+    justify-content: center;
+    padding: 10px;
+}
+.car-detail .info p{
+    margin-bottom: 0;
+    color: black;
+    font-weight: bold;
+}
+.car-detail .info p:first-child{
+    font-size: 22px;
+}
+.car-detail .info p:nth-child(2){
+    font-size: 17px;
+}
+.car-detail .info .iconic p{
+    font-weight: normal;
+}
+.car-detail .info{
+    margin-left: 20px;
+}
+.car-detail .info img{
+    height: 25px;
+    width: 25px;
+    border: none;
+}
+.car-detail img{
+   width: 300px;
+   height: 200px;
+   object-fit: cover;
+}
+.car-detail p{
+    padding: 5px 0;
+}
+.iconic{
+    display: flex;
+    margin-top: 15px;
+}
+.iconic p{
+    margin-top: -5px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.Policy{
+    padding: 0 20px;
+    margin: 30px 0;
+}
+.Policy img{
+    height: 25px;
+    width: 25px;
+    border: none;
+    margin-right: 10px;
+}
+.Policy h5{
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+.Policy ul {
+    list-style: none;
+}
+
+.Policy ul li:before {
+    content: '✓';
+}
+
+.rental-info{
+    background-color: white;
+    padding: 10px;
+    width: 100%
+}
+.user-info {
+    background-color: white;
+    padding: 10px;
+    width: 100%
+}
+.rental-info img{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+.payment{
+    margin-top: 20px;
+    background-color: white;
+    padding: 10px;
+}
+.payment h6{
+    color: orangered;
+    font-size: large;
+}
+.payment button{
+    width: 100%;
+    height: 40px;
+    margin: 15px 0;
+    border-style: none;
+    border-radius: 10px;
+    color: white;
+    background-color: orangered;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+}
+.choose-loca{
+    padding: 10px 20px;
+}
+.pursuit{
+    padding: 20px 20px;
+    background-color: white;
+    display: flex;
+    align-content: space-between;
+    justify-content: space-between;
+}
+.pursuit h6{
+    color: orangered;
+    font-size: large;
+}
+.next-page button{
+    width: 20%;
+    height: 40px;
+    margin: 15px 0;
+    border-style: none;
+    border-radius: 10px;
+    color: white;
+    background-color: orangered;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+}

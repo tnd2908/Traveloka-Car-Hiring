@@ -9,9 +9,7 @@
 .navbar-admin.col-3, .navbar-admin.col-9{
     padding: 0;
 }
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: #f6f6f6;
-}
+
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected span{
     color: black;
 }
@@ -26,16 +24,51 @@
     align-items: center;
     height: 50px;
 }
+.fas.fa-sort-amount-up, .fas.fa-sort-amount-down{
+    margin-left: 7px;
+}
+.menu-title button{
+    margin-left: 12px;
+}
 .menu-title h4{
     color: orange;
     display: block;
     transform: translateY(-2px);
-    margin: 0 20px;
+    margin: 0px;
 }
 .navbar-admin{
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     height: 50px;
+}
+.admin-search{
+    margin-bottom: 30px;
+}
+.admin-sort{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-start;
+    padding: 0 50px;
+}
+.admin-sort #h5{
+    width: 100%;
+    
+}
+.admin-sort button{
+    background-color: white;
+    border-style: none;
+    color: black;
+    height: 40px;
+    box-sizing: border-box;
+    transition: 0.4s;
+}
+.admin-sort button:active{
+    opacity: 0.7;
+    background-color: #eee;
+}
+.admin-sort button:first-child{
+    margin-right: 10px;
 }
 .container-fluid.navbar-admin{
     padding: 0;
@@ -45,6 +78,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 100%;
 }
 .sub-menu{
     background-color: #fff;
@@ -69,15 +103,17 @@
 }
 .user-icon {
     margin: 0;
-    font-size: 30px;
     cursor: pointer;
     margin-right: 20px;
+    font-size: 17px;
 }
 .user-icon i{
     color: silver;
+    margin-right: 15px;
     transform: translateY(1px);
+    font-size: 30px;
 }
-.container-fluid.component{
+.container.component{
     margin-top: 50px;
     background-color: #eee;
 }
@@ -93,16 +129,19 @@ table.table button{
     color: white;
     width: 65px;
     border-style: none;
-    border-radius: 6px;
+    border-radius: 3px;
 }
-table.table .btn-delete{
+table.table .btn-detail{
     background-color: white;
-    border: 1px solid orangered;
-    color: orangered;
+    border: 1px solid green;
+    color: green;
 }
 table.table .btn-edit{
     background-color: #52BE80;
     background-color: orange;
+}
+.form-detail li{
+    font-size: 16px;
 }
 .component .form{
     background-color: #eee;
@@ -121,10 +160,9 @@ table.table .btn-edit{
     margin-bottom: 20px;
     margin-top: 20px;
     line-height: 40px;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     padding-left: 10px;
     border-radius: 5px;
-    background-color: rgb(240, 234, 234);
     text-transform: uppercase;
     font-weight: bolder;
     letter-spacing: 1px;
@@ -136,7 +174,9 @@ table.table .btn-edit{
 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
     background-color: #f6f6f6;
 }
-
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background-color: #f6f6f6;
+}
 .component .form .btn-add{
     width: 50%;
     height: 38px;
@@ -145,7 +185,7 @@ table.table .btn-edit{
     background-color: #fcba07;
     color: rgb(255, 255, 255);
     text-transform: uppercase;
-    border-radius: 10px;
+    border-radius: 4px;
     transition: 0.4s;
 }
 .component .form .btn-add:hover{
@@ -162,14 +202,7 @@ table.table .btn-edit{
     display: flex;
     justify-content: flex-end;
 }
-.modal-btn .btn-delete{
-    width: 100px;
-    height: 35px;
-    color: white;
-    background-color: rgb(255, 196, 0);
-    border-radius: 2px;
-    border-style: none;
-}
+
 .car-infor{
     animation: toRight 1s;
 }
@@ -190,4 +223,16 @@ table.table tr{
 @keyframes appear{
     from{opacity: 0;}
     to{opacity: 1;}
+}
+table .btn-detail{
+    height: 35px;
+    background-color: #fff;
+    width: 100px;
+    border-radius: 4px;
+    color: orange;
+    border: 1px solid orange;
+}
+#h6-register{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }

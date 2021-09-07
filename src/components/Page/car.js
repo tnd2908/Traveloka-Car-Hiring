@@ -1,33 +1,35 @@
-import axios from "axios";
-import { useEffect } from "react";
+
+import { Button, message } from "antd";
 import {
     Link
   } from "react-router-dom";
-function Car({car}){
-    const id = car.idVehicle;
-    const fetchCar = () => {
-        axios.get("https://mighty-meadow-74982.herokuapp.com/vehicle/"+id)
-        .then(res=>{
-            console.log(res);
-        })
+import { API_URL } from "../../util/util";
+function Car({car,isExpire}){
+    console.log(isExpire);
+    const id = car.id;
+    const authorizeHanlde = () => {
+        if(isExpire) {
+            message.error("Bạn chưa đăng nhập");
+        }
     }
-    useEffect(()=>{
-
-    },[])
+    console.log(car);
     return(
-        <div className="container-fluid bg-white car">
+        <div className="container-fluid bg-white car-item">
             <div className="row">
-                <div className="col-3">
-                    <p className="image">picture</p>
+                <div className="col-lg-4">
+                    {car.avatar?<img className="car--image" src={ API_URL + 'images/' + car.avatar} alt=""/>:
+                    <p className="car-image">picture</p>}
                 </div>
-                <div className="col-5">
-                    <p className="name">{car.name}</p>
+                <div className="col-lg-4">
+                    <p className="car-name">{car.name}</p>
                 </div>
-                <div className="col-4"> 
-                    <div className="price">
-                        <p id="text">Giá thuê theo ngày từ</p>
-                        <p id="price">{new Intl.NumberFormat().format(car.price)} VNĐ</p>
-                        <Link to={`/vehicles/${id}`}><span>Tiếp tục</span></Link>
+                <div className="col-lg-4"> 
+                    <div className="car-price">
+                        <p id="car-text">Giá thuê theo ngày từ</p>
+                        <p id="car-price">{new Intl.NumberFormat().format(car.self_drive_price)} VNĐ</p>
+                        {
+                            car.quantity <= 0 ? <Button disabled={true}>Hết xe</Button> : <Link onClick={() => authorizeHanlde()} to={!isExpire && `/detail/${id}`}><span>Tiếp tục</span></Link>
+                        }
                     </div>
                  </div>
             </div>
